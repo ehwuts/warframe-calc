@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>warframe-calc - notes</title>
+	<link rel="icon" type="image/png" href="project/res/warframe-calc.png">
+	<link rel="stylesheet" type="text/css" href="project/res/warframe-calc.css">
+</head>
+<body>
+Health Scaling<br>
+Health = BaseHealth * (1 + 0.015 * (Level - BaseLevel)^2)<br>
+Armo Scaling<br>
+Armor = BaseArmor * (1 + 0.005 * (Level - BaseLevel)^1.75)<br>
+Shield Scaling<br>
+Shield = BaseShield * (1 + 0.0075 * (Level - BaseLevel)^2)<br>
+<br>
+Basic damage reduction from armor calc<br>
+Damage Reduction = Armor / (300 + Armor)<br>
+Damage Effectiveness = 1 - Damage Reduction<br>
+Damage Effectiveness = 300 / (300 + Armor)<br>
+<br>
+General damage formula<br>
+Damage Effectiveness = (1 + HealthMod) * (1 + ArmorMod) / (1 + Armor * (1 - ArmorMod) / 300)<br>
+<br>
+Shields don't benefit from armor.<br>
+Toxin damage bypasses shields. Gas damage does not bypass shields.<br>
+Toxin and Gas procs both do Toxin damage.<br>
+<br>
+Finisher damage ignores armor and bypasses shields.<br>
+<br>
+<table>
+<tr><th colspan="14">Health Modifiers</th></tr>
+<tr><td> </td><td>Impact</td><td>Puncture</td><td>Slash</td><td>Cold</td><td>Electricity</td><td>Heat</td><td>Toxin</td><td>Blast</td><td>Corrosive</td><td>Gas</td><td>Magnetic</td><td>Radiation</td><td>Viral</td></tr>
+<tr><td>Cloned Flesh</td><td>-0.25</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0</td><td>-0.5</td><td>0</td><td>0</td><td>0.75</td></tr>
+<tr><td>Machinery</td><td>0.25</td><td>0</td><td>0</td><td>0</td><td>0.5</td><td>0</td><td>-0.25</td><td>0.75</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-0.25</td></tr>
+<tr><td>Flesh</td><td>-0.25</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0</td><td>0.5</td><td>0</td><td>0</td><td>-0.25</td><td>0</td><td>0</td><td>0.5</td></tr>
+<tr><td>Robotic</td><td>0</td><td>0.25</td><td>-0.25</td><td>0</td><td>0.5</td><td>0</td><td>-0.25</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0.25</td><td>0</td></tr>
+<tr><td>Infested</td><td>0</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0</td><td>0.75</td><td>0</td><td>-0.5</td><td>-0.5</td></tr>
+<tr><td>Infested Flesh</td><td>0</td><td>0</td><td>0.5</td><td>-0.5</td><td>0</td><td>0.5</td><td>0</td><td>0</td><td>0</td><td>0.5</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Fossilized</td><td>0</td><td>0</td><td>0.15</td><td>-0.25</td><td>0</td><td>0</td><td>-0.5</td><td>0.5</td><td>0.75</td><td>0</td><td>0</td><td>-0.75</td><td>0</td></tr>
+<tr><td>Infested Sinew</td><td>0</td><td>0.25</td><td>0</td><td>0.25</td><td>0</td><td>0</td><td>0</td><td>-0.5</td><td>0</td><td>0</td><td>0</td><td>0.5</td><td>0</td></tr>
+<tr><td colspan="14"> </td></tr>
+<tr><th colspan="14">Armor Modifiers</th></tr>
+<tr><td> </td><td>Impact</td><td>Puncture</td><td>Slash</td><td>Cold</td><td>Electricity</td><td>Heat</td><td>Toxin</td><td>Blast</td><td>Corrosive</td><td>Gas</td><td>Magnetic</td><td>Radiation</td><td>Viral</td></tr>
+<tr><td>Ferrite Armor</td><td>0</td><td>0.5</td><td>-0.15</td><td>0</td><td>0</td><td>0</td><td>0.25</td><td>-0.25</td><td>0.75</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Alloy Armor</td><td>0</td><td>0.15</td><td>-0.5</td><td>0.25</td><td>-0.5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-0.5</td><td>0.75</td><td>0</td></tr>
+<tr><td colspan="14"> </td></tr>
+<tr><th colspan="14">Shield Modifiers</th></tr>
+<tr><td> </td><td>Impact</td><td>Puncture</td><td>Slash</td><td>Cold</td><td>Electricity</td><td>Heat</td><td>Toxin</td><td>Blast</td><td>Corrosive</td><td>Gas</td><td>Magnetic</td><td>Radiation</td><td>Viral</td></tr>
+<tr><td>Shield</td><td>0.5</td><td>-0.2</td><td>0</td><td>0.5</td><td>0</td><td>0</td><td>*</td><td>0</td><td>0</td><td>0</td><td>0.75</td><td>-0.25</td><td>0</td></tr>
+<tr><td>Proto Shield</td><td>0.15</td><td>-0.5</td><td>0</td><td>0</td><td>0</td><td>-0.5</td><td>*</td><td>0</td><td>-0.5</td><td>0</td><td>0.75</td><td>0</td><td>0</td></tr>
+</table>
+<br>
+<br>
+<a href="index.html">Home</a>
+<script src="project/data/wfc_weapons.js"></script>
+<script src="project/scripts/warframe-calc.js"></script>
+</body>
+</html>
