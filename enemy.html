@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>warframe-calc - Enemy Calculator</title>
+	<link rel="icon" type="image/png" href="project/res/warframe-calc.png">
+	<link rel="stylesheet" type="text/css" href="project/res/warframe-calc.css">
+</head>
+<body>
+
+<table>
+<tr><td></td><th>Level</th><th>Shields</th><th>Health</th><th>Armor</th></tr>
+<tr>
+	<th>Base</th>
+	<td><input type="text" id="b_level" autocomplete="false" value="1" size="3"></td>
+	<td><input type="text" id="b_shield" autocomplete="false" value="10" size="6"></td>
+	<td><input type="text" id="b_health" autocomplete="false" value="250" size="6"></td>
+	<td><input type="text" id="b_armor" autocomplete="false" value="5" size="6"></td>
+</tr>
+<!--<tr class="hide2">
+	<th>Base</th>
+	<td><input type="text" name="b_level" autocomplete="false" value="1" size="3"></td>
+	<td><input type="text" name="b_shield" autocomplete="false" value="10" size="6"></td>
+	<td><input type="text" name="b_health" autocomplete="false" value="250" size="6"></td>
+	<td><input type="text" name="b_armor" autocomplete="false" value="5" size="6"></td>
+</tr>-->
+<tr>
+	<th>Effective</th>
+	<td><input type="text" id="e_level" autocomplete="false" value="1" size="3"></td>
+	<td><span id="e_shield"></span></td>
+	<td><span id="e_health"></span></td>
+	<td><span id="e_armor"></span></td></tr>
+</table>
+<br>
+<a href="index.html">Home</a> | Enemy Scaler | <a href="notes.html">notes</a>
+<script src="project/data/wfc_enemies.js"></script>
+<script id="faction"></script>
+<script src="project/scripts/warframe-enemycalc.js"></script>
+</body>
+</html>
