@@ -12,26 +12,31 @@
 <tr><td></td><th>Level</th><th>Shields</th><th>Health</th><th>Armor</th></tr>
 <tr>
 	<th>Base</th>
-	<td><input type="text" id="b_level" autocomplete="false" value="1" size="3"></td>
-	<td><input type="text" id="b_shield" autocomplete="false" value="10" size="6"></td>
-	<td><input type="text" id="b_health" autocomplete="false" value="250" size="6"></td>
-	<td><input type="text" id="b_armor" autocomplete="false" value="5" size="6"></td>
+	<td><input type="text" id="base_level" autocomplete="false" value="1" size="3"></td>
+	<td><input type="text" id="base_shield" autocomplete="false" value="10" size="6"></td>
+	<td><input type="text" id="base_health" autocomplete="false" value="250" size="6"></td>
+	<td><input type="text" id="base_armor" autocomplete="false" value="5" size="6"></td>
 </tr>
-<!--<tr class="hide2">
-	<th>Base</th>
-	<td><input type="text" name="b_level" autocomplete="false" value="1" size="3"></td>
-	<td><input type="text" name="b_shield" autocomplete="false" value="10" size="6"></td>
-	<td><input type="text" name="b_health" autocomplete="false" value="250" size="6"></td>
-	<td><input type="text" name="b_armor" autocomplete="false" value="5" size="6"></td>
-</tr>-->
+<tr>
+	<td></td>
+	<th>Type</th>
+	<td><select id="select_shield"><option>Shield</option><option>Proto Shield</option></select></td>
+	<td><select id="select_health"><option>Shield</option><option>Proto Shield</option></select></td>
+	<td><select id="select_armor"><option>Shield</option><option>Proto Shield</option></select></td>
+</tr>
+<tr><td colspan="5" class="center">or <select id="select_enemy"><option>--select--</option></select></select></td></tr>
+<tr><td colspan="5">&nbsp;</td></tr>
 <tr>
 	<th>Effective</th>
-	<td><input type="text" id="e_level" autocomplete="false" value="1" size="3"></td>
-	<td><span id="e_shield"></span></td>
-	<td><span id="e_health"></span></td>
-	<td><span id="e_armor"></span></td></tr>
+	<td><input type="text" id="scaled_level" autocomplete="false" value="50" size="3"></td>
+	<td><span id="scaled_shield"></span></td>
+	<td><span id="scaled_health"></span></td>
+	<td><span id="scaled_armor"></span></td></tr>
 </table>
 <br>
+<br>
+<a href="https://docs.google.com/spreadsheets/d/1QUA3jrm3N3MfifCv0lDe7GCS9Rq6o2YKk8tBsOz1iD0/edit?usp=sharing">Spreadsheet version of Enemy calculator</a>
+<hr>
 <a href="index.html">Home</a> | Enemy Scaler | <a href="notes.html">notes</a>
 <script src="project/data/wfc_enemies.js"></script>
 <script id="faction"></script>

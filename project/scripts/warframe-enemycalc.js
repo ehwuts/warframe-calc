@@ -1,41 +1,59 @@
 var WFC_enemy = {};
 
-WFC_enemy.scaleShield = function(level, base_level, base_shield) {
-	return (base_shield * (1 + 0.0075 * Math.pow(level - base_level, 2)));
-};
-WFC_enemy.scaleHealth = function(level, base_level, base_health) {
-	return (base_health * (1 + 0.015 * Math.pow(level - base_level, 2)));
-};
-WFC_enemy.scaleArmor = function(level, base_level, base_armor) {
-	return (base_armor * (1 + 0.005 * Math.pow(level - base_level, 1.75)));
+WFC_enemy.scaleFactor = function(delta, base, coeff, exp) {
+	return base * (1 + coeff * Math.pow(delta, exp));
 };
 
-WFC_enemy.updateScaled = function() {
+WFC_enemy.updateDisplay = function() {	
+	var stat = WFC_enemy.enemy.getShield();	
+	WFC_enemy.ref.scaled_shield.innerHTML = (stat|0);
+	WFC_enemy.ref.scaled_shield.title = stat;
 	
+	stat = WFC_enemy.enemy.getHealth();
+	WFC_enemy.ref.scaled_health.innerHTML = (stat|0);
+	WFC_enemy.ref.scaled_health.title = stat;
 	
-	var scaled_level = WFC_enemy.ref.scaled_level.value;
-	var scaled_shield = WFC_enemy.scaleShield(scaled_level, 1, 100);
-	WFC_enemy.ref.scaled_shield.innerHTML = (scaled_shield|0);
-	WFC_enemy.ref.scaled_shield.title = scaled_shield;
-	
-	var scaled_health = WFC_enemy.scaleHealth(scaled_level, 1, 250);
-	WFC_enemy.ref.scaled_health.innerHTML = (scaled_health|0);
-	WFC_enemy.ref.scaled_health.title = scaled_health;
-	
-	var scaled_armor = WFC_enemy.scaleArmor(scaled_level, 1, 5);
-	WFC_enemy.ref.scaled_armor.innerHTML = (scaled_armor|0);
-	WFC_enemy.ref.scaled_armor.title = scaled_armor;
+	stat = WFC_enemy.enemy.getArmor();
+	WFC_enemy.ref.scaled_armor.innerHTML = (stat|0);
+	WFC_enemy.ref.scaled_armor.title = stat;
 };
 
 WFC_enemy.init = function() {
-	WFC_enemy.enemy = {};
-	WFC_enemy.ref = {
-		"scaled_level" : document.getElementById("e_level"),
-		"scaled_shield" : document.getElementById("e_shield"),
-		"scaled_health" : document.getElementById("e_health"),
-		"scaled_armor" : document.getElementById("e_armor"),
+	WFC_enemy.enemy = {
+		"type" : {
+			"faction" : "corpus",
+			"shield" : "shield",
+			"health" : "flesh",
+			"armor" : "ferrite"
+		},
+		"base" : {
+			"level" : 1,
+			"shield" : 10,
+			"health" : 250,
+			"armor" : 5
+		},
+		"level" : 50,
+		"getShield" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.shield, 0.0075, 2); },
+		"getHealth" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.health, 0.015, 2); },
+		"getArmor" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.armor, 0.005, 1.75); }
+		
 	};
-	WFC_enemy.ref.scaled_level.onchange = WFC_enemy.updateScaled();
+	
+	WFC_enemy.ref = {
+		"base_level" : document.getElementById("base_level"),
+		"base_shield" : document.getElementById("base_shield"),
+		"base_health" : document.getElementById("base_health"),
+		"base_armor" : document.getElementById("base_armor"),
+		"scaled_level" : document.getElementById("scaled_level"),
+		"scaled_shield" : document.getElementById("scaled_shield"),
+		"scaled_health" : document.getElementById("scaled_health"),
+		"scaled_armor" : document.getElementById("scaled_armor"),
+	};
+	
+	WFC_enemy.ref.base_level.onkeyup = function() { WFC_enemy.enemy.base.level = WFC_enemy.ref.base_level.value; WFC_enemy.updateDisplay(); };
+	WFC_enemy.ref.scaled_level.onkeyup = function() { WFC_enemy.enemy.level = WFC_enemy.ref.scaled_level.value; WFC_enemy.updateDisplay(); };
+	
+	WFC_enemy.updateDisplay();
 };
 
 window.addEventListener("load", WFC_enemy.init);

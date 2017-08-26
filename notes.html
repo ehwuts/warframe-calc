@@ -6,6 +6,9 @@
 	<link rel="icon" type="image/png" href="project/res/warframe-calc.png">
 </head>
 <body>
+Pellet-based weapons (i.e. shotguns) display their status chance before added multishot of the chance of at least one proc. Phrased alternately, the status chance for each pellet is the displayed status chance without multishot divided by the base number of pellets. Until "True" 100%. Then it's suddenly 100% status chance per pellet. Beware of multishot display saying status chance is close enough and lying about it.<br>
+More specifically: Per-Pellet Chance = 1 - ((1 - StatusChance) ^ (1 / BasePellets))<br>
+<br>
 Health Scaling<br>
 Health = BaseHealth * (1 + 0.015 * (Level - BaseLevel)^2)<br>
 Armo Scaling<br>
