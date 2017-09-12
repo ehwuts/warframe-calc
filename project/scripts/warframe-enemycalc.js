@@ -18,6 +18,8 @@ WFC_enemy.updateDisplay = function() {
 	WFC_enemy.ref.scaled_armor.title = stat;
 };
 
+WFC_enemy.updateEnemy 
+
 WFC_enemy.init = function() {
 	WFC_enemy.enemy = {
 		"type" : {
@@ -48,10 +50,12 @@ WFC_enemy.init = function() {
 		"scaled_shield" : document.getElementById("scaled_shield"),
 		"scaled_health" : document.getElementById("scaled_health"),
 		"scaled_armor" : document.getElementById("scaled_armor"),
+		"select_enemy" : document.getElementById("select_enemy")
 	};
 	
 	WFC_enemy.ref.base_level.onkeyup = function() { WFC_enemy.enemy.base.level = WFC_enemy.ref.base_level.value; WFC_enemy.updateDisplay(); };
 	WFC_enemy.ref.scaled_level.onkeyup = function() { WFC_enemy.enemy.level = WFC_enemy.ref.scaled_level.value; WFC_enemy.updateDisplay(); };
+	document.getElementById("select_load").onlick = WFC_enemy.updateEnemy();
 	
 	WFC_enemy.updateDisplay();
 };

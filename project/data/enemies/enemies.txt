@@ -1,0 +1,136 @@
+	Faction	Health Type	Armor Type	Shield Type	Base Level	Health	Armor	Shield	Weak Point	Where
+Butcher	Grineer	Cloned Flesh	Ferrite Armor	None	1	50	5	0	2	Land
+Flameblade	Grineer	Cloned Flesh	Ferrite Armor	None	3	50	5	0	2	Land
+Guardsman	Grineer	Cloned Flesh	Ferrite Armor	None	1	150	5	0	2	Land
+Powerfist	Grineer	Cloned Flesh	Ferrite Armor	None	5	100	5	0	2	Land
+Scorpion	Grineer	Cloned Flesh	Ferrite Armor	None	10	150	150	0	2	Land
+Shield Lancer	Grineer	Cloned Flesh	Ferrite Armor	None	5	100	5	0	2	Land
+Ballista	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	100	0	2	Land
+Lancer	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	100	0	2	Land
+Elite Lancer	Grineer	Cloned Flesh	Ferrite Armor	None	15	150	200	0	2	Land
+Eviscerator	Grineer	Cloned Flesh	Ferrite Armor	None	15	150	200	0	2	Land
+Hellion	Grineer	Cloned Flesh	Ferrite Armor	None	15	100	100	0	2	Land
+Scorch	Grineer	Cloned Flesh	Ferrite Armor	None	10	120	100	0	2	Land
+Seeker	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	200	0	2	Land
+Trooper	Grineer	Cloned Flesh	Ferrite Armor	None	1	120	150	0	2	Land
+Bailiff	Grineer	Cloned Flesh	Alloy Armor	None	1	700	500	0	?	Land
+Bombard	Grineer	Cloned Flesh	Alloy Armor	None	4	300	500	0	2	Land
+Commander	Grineer	Cloned Flesh	Ferrite Armor	None	3	500	95	0	2	Land
+Drahk Master	Grineer	Cloned Flesh	Ferrite Armor	None	12	500	200	0	?	Land
+Heavy Gunner	Grineer	Cloned Flesh	Ferrite Armor	None	8	300	500	0	2	Land
+Hyekka Master	Grineer	Cloned Flesh	Ferrite Armor	None	1	650	50	0	?	Land
+Manic	Grineer	Cloned Flesh	Ferrite Armor	None	1	350	25	0	2	Land
+Napalm	Grineer	Cloned Flesh	Alloy Armor	None	6	600	500	0	2	Land
+Nox	Grineer	Cloned Flesh	Alloy Armor	None	1	350	250	0	2	Land
+Drahk	Grineer	Flesh	Ferrite Armor	None	1	300	175	0	?	Land
+Hyekka	Grineer	Flesh	Ferrite Armor	None	1	300	175	0	?	Land
+Manic Bombard	Grineer	Cloned Flesh	Alloy Armor	None	1	1500	500	0	2	Land
+Regulator	Grineer	Machinery	None	Shield	1	10	0	99	?	Land
+Roller	Grineer	Machinery	Ferrite Armor	None	10	40	100	0	?	Land
+Dreg	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	150	0	?	Archwing
+Lancer Dreg	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	150	0	?	Archwing
+Temporal Dreg	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	150	0	?	Archwing
+Ogma	Grineer	Cloned Flesh	Ferrite Armor	None	1	600	500	0	3	Archwing
+Dargyn	Grineer	Cloned Flesh	Ferrite Armor	None	1	200	200	0	?	Archwing
+Hellion Dargyn	Grineer	Cloned Flesh	Ferrite Armor	None	1	200	200	0	?	Archwing
+Shield Dargyn	Grineer	Cloned Flesh	Ferrite Armor	None	1	100	200	0	?	Archwing
+Shield-Hellion Dargyn	Grineer	Cloned Flesh	Ferrite Armor	None	1	300	200	0	?	Archwing
+Draga	Grineer	Cloned Flesh	Ferrite Armor	None	1	120	10	0	2	Submersible
+Darek Draga	Grineer	Cloned Flesh	Ferrite Armor	None	1	130	10	0	?	Submersible
+Shock Draga	Grineer	Cloned Flesh	Ferrite Armor	None	1	150	10	0	?	Submersible
+Sikula	Grineer	Robotic	Ferrite Armor	Shield	1	100	50	50	?	Submersible
+Captain Vor	Grineer	Cloned Flesh	Alloy Armor	Shield	1	900	250	900	2	Boss
+Councilor Vay Hek	Grineer	Untyped	Ferrite Armor	None	1	2000	225	0	?	Boss
+Vay Hek Terra Frame	Grineer	Untyped	Ferrite Armor	None	1	2500	225	0	?	Boss
+General Sargus Ruk	Grineer	Cloned Flesh	Alloy Armor	None	1	2000	250	0	?	Boss
+Kela De Thaym	Grineer	Cloned Flesh	Alloy Armor	Shield	1	7250	250	1400	2	Boss
+Grustrag Three	Grineer	Cloned Flesh	Alloy Armor	None	1	1700	200	0	2	Boss
+Leekter	Grineer	Cloned Flesh	Alloy Armor	None	1	1700	200	0	2	Boss
+Shik Tal	Grineer	Cloned Flesh	Alloy Armor	None	1	1700	200	0	2	Boss
+Vem Tabook	Grineer	Cloned Flesh	Alloy Armor	None	1	1700	200	0	2	Boss
+Lieutenant Lech Kril	Grineer	Cloned Flesh	Alloy Armor	Shield	1	4000	200	400	2	Boss
+Sprag	Grineer	Cloned Flesh	Ferrite Armor	None	10	600	150	0	2	Boss
+Ven'Kra Tel	Grineer	Cloned Flesh	Ferrite Armor	None	10	400	150	0	2	Boss
+Tyl Regor	Grineer	Cloned Flesh	Alloy Armor	Shield	1	3000	250	800	2	Boss
+Crewman	Corpus	Flesh	None	Shield	1	60	0	150	2	Land
+Detron Crewman	Corpus	Flesh	None	Shield	1	60	0	150	2	Land
+Sniper Crewman	Corpus	Flesh	None	Proto Shield	15	60	0	150	2	Land
+Elite Crewman	Corpus	Flesh	None	Shield	15	100	0	200	2	Land
+Tech	Corpus	Flesh	None	Shield	15	700	0	250	2	Land
+Prod Crewman	Corpus	Flesh	None	Shield	1	100	0	50	2	Land
+Nullifier Crewman	Corpus	Flesh	None	Proto Shield	15	60	0	150	2	Land
+Scrambus	Corpus	Flesh	None	Shield	15	1100	0	400	2	Land
+Comba	Corpus	Flesh	None	Shield	15	1100	0	400	2	Land
+Moa	Corpus	Robotic	None	Shield	1	60	0	150	3	Land
+Shockwave Moa	Corpus	Robotic	None	Shield	5	60	0	150	3	Land
+Railgun Moa	Corpus	Robotic	None	Shield	1	60	0	150	3	Land
+Fusion Moa	Corpus	Robotic	None	Shield	10	250	0	250	?	Land
+Anti Moa	Corpus	Robotic	None	Shield	1	50	0	500	?	Land
+Bursa	Corpus	Robotic	Alloy Armor	Shield	1	1200	200	700	3	Land
+Leech Osprey	Corpus	Robotic	None	Shield	15	100	0	50	?	Land
+Mine Osprey	Corpus	Robotic	None	Shield	10	100	0	50	?	Land
+Oxium Osprey	Corpus	Robotic	Ferrite Armor	Shield	5	750	40	150	?	Land
+Shield Osprey	Corpus	Robotic	None	Shield	1	35	0	50	?	Land
+Sapping Osprey	Corpus	Robotic	None	Shield	1	200	0	50	?	Land
+Attack Drone	Corpus	Robotic	None	Shield	1	250	0	75	?	Land
+Scavenger Drone	Corpus	Robotic	None	Shield	1	100	0	50	?	Land
+Attack Drone (Archwing)	Corpus	Robotic	None	Shield	1	250	0	75	?	Archwing
+Corvette	Corpus	Robotic	Ferrite Armor	Shield	1	100	75	100	?	Archwing
+Frigate	Corpus	Robotic	Ferrite Armor	Shield	1	100	75	100	?	Archwing
+Carrier (Archwing)	Corpus	Robotic	Ferrite Armor	Shield	1	100	75	100	?	Archwing
+Locust Drone	Corpus	Cloned Flesh	Ferrite Armor	None	1	10	50	0	?	Archwing
+Ranger	Corpus	Flesh	None	Shield	1	100	0	100	?	Archwing
+Penta Ranger	Corpus	Flesh	None	Shield	1	100	0	100	?	Archwing
+Quanta Ranger	Corpus	Flesh	None	Shield	1	100	0	100	?	Archwing
+Gox	Corpus	Robotic	Ferrite Armor	Shield	1	350	500	250	?	Archwing
+Jackal	Corpus	Robotic	Alloy Armor	Proto Shield	1	1200	100	2000	0.1	Boss
+Alad V	Corpus	Flesh	Ferrite Armor	Proto Shield	1	900	250	1500	2	Boss
+Zanuka	Corpus	Robotic	Alloy Armor	Proto Shield	1	100	25	1000	?	Boss
+Ambulas	Corpus	Robotic	Alloy	Proto Shield	1	1100	150	500	3	Boss
+Hyena Pack	Corpus	Robotic	Alloy Armor	Proto Shield	1	800	25	1000	?	Boss
+Lynx	Corpus	Robotic	Alloy Armor	None	1	1000	150	0	?	Boss
+Raptor NS	Corpus	Robotic	Alloy Armor	Proto Shield	1	2000	25	600	?	Boss
+Raptor MT	Corpus	Robotic	Alloy Armor	Proto Shield	1	2500	25	600	?	Boss
+Raptor RV	Corpus	Robotic	Alloy Armor	Proto Shield	1	3000	25	600	?	Boss
+Razorback	Corpus	Robotic	Alloy Armor	Proto Shield	1	6000	100	2000	?	Boss
+The Sergeant	Corpus	Flesh	Ferrite Armor	Proto Shield	1	500	150	1000	2	Boss
+Zanuka Hunter	Corpus	Robotic	Alloy Armor	Proto Shield	1	600	25	1000	?	Boss
+Charger	Infested	Infested	None	None	1	80	0	0	?	Land
+Leaper	Infested	Infested	None	None	1	100	0	0	2	Land
+Runner	Infested	Infested	None	None	1	100	0	0	2	Land
+Volatile Runner	Infested	Infested	None	None	1	80	0	0	2	Land
+Crawler	Infested	Infested	None	None	1	50	0	0	2	Land
+Nauseous Crawler	Infested	Infested	None	None	1	50	0	0	2	Land
+Toxic Crawler	Infested	Infested	None	None	1	50	0	0	2	Land
+Electric Crawler	Infested	Infested	None	None	1	50	0	0	?	Land
+Lobber Crawler	Infested	Infested	None	None	1	50	0	0	2	Land
+Mutalist Osprey	Infested	Infested Flesh	None	None	1	200	0	0	2	Land
+Swarm Mutalist MOA	Infested	Fossilized	None	None	12	350	0	0	2	Land
+Tar Mutalist MOA	Infested	Fossilized	None	None	12	350	0	0	2	Land
+Ancient Healer	Infested	Fossilized	None	None	1	400	0	0	3	Land
+Ancient Disruptor	Infested	Fossilized	None	None	1	400	0	0	3	Land
+Toxic Ancient	Infested	Fossilized	None	None	1	400	0	0	3	Land
+Boiler	Infested	Fossilized	None	None	12	1200	0	0	?	Land
+Brood Mother	Infested	Fossilized	None	None	12	700	0	0	?	Land
+Juggernaut	Infested	Infested	Ferrite Armor	None	15	3500	200	0	?	Boss
+Lephantis	Infested	Fossilized	None	None	1	1200	0	0	?	Boss
+Phorid	Infested	Fossilized	Ferrite Armor	None	1	5000	25	0	?	Boss
+Jordas Golem	Infested	Infested Sinew	Ferrite Armor	None	1	20000	250	0	1	Boss
+Juggernaut Behemoth	Infested	Infested	Ferrite Armor	None	1	4500	300	0	?	Boss
+Mutalist Alad V	Infested	Flesh	Ferrite Armor	Proto Shield	1	2500	500	1200	?	Boss
+Attack Mutalist	Infested	Infested Flesh	None	None	1	65	0	0	?	Archwing
+Mutalist Lightning Carrier	Infested	Infested Flesh	None	None	1	65	0	0	?	Archwing
+Mutalist Toxic Carrier	Infested	Infested Flesh	None	None	1	65	0	0	?	Archwing
+Corrupted Butcher	Corrupted	Cloned Flesh	Ferrite Armor	None	1	100	5	0	2	Land
+Corrupted Bombard	Corrupted	Cloned Flesh	Alloy Armor	None	4	300	500	0	?	Land
+Corrupted Heavy Gunner	Corrupted	Cloned Flesh	Ferrite Armor	None	8	700	500	0	2	Land
+Corrupted Lancer	Corrupted	Cloned Flesh	Alloy Armor	None	1	60	200	0	2	Land
+Corrupted Drone	Corrupted	Robotic	None	Shield	1	250	0	75	?	Land
+Corrupted Crewman	Corrupted	Flesh	None	Shield	1	60	0	150	2	Land
+Corrupted MOA	Corrupted	Robotic	None	Shield	1	250	0	250	2	Land
+Corrupted Nullifier	Corrupted	Flesh	None	Proto Shield	15	60	0	150	2	Land
+Corrupted Ancient	Corrupted	Fossilized	None	None	1	400	0	0	3	Land
+Orokin Drone	Corrupted	Robotic	None	Shield	1	35	0	50	?	Land
+Orokin Spectator	Corrupted	Robotic	None	Shield	1	300	0	50	?	Land
+Orokin Turret	Corrupted	Robotic	None	Shield	1	50	0	50	?	Land
+Corrupted Vor	Corrupted	Cloned Flesh	Alloy Armor	Shield	1	1500	250	1500	?	Boss
