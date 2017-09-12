@@ -1,0 +1,22 @@
+The goal of this project is to produce a fully featured weapon 
+calculator for Warframe.
+
+Goal Features:
+    1 Fully clientside logic with static data modules. 
+        * Leaning async json to load weapon/enemy 
+          stats, trading increased file requests 
+          for reduced standing memory?
+    2 ?Display as per ingame.
+    3 Display actual, with "Effective" unmerged.
+    4 Display Single shot/Burst/Sustained DPS
+        * merged and per-type
+    5 Built in support for drop-in localization. 
+        One of:
+        * pregen endpoints from template
+        * dynamically fill after page load
+Secondary Features:
+    1 Enemy Scaling Calculator
+    2 Condition damage calcs sufficiently accurate
+      as to be meaningful.
+    3 Damage effectiveness for enemy resource combinations
+    4 Tileset-based enemy spreads for #3
