@@ -16,7 +16,8 @@ Goal Features:
         * dynamically fill after page load
 Secondary Features:
     1 Enemy Scaling Calculator
-    2 Condition damage calcs sufficiently accurate
+    2 Per-mod value calcs
+    3 Condition damage calcs sufficiently accurate
       as to be meaningful.
-    3 Damage effectiveness for enemy resource combinations
-    4 Tileset-based enemy spreads for #3
+    4 Damage effectiveness for enemy resource combinations
+    5 Tileset-based enemy spreads for #3
