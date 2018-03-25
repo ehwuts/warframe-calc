@@ -1,3 +1,10 @@
+Local App Usage: When using a local deployment, certain 
+browsers block AJAX from requesting files no the local machine. 
+This can be worked around by using a lightweight webserver such 
+as python's SimpleHTTPServer or with browser-specific options 
+such as Chrome's --allow-file-access-from-files.
+
+GOALS
 The goal of this project is to produce a fully featured weapon 
 calculator for Warframe.
 
@@ -21,3 +28,14 @@ Secondary Features:
       as to be meaningful.
     4 Damage effectiveness for enemy resource combinations
     5 Tileset-based enemy spreads for #3
+	
+LICENSING
+This project is licensed under the Unlicense. A copy of the 
+Unlicense is saved here as LICENSE. This project directly 
+depends upon and includes some libraries licensed differently.
+Their information is as follows:
+	i18njs (c) 2017 Simon Rodwell
+	  * Released under the MIT License. A copy of the MIT 
+	  license is saved here as LICENSE-i18njs
+	  * Sources can be found at 
+	  https://github.com/roddeh/i18njs

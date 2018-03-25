@@ -2,3 +2,5 @@
 .hide2 { display: none; }
 
 .center { text-align: center; };
+
+.hr { border-bottom: 1px solid black; }

@@ -1,0 +1,38 @@
+{
+	"code": "fr",
+	"values": {
+		"impact": "Impact",
+		"puncture": "Crevaison",
+		"slash": "Sabrer",
+		"cold": "Du froid",
+		"electricity": "Électricité",
+		"heat": "Chaleur",
+		"toxin": "Toxine",
+		"blast": "Explosion",
+		"corrosive": "Corrosif",
+		"gas": "Gaz",
+		"magnetic": "Magnétique",
+		"radiation": "Radiation",
+		"viral": "Viral",
+
+		"accuracy": "Précision",
+		"charge_rate": "Taux de Charge",
+		"critical_chance": "Chance Critique",
+		"critical_multiplier": "Multiplicateur Critique",
+		"falloff": "Tomber",
+		"fire_rate": "Taux de Feu",
+		"magazine": "Magazine",
+		"noise": "Bruit",
+		"punch_through": "Percer",
+		"reload": "Recharger",
+		"rivendisposition": "Riven Tempérament",
+		"status": "Statut",
+		"trigger": "Déclencheur",
+
+		"held": "Tenu",
+		"charge": "Charge",
+		"semi": "Semi",
+		"auto": "Auto",
+		"burst": "Éclater"
+	}
+}

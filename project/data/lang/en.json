@@ -1,0 +1,38 @@
+{
+	"code": "en",
+	"values": {
+		"impact": "Impact",
+		"puncture": "Puncture",
+		"slash": "Slash",
+		"cold": "Cold",
+		"electricity": "Electricity",
+		"heat": "Heat",
+		"toxin": "Toxin",
+		"blast": "Blast",
+		"corrosive": "Corrosive",
+		"gas": "Gas",
+		"magnetic": "Magnetic",
+		"radiation": "Radiation",
+		"viral": "Viral",
+
+		"accuracy": "Accuracy",
+		"charge_rate": "Charge Rate",
+		"critical_chance": "Critical Chance",
+		"critical_multiplier": "Critical Multiplier",
+		"falloff": "Falloff",
+		"fire_rate": "Fire Rate",
+		"magazine": "Magazine",
+		"noise": "Noise",
+		"punch_through": "Punch Through",
+		"reload": "Reload",
+		"rivendisposition": "Riven Disposition",
+		"status": "Status",
+		"trigger": "Trigger",
+
+		"held": "Held",
+		"charge": "Charge",
+		"semi": "Semi",
+		"auto": "Auto",
+		"burst": "Burst"
+	}
+}
