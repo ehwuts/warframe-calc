@@ -225,7 +225,7 @@ function setSlot(slot, id) {
 	'<div class="slotrank"><button>-</button> '+slots[i].rank+'/'+testMods[id].ranks+' <button>+</button></div>' +
 	'<div class="slotcost"'+(slots[i].polarity?(slots[i].polarity==testMods[id].polarity?' class="green"':' class="red"'):'')+'>'+((slots[i].rank|0)+testMods[id].cost)+' '+testMods[id].polarity+'</div>' +
 	'<div class="slotname">'+id+'</div>' +
-	'<div class="sloteffects">'+JSON.stringify(testMods[id].effects)+'</div>' +
+	'<pre class="sloteffects">'+JSON.stringify(testMods[id].effects,null,"\t")+'</pre>' +
 	'<div class="slotcategory">'+testMods[id].tag+'</div>';
 		slot.draggable=true;
 	} else {
