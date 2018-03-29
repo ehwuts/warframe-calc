@@ -1,6 +1,40 @@
 .hide { visibility: hidden; }
 .hide2 { display: none; }
+.center { text-align: center; }
 
-.center { text-align: center; };
+div { border: 1px solid black; }
+span { border: 1px solid darkblue; }
+td { border: 1px solid green; }
 
-.hr { border-bottom: 1px solid black; }
+[draggable] { user-select: none; }
+.tile {
+	width: 100%;
+	display: inline-block;
+	border: 1px solid #666;
+	padding-left: 2px;
+	margin-right: 5px;
+	border-radius: 3px;
+	box-shadow: inset 0 0 3px #000;
+	text-align: left;
+	cursor: move;
+}
+.over {
+	border: 2px dashed #000;
+}
+
+.modsearch { width: 20%; }
+.modslots { width: 80%; }
+.modslot {
+	border: 1px solid blue;
+	height: 150px;
+	width: 23%;
+	display: inline-block;
+	position: relative;
+	text-align: center;
+}
+
+.slotrank { position: relative; top: 40%; }
+.modslotpolarity { position: absolute; display: inline-block; width: 1em; left: 0; top: 0; text-align: left; padding: 3px; }
+.modslotcost { position: absolute; display: inline-block; width: 2em; right: 0; top: 0; text-align: right; padding: 3px; }
+.modslotname { font-size: larger; margin-bottom: 5px; }
+.modslotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
