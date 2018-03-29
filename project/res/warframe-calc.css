@@ -1,5 +1,4 @@
 .hide { visibility: hidden; }
-.hide2 { display: none; }
 .center { text-align: center; }
 
 div { border: 1px solid black; }
@@ -14,27 +13,37 @@ td { border: 1px solid green; }
 	padding-left: 2px;
 	margin-right: 5px;
 	border-radius: 3px;
-	box-shadow: inset 0 0 3px #000;
 	text-align: left;
 	cursor: move;
 }
-.over {
-	border: 2px dashed #000;
-}
 
-.modsearch { width: 20%; }
-.modslots { width: 80%; }
-.modslot {
+#mods { max-height: 100%; }
+#modslist { overflow-x: hidden; overflow-y: auto; max-height: 100%; }
+
+.modsearch { width: 20%; display: inline-block; }
+.slots { width: 79%; display: inline-block; }
+.slot {
+	margin: 0px;
 	border: 1px solid blue;
 	height: 150px;
-	width: 23%;
+	width: 24.5%;
 	display: inline-block;
 	position: relative;
 	text-align: center;
 }
+.slotFilled {
+	cursor: move;
+}
+.green { color: darkgreen; }
+.red { color: darkred; }
 
-.slotrank { position: relative; top: 40%; }
-.modslotpolarity { position: absolute; display: inline-block; width: 1em; left: 0; top: 0; text-align: left; padding: 3px; }
-.modslotcost { position: absolute; display: inline-block; width: 2em; right: 0; top: 0; text-align: right; padding: 3px; }
-.modslotname { font-size: larger; margin-bottom: 5px; }
-.modslotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
+.slotrank { position: relative; top: 0; width: 100%; }
+.slotpolarity { position: absolute; display: inline-block; width: 1em; left: 0; top: 0; text-align: left; padding: 3px; }
+.slotcost { position: absolute; display: inline-block; width: 2em; right: 0; top: 0; text-align: right; padding: 3px; }
+.slotname { font-size: larger; margin-bottom: 5px; }
+.slotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
+
+.over {
+	border: 1px dashed #000;
+}
+.hide2 { display: none; }
