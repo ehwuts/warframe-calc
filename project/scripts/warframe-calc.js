@@ -220,12 +220,17 @@ function setSlot(slot, id) {
 	if (id) {
 		slots[i].mod = id;
 		slots[i].rank = testMods[id].ranks;
+		let polarmatch = (slots[i].polarity?(slots[i].polarity==testMods[id].polarity?true:false):null);
+		let cost = (slots[i].rank|0)+testMods[id].cost;
 		slot.innerHTML = 
 	'<div class="slotpolarity">' + slots[i].polarity +'</div>' +
 	'<div class="slotrank"><button>-</button> '+slots[i].rank+'/'+testMods[id].ranks+' <button>+</button></div>' +
-	'<div class="slotcost"'+(slots[i].polarity?(slots[i].polarity==testMods[id].polarity?' class="green"':' class="red"'):'')+'>'+((slots[i].rank|0)+testMods[id].cost)+' '+testMods[id].polarity+'</div>' +
+	'<div class="slotcost"' +
+	(polarmatch?(polarmatch?' class="green"':' class="red"'):'') + '>' + 
+	(polarmatch?(polarmatch?Math.ceil(cost/2):cost+3):cost) +
+	'</div>' +
 	'<div class="slotname">'+id+'</div>' +
-	'<pre class="sloteffects">'+JSON.stringify(testMods[id].effects,null,"\t")+'</pre>' +
+	'<div class="sloteffects">'+JSON.stringify(testMods[id].effects,null,"\t")+'</div>' +
 	'<div class="slotcategory">'+testMods[id].tag+'</div>';
 		slot.draggable=true;
 	} else {
@@ -242,7 +247,13 @@ function swapSlots(a, b) {
 }
 
 function makeListVisible(id) {
-	//this.classList.remove("hide2");
+	var search = document.querySelectorAll(".hide2");
+	for (let i = 0; i < search.length; i++) {
+		if (search[i].parentElement.id == "modslist" && search[i].innerText == id) {
+			search[i].classList.remove("hide2");
+			break;
+		}			
+	}
 }
 
 function handleDragStart(e) {
@@ -275,11 +286,14 @@ function handleDrop(e) {
 	
 	if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
 		if (dragSrc.parentElement.id == "modslist") {
+			if (slots[this.getAttribute("data-num")].mod) {
+				makeListVisible(slots[this.getAttribute("data-num")].mod);
+			}
 			setSlot(this, dragSrc.innerHTML);
 			dragSrc.classList.add("hide2");
 		} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
+			makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
 			setSlot(dragSrc, null);
-			makeListVisible(this);
 		} else {
 			swapSlots(dragSrc, this);
 		}
@@ -297,36 +311,30 @@ function handleDragEnd(e) {
 }
 
 function init() {
-	var k = Object.keys(testMods);
-	var dest = document.getElementById("modslist");
-	
-	for (let i = 0; i < k.length; i++) {
+	var dest = document.getElementById("modslots")
+	for (let i = 0; i < slots.length; i++) {
 		let e = document.createElement("div");
+		e.classList.add("modslot");
 		
-		e.classList.add("tile");
-		e.draggable = true;
-		e.innerText = k[i];
-		
-		e.addEventListener('dragstart', handleDragStart, false);
-		e.addEventListener('dragend', handleDragEnd, false);
+		let e2 = document.createElement("button");
+		e2.innerText = "-";
+		e.appendChild(e2);
+		e2 = document.createElement("button");
+		e2.innerText = "- / -";
+		e.appendChild(e2);
+		e2 = document.createElement("button");
+		e2.innerText = "+";
+		e.appendChild(e2);
+		e2 = document.createElement("span");
+		e2.innerText = "Empty";
+		e.appendChild(e2);
 		
 		dest.appendChild(e);
+		dest.appendChild(document.createElement("br"));
+		//<span class="slot" data-num="0"><span>-</span> <span>- / X</span> <span>+</span> <span></span></span>
 	}
 	
-	var cols = document.querySelectorAll(".slot");
-	[].forEach.call(cols, (e) => {
-		e.addEventListener('dragstart', handleDragStart, false);
-		e.addEventListener('dragenter', handleDragEnter, false);
-		e.addEventListener('dragover', handleDragOver, false);
-		e.addEventListener('dragleave', handleDragLeave, false);
-		e.addEventListener('dragend', handleDragEnd, false);
-		e.addEventListener('drop', handleDrop, false);
-	});
-	
-	dest.addEventListener('dragover', handleDragOver, false);
-	dest.addEventListener('dragleave', handleDragLeave, false);
-	dest.addEventListener('dragend', handleDragEnd, false);
-	dest.addEventListener('drop', handleDrop, false);
+	dest = document.getElementById("modlist");
 }
 
 window.addEventListener("load", init);

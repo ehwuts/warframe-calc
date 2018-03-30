@@ -21,26 +21,10 @@ td { border: 1px solid green; }
 #modslist { overflow-x: hidden; overflow-y: auto; max-height: 100%; }
 
 .modsearch { width: 20%; display: inline-block; }
-.slots { width: 79%; display: inline-block; }
-.slot {
-	border: 1px solid blue;
-	height: 150px;
-	width: 23%;
-	display: inline-block;
-	position: relative;
-	text-align: center;
-}
-.slotFilled {
-	cursor: move;
-}
-.green { color: darkgreen; }
-.red { color: darkred; }
-
-.slotrank { position: relative; top: 0; width: 100%; }
-.slotpolarity { position: absolute; display: inline-block; width: 1em; left: 0; top: 0; text-align: left; padding: 3px; }
-.slotcost { position: absolute; display: inline-block; width: 2em; right: 0; top: 0; text-align: right; padding: 3px; }
-.slotname { font-size: larger; margin-bottom: 5px; }
-.slotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
+.modslots {}
+.modslot { display: inline-block; padding: 5px; }
+.modslot button { width: 2em; margin-right: 5px;}
+.modslot button:nth-of-type(2) { width: 5em; }
 
 .over {
 	border: 1px dashed #000;

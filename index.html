@@ -42,26 +42,8 @@
 </div>
 <br>
 <div id="mods">
-	<div class="modsearch">
-		Search: <input id="modsearch"><br>
-		<div id="modslist"></div>
-	</div>
-	<div class="slots">
-		<div class="slot" data-num="0"></div>
-		<div class="slot" data-num="1"></div>
-		<div class="slot" data-num="2"></div>
-		<div class="slot" data-num="3">
-	<div class="slotpolarity">?</div>
-	<div class="slotrank"><button>-</button> 0/10 <button>+</button></div>
-	<div class="slotcost">6 V</div>
-	<div class="slotname">ModName</div>
-	<div class="sloteffects">+3 Mod Effects</div>
-	<div class="slotcategory">Primary</div></div>
-		<div class="slot" data-num="4"></div>
-		<div class="slot" data-num="5"></div>
-		<div class="slot" data-num="6"></div>
-		<div class="slot" data-num="7"></div>
-	</div>
+	<datalist id="modlist"></datalist>Search: <input id="modsearch" list="modlist" placeholder="Serration, crit"><br>
+	<span id="modslots"></span>
 </div>
 
 <pre id="testdiv"></pre>
