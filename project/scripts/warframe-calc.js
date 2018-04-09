@@ -215,21 +215,31 @@ var slots = [
 
 var dragSrc = null;
 
-function setSlot(slot, id) {
+function setSlot(slot, id, rank = null) {
 	var i = slot.getAttribute("data-num");
 	if (id) {
+		if (rank !== null) {
+			slots[i].rank = rank;
+		} else {
+			slots[i].rank = testMods[id].ranks;
+		}
 		slots[i].mod = id;
-		slots[i].rank = testMods[id].ranks;
+		let polarmatch = (slots[i].polarity?(slots[i].polarity==testMods[id].polarity?true:false):null);
+		let cost = (slots[i].rank|0)+testMods[id].cost;
 		slot.innerHTML = 
 	'<div class="slotpolarity">' + slots[i].polarity +'</div>' +
 	'<div class="slotrank"><button>-</button> '+slots[i].rank+'/'+testMods[id].ranks+' <button>+</button></div>' +
-	'<div class="slotcost"'+(slots[i].polarity?(slots[i].polarity==testMods[id].polarity?' class="green"':' class="red"'):'')+'>'+((slots[i].rank|0)+testMods[id].cost)+' '+testMods[id].polarity+'</div>' +
+	'<div class="slotcost' +
+	(polarmatch?(polarmatch?' green':' red'):'') + '">' + 
+	(polarmatch?Math.ceil(polarmatch?cost/2.0:cost*1.25):cost) + ' ' + testMods[id].polarity +
+	'</div>' +
 	'<div class="slotname">'+id+'</div>' +
-	'<pre class="sloteffects">'+JSON.stringify(testMods[id].effects,null,"\t")+'</pre>' +
+	'<div class="sloteffects">'+JSON.stringify(testMods[id].effects)+(testMods[id].set?'<br>'+testMods[id].set:'')+'</div>' +
+	//id + "<br>" + JSON.stringify(testMods[id].effects)+(testMods[id].set?'<br>'+testMods[id].set:'') +
 	'<div class="slotcategory">'+testMods[id].tag+'</div>';
 		slot.draggable=true;
 	} else {
-		slots[i] = { polarity: slots[i].polarity, mod: null, rank: "" };
+		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
 		slot.innerHTML = '<div class="slotpolarity">' + slots[i].polarity +'</div>';
 		slot.draggable = null;
 	}
@@ -237,12 +247,19 @@ function setSlot(slot, id) {
 
 function swapSlots(a, b) {
 	var i = slots[a.getAttribute("data-num")].mod;
-	setSlot(a, slots[b.getAttribute("data-num")].mod);
-	setSlot(b, i);
+	var ir = slots[a.getAttribute("data-num")].rank;
+	setSlot(a, slots[b.getAttribute("data-num")].mod, slots[b.getAttribute("data-num")].rank);
+	setSlot(b, i, ir);
 }
 
 function makeListVisible(id) {
-	//this.classList.remove("hide2");
+	var search = document.querySelectorAll(".hide2");
+	for (let i = 0; i < search.length; i++) {
+		if (search[i].parentElement.id == "modslist" && search[i].innerText == id) {
+			search[i].classList.remove("hide2");
+			break;
+		}			
+	}
 }
 
 function handleDragStart(e) {
@@ -275,11 +292,14 @@ function handleDrop(e) {
 	
 	if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
 		if (dragSrc.parentElement.id == "modslist") {
+			if (slots[this.getAttribute("data-num")].mod) {
+				makeListVisible(slots[this.getAttribute("data-num")].mod);
+			}
 			setSlot(this, dragSrc.innerHTML);
 			dragSrc.classList.add("hide2");
 		} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
+			makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
 			setSlot(dragSrc, null);
-			makeListVisible(this);
 		} else {
 			swapSlots(dragSrc, this);
 		}
@@ -294,6 +314,16 @@ function handleDragEnd(e) {
 	});
 	
 	dragSrc = null;
+}
+
+function drawFormCustomProjectile() {
+	var dest = document.getElementById("custom_projectile");
+	dest.innerHTML = 
+	"<form id='custom_projectile_form'>" +
+	"<table>" +
+	"<tr><td>" + "a" + "</td><td><input name='cprj_impact'></td></tr>" +
+	"</table>" +
+	"</form>";
 }
 
 function init() {
@@ -312,21 +342,26 @@ function init() {
 		
 		dest.appendChild(e);
 	}
+	dest.addEventListener('dragover', handleDragOver, false);
+	dest.addEventListener('dragleave', handleDragLeave, false);
+	dest.addEventListener('dragend', handleDragEnd, false);
+	dest.addEventListener('drop', handleDrop, false);
 	
-	var cols = document.querySelectorAll(".slot");
-	[].forEach.call(cols, (e) => {
+	dest = document.getElementById("slots");
+	for (let i = 0; i < slots.length; i++) {
+		let e = document.createElement("div");
+		e.classList.add("slot");
+		e.setAttribute("data-num", i);
+		
 		e.addEventListener('dragstart', handleDragStart, false);
 		e.addEventListener('dragenter', handleDragEnter, false);
 		e.addEventListener('dragover', handleDragOver, false);
 		e.addEventListener('dragleave', handleDragLeave, false);
 		e.addEventListener('dragend', handleDragEnd, false);
 		e.addEventListener('drop', handleDrop, false);
-	});
-	
-	dest.addEventListener('dragover', handleDragOver, false);
-	dest.addEventListener('dragleave', handleDragLeave, false);
-	dest.addEventListener('dragend', handleDragEnd, false);
-	dest.addEventListener('drop', handleDrop, false);
+		
+		dest.appendChild(e);
+	}
 }
 
 window.addEventListener("load", init);

@@ -17,11 +17,11 @@ td { border: 1px solid green; }
 	cursor: move;
 }
 
-#mods { max-height: 100%; }
+#mods { display: table; height: 300px; }
 #modslist { overflow-x: hidden; overflow-y: auto; max-height: 100%; }
 
-.modsearch { width: 20%; display: inline-block; }
-.slots { width: 79%; display: inline-block; }
+.modsearch { width: 20%; display: table-cell; vertical-align: top; }
+#slots { width: 79%; display: table-cell; }
 .slot {
 	border: 1px solid blue;
 	height: 150px;
@@ -36,10 +36,11 @@ td { border: 1px solid green; }
 .green { color: darkgreen; }
 .red { color: darkred; }
 
-.slotrank { position: relative; top: 0; width: 100%; }
 .slotpolarity { position: absolute; display: inline-block; width: 1em; left: 0; top: 0; text-align: left; padding: 3px; }
-.slotcost { position: absolute; display: inline-block; width: 2em; right: 0; top: 0; text-align: right; padding: 3px; }
-.slotname { font-size: larger; margin-bottom: 5px; }
+.slotcost { position: absolute; display: inline-block; width: 3em; right: 0; top: 0; text-align: right; padding: 3px; }
+.slotrank { position: absolute; top: 0; width: 100%; }
+.slotname { position: absolute; font-size: larger; margin-bottom: 5px; width: 100%; top: 1em; }
+.sloteffects { position: absolute; width: 100%; top: 3em; }
 .slotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
 
 .over {

@@ -9,7 +9,7 @@
 <body>
 <form><span id="label_langsel">Language</span> <select id="lang_select"></select></form><br>
 
-<div id="edit_stats">
+<div id="edit_stats" class="hide2">
 	<form>
 	<table>
 		<tr><td id="lbl_impact">Impact</td><td><input name="impact"></td></tr>
@@ -40,28 +40,14 @@
 		</table>
 	</form>
 </div>
-<br>
+
+
 <div id="mods">
 	<div class="modsearch">
-		Search: <input id="modsearch"><br>
+		Filter: <input id="modfilter"><br>
 		<div id="modslist"></div>
 	</div>
-	<div class="slots">
-		<div class="slot" data-num="0"></div>
-		<div class="slot" data-num="1"></div>
-		<div class="slot" data-num="2"></div>
-		<div class="slot" data-num="3">
-	<div class="slotpolarity">?</div>
-	<div class="slotrank"><button>-</button> 0/10 <button>+</button></div>
-	<div class="slotcost">6 V</div>
-	<div class="slotname">ModName</div>
-	<div class="sloteffects">+3 Mod Effects</div>
-	<div class="slotcategory">Primary</div></div>
-		<div class="slot" data-num="4"></div>
-		<div class="slot" data-num="5"></div>
-		<div class="slot" data-num="6"></div>
-		<div class="slot" data-num="7"></div>
-	</div>
+	<div id="slots"></div>
 </div>
 
 <pre id="testdiv"></pre>
