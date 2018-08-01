@@ -202,18 +202,41 @@ var testMods = {
 	},
 }
 
-var slots = [
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-	{ polarity: "", mod: null, rank: "" },
-];
+var slots = [];
+//{ polarity: '', mod: null, rank: '' }
+var slotsCount = 8;
+
+var statsum = {};
 
 var dragSrc = null;
+
+function updateStatsum() {
+	var newStatsum = {};
+	for (var m = 0; m < slots.length; m++) {
+		if (slots[m].mod && testMods[slots[m].mod]) {
+			let mod = testMods[slots[m].mod];
+			let k = Object.keys(mod.effects);
+			for (let i = 0; i < k.length; i++) {
+				let magnitude = mod.effects[k[i]] * (slots[m].rank + 1);
+				if (newStatsum[k[i]]) {
+					newStatsum[k[i]] += magnitude;
+				} else {
+					newStatsum[k[i]] = magnitude;
+				}
+			}
+			if (mod.set) {
+				if (newStatsum[mod.set]) {
+					newStatsum[mod.set] ++;
+				} else {
+					newStatsum[mod.set]  = 1;
+				}
+			}
+		}
+	}
+	
+	statsum = newStatsum;
+	document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
+}
 
 function describeMod(id, rank = null) {
 	var result = '';
@@ -225,7 +248,7 @@ function describeMod(id, rank = null) {
 		rank = Math.max(0, Math.min(mod.ranks, rank));
 		var k = Object.keys(mod.effects);
 		for (let i = 0; i < k.length; i++) {
-			result += k + ': ' + mod.effects[k[i]] * (rank + 1) + '<br>';
+			result += k[i] + ': ' + mod.effects[k[i]] * (rank + 1) + '<br>';
 		}
 		if (mod.set) {
 			result += 'Set - ' + mod.set;
@@ -244,6 +267,8 @@ function slotAdjust(slot, delta) {
 	costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==testMods[id].polarity?costadj/2.0:costadj*1.25):costadj);
 	slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
 	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
+	
+	updateStatsum();
 }
 
 function setSlot(slot, id, rank = null) {
@@ -279,6 +304,8 @@ function setSlot(slot, id, rank = null) {
 		slot.children[5].innerText = '';
 		slot.draggable = null;
 	}
+	
+	updateStatsum();
 }
 
 function swapSlots(a, b) {
@@ -375,6 +402,10 @@ function initializeModsList() {
 }
 
 function initializeModSlots() {
+	for (let i = 0; i < slotsCount; i++) {
+		slots[i] = { polarity: '', mod: null, rank: '' };
+	}
+	
 	var dest = document.getElementById("slots");
 	for (let i = 0; i < slots.length; i++) {
 		let e = document.createElement("div");
