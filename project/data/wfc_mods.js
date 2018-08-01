@@ -1,5 +1,5 @@
 var testMods = {
-	"Serration": {
+	"modSerration": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 10,
@@ -8,7 +8,7 @@ var testMods = {
 			bonusDamage : 0.15,
 		},
 	},
-	"Point Strike": {
+	"modPointStrike": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 5,
@@ -17,7 +17,7 @@ var testMods = {
 			bonusCritChance : 0.25,
 		},		
 	},
-	"Vital Sense": {
+	"modVitalSense": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 5,
@@ -26,7 +26,7 @@ var testMods = {
 			bonusCritDamage : 0.2,
 		},		
 	},
-	"Vigilante Armaments": {
+	"modVigilanteArmaments": {
 		tag : "Primary",
 		cost : 4,
 		ranks : 5,
@@ -36,7 +36,7 @@ var testMods = {
 		},
 		set: "setVigilante",
 	},
-	"Hellfire": {
+	"modHellfire": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 5,
@@ -45,7 +45,7 @@ var testMods = {
 			bonusHeat : 0.15,
 		},		
 	},
-	"Stormbringer": {
+	"modStormbringer": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 5,
@@ -54,7 +54,7 @@ var testMods = {
 			bonusElectric : 0.15,
 		},		
 	},
-	"Split Chamber": {
+	"modSplitChamber": {
 		tag : "Rifle",
 		cost : 10,
 		ranks : 5,
@@ -63,7 +63,7 @@ var testMods = {
 			bonusMultishot : 0.15,
 		},		
 	},
-	"Cryo Rounds": {
+	"modCryoRounds": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 5,
@@ -72,7 +72,7 @@ var testMods = {
 			bonusCold : 0.15,
 		},		
 	},
-	"Infected Clip": {
+	"modInfectedClip": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 5,
@@ -81,7 +81,7 @@ var testMods = {
 			bonusToxin : 0.15,
 		},		
 	},
-	"Primed Cryo Rounds": {
+	"modPrimedCryoRounds": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 10,
@@ -89,19 +89,19 @@ var testMods = {
 		effects : {
 			bonusCold : 0.15,
 		},
-		conflicts: ["Cryo Rounds"],
+		conflicts: ["modCryoRounds"],
 	},
-	"Hunter Munitions": {
+	"modHunterMunitions": {
 		tag : "Primary",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",
 		effects : {
-			specialHunterMunitions: 0.05,
+			specialeffectHunterMunitions: 0.05,
 		},
 		set : "setHunter",
 	},
-	"Heavy Caliber": {
+	"modHeavyCaliber": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 10,
@@ -111,56 +111,56 @@ var testMods = {
 			bonusAccuracy: -0.05,
 		},		
 	},
-	"High Voltage": {
+	"modHighVoltage": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
 		effects : {
 			bonusElectric: 0.15,
-			bonusStatus: 0.15,
+			bonusStatusChance: 0.15,
 		},		
 	},
-	"Malignant Force": {
+	"modMalignantForce": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
 		effects : {
 			bonusToxin: 0.15,
-			bonusStatus: 0.15,
+			bonusStatusChance: 0.15,
 		},		
 	},
-	"Rime Rounds": {
+	"modRimeRounds": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
 		effects : {
 			bonusCold: 0.15,
-			bonusStatus: 0.15,
+			bonusStatusChance: 0.15,
 		},		
 	},
-	"Thermite Rounds": {
+	"modThermiteRounds": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
 		effects : {
 			bonusHeat: 0.15,
-			bonusStatus: 0.15,
+			bonusStatusChance: 0.15,
 		},		
 	},
-	"Rifle Aptitude": {
+	"modRifleAptitude": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "D",
 		effects : {
-			bonusStatus: 0.025,
+			bonusStatusChance: 0.025,
 		},		
 	},
-	"Shred": {
+	"modShred": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 5,
@@ -170,7 +170,7 @@ var testMods = {
 			flatPunchThrough: 0.2,
 		},		
 	},
-	"Primed Shred": {
+	"modPrimedShred": {
 		tag : "Rifle",
 		cost : 6,
 		ranks : 10,
@@ -179,9 +179,9 @@ var testMods = {
 			bonusFireRate: 0.05,
 			flatPunchThrough: 0.2,
 		},		
-		conflicts: ["Shred"],
+		conflicts: ["modShred"],
 	},
-	"Speed Trigger": {
+	"modSpeedTrigger": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 5,
@@ -190,7 +190,7 @@ var testMods = {
 			bonusFireRate: 0.1,
 		},		
 	},
-	"Vile Acceleration": {
+	"modVileAcceleration": {
 		tag : "Rifle",
 		cost : 4,
 		ranks : 5,
