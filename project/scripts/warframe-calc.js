@@ -228,10 +228,22 @@ function describeMod(id, rank = null) {
 			result += k + ': ' + mod.effects[k[i]] * (rank + 1) + '<br>';
 		}
 		if (mod.set) {
-			result += 'Set: ' + mod.set;
+			result += 'Set - ' + mod.set;
 		}
 	}	
 	return result;
+}
+
+function slotAdjust(slot, delta) {
+	var i = slot.getAttribute('data-num');
+	var id = slots[i].mod;
+	slots[i].rank = Math.max(0, Math.min(testMods[id].ranks, slots[i].rank + delta));
+	slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
+	
+	let costadj = (slots[i].rank|0)+testMods[id].cost;
+	costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==testMods[id].polarity?costadj/2.0:costadj*1.25):costadj);
+	slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
+	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
 }
 
 function setSlot(slot, id, rank = null) {
@@ -243,22 +255,28 @@ function setSlot(slot, id, rank = null) {
 			slots[i].rank = testMods[id].ranks;
 		}
 		slots[i].mod = id;
-		let polarmatch = (slots[i].polarity?(slots[i].polarity==testMods[id].polarity?true:false):null);
+		let polarmatch = (slots[i].polarity?(slots[i].polarity==testMods[id].polarity?' polaritymatch':' polarityconflict'):'');
 		let cost = (slots[i].rank|0)+testMods[id].cost;
-		slot.innerHTML = 
-	'<div class="slotpolarity">' + slots[i].polarity +'</div>' +
-	'<div class="slotrank"><button>-</button> '+slots[i].rank+'/'+testMods[id].ranks+' <button>+</button></div>' +
-	'<div class="slotcost' +
-	(polarmatch?(polarmatch?' green':' red'):'') + '">' + 
-	(polarmatch?Math.ceil(polarmatch?cost/2.0:cost*1.25):cost) + ' ' + testMods[id].polarity +
-	'</div>' +
-	'<div class="slotname">'+id+'</div>' +
-	'<div class="sloteffects">'+describeMod(id, slots[i].rank)+'</div>' +
-	'<div class="slotcategory">'+testMods[id].tag+'</div>';
+		let costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==testMods[id].polarity?cost/2.0:cost*1.25):cost);
+		
+		slot.children[0].innerText = slots[i].polarity;
+		slot.children[1].className = 'slotrank';
+		slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
+		slot.children[2].className = 'slotcost' + polarmatch;
+		slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
+		slot.children[3].innerText = id;
+		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
+		slot.children[5].innerText = testMods[id].tag;
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
-		slot.innerHTML = '<div class="slotpolarity">' + slots[i].polarity +'</div>';
+		slot.children[0].innerText = slots[i].polarity;
+		slot.children[1].className = 'slotrank hide';
+		slot.children[2].className = 'slotcost';
+		slot.children[2].innerText = '';
+		slot.children[3].innerText = '';
+		slot.children[4].innerText = '';
+		slot.children[5].innerText = '';
 		slot.draggable = null;
 	}
 }
@@ -369,6 +387,41 @@ function initializeModSlots() {
 		e.addEventListener('dragleave', DragHandler.leave, false);
 		e.addEventListener('dragend', DragHandler.end, false);
 		e.addEventListener('drop', DragHandler.drop, false);
+		
+		let ee = document.createElement('div');
+		ee.className = 'slotpolarity';
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'slotrank hide';
+		let eee = document.createElement('button');
+		eee.innerText = '-';
+		eee.onclick = (e) => slotAdjust(e.target.parentElement.parentElement, -1);
+		ee.appendChild(eee);
+		eee = document.createElement('span');
+		eee.innerText = '0/0';
+		ee.appendChild(eee);
+		eee = document.createElement('button');
+		eee.innerText = '+';
+		eee.onclick = (e) => slotAdjust(e.target.parentElement.parentElement, 1);
+		ee.appendChild(eee);		
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'slotcost';
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'slotname';
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'sloteffects';
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'slotcategory';
+		e.appendChild(ee);
 		
 		dest.appendChild(e);
 	}	
