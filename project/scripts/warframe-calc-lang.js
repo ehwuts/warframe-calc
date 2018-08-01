@@ -1,28 +1,6 @@
 /* dictionary -> interface */
 ;(function(window, undefined) {
-	var mappings = {
-		"lbl_impact" : "impact",
-		"lbl_puncture" : "puncture",
-		"lbl_slash" : "slash",
-		"lbl_cold" : "cold",
-		"lbl_electricity" : "electricity",
-		"lbl_heat" : "heat",
-		"lbl_toxin" : "toxin",
-		"lbl_blast" : "blast",
-		"lbl_corrosive" : "corrosive",
-		"lbl_gas" : "gas",
-		"lbl_magnetic" : "magnetic",
-		"lbl_radiation" : "radiation",
-		"lbl_viral" : "viral",
-		"lbl_accuracy" : "accuracy",
-		"lbl_chargespeed" : "charge_rate",
-		"lbl_critchance" : "critical_chance",
-		"lbl_critmulti" : "critical_multiplier",
-		"lbl_firerate" : "fire_rate",
-		"lbl_statuschance" : "status",
-		"lbl_magazine" : "magazine",
-		"lbl_reload" : "reload"
-	};
+	var lang_aliases = {};
 	
 	var obj = {};
 	
@@ -36,13 +14,19 @@
 	}
 	
 	obj.fullPageUpdate = function() {
-		performFullPageUpdate();
+		//performFullPageUpdate();
 	};
 	
 	obj.loadTranslations = function(o) {
 		obj.translator = i18n.create(o);
 	};
 	
+	obj.translate = function(k, a = null) {
+		if (a && lang_aliases[a] && lang_aliases[a][k]) return obj.translator(lang_aliases[a][k]);
+		return obj.translator(k);
+	};
+
+	obj.loadTranslations();
 	window.WFC_mapper = obj;
 })(window);
 
@@ -51,26 +35,26 @@
 	var locales = {
 		"en" : "English", 
 		"fr" : "Français",
-		"it" : "Italiano",
+		//"it" : "Italiano",
 		//"de" : "Deutsch",
-		//"sp" : "Español",
+		"sp" : "Español",
 		//"pt" : "Português",
 		//"ru" : "Pусский",
 		//"pl" : "Polski",
 		//"uk" : "Українська",
 		//"tr" : "Türkçe",
 		//"jp" : "日本語",
-		"zh-CN" : "中文",
+		//"zh-CN" : "中文",
 		//"ko" : "한국어"
 	};
 	var localeRegex = /^[a-z][a-z](?:-[a-z][a-z])?$/i;
 	
-	var langData = {};
+	window.WFC_mapper.langData = {};
 	var lastTried = "";
 	
 	function updatePage() {
 		//console.log(window.WFC_mapper.translator("toxin"));
-		//window.document.getElementById("testdiv").innerHTML = JSON.stringify(langData, null, "\t");
+		//window.document.getElementById("testdiv").innerHTML = JSON.stringify(window.WFC_mapper.langData, null, "\t");
 		window.WFC_mapper.fullPageUpdate();
 	};
 	
@@ -84,11 +68,11 @@
 	
 	function applyLang() {
 		try {
-			langData = JSON.parse(this.response);
+			window.WFC_mapper.langData = JSON.parse(this.response);
 			if (!!window.localStorage) {
-				window.localStorage.setItem("langCache", JSON.stringify(langData));
+				window.localStorage.setItem("langCache", JSON.stringify(window.WFC_mapper.langData));
 			}
-			window.WFC_mapper.loadTranslations(langData);
+			window.WFC_mapper.loadTranslations(window.WFC_mapper.langData);
 			updatePage();
 		} catch (e) {
 			console.log("Lang request '" + lastTried + "' unsuccessful.");
@@ -109,7 +93,7 @@
 	}
 	
 	function changeLangEvent(e) {
-		if (langData.code !== e.target.value) {
+		if (window.WFC_mapper.langData.code !== e.target.value) {
 			return changeLang(e.target.value);
 		}
 		return;
@@ -118,8 +102,8 @@
 	function initGetStorage() {
 		var langCacheString = "";
 		if (!!window.localStorage && (langCacheString = window.localStorage.getItem("langCache")) !== null) {
-			langData = JSON.parse(langCacheString);
-			window.WFC_mapper.loadTranslations(langData);
+			window.WFC_mapper.langData = JSON.parse(langCacheString);
+			window.WFC_mapper.loadTranslations(window.WFC_mapper.langData);
 			updatePage();
 		} else {
 			changeLang(Object.keys(locales)[0]);
@@ -143,8 +127,8 @@
 		initRegisterTrigger();
 		initGetStorage();
 		
-		if (langData.code && langData.code !== window.document.getElementById(idstr).value) {
-			window.document.querySelector('#'+idstr+ ' [value="'+langData.code+'"]').selected = true;
+		if (window.WFC_mapper.langData.code && window.WFC_mapper.langData.code !== window.document.getElementById(idstr).value) {
+			window.document.querySelector('#'+idstr+ ' [value="'+window.WFC_mapper.langData.code+'"]').selected = true;
 		}
 	}
 	

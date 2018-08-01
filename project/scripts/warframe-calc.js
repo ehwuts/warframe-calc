@@ -2,9 +2,28 @@ var slots = [];
 //{ polarity: '', mod: null, rank: '' }
 var slotsCount = 8;
 
+var modslist = [];
+
 var statsum = {};
 
 var dragSrc = null;
+
+function percentagestringFromFloat(f) {
+	f *= 100;
+	if (f > 0) f += 0.00001;
+	else f -= 0.00001;
+	let r = (f + ' ').substring(0, 3);
+	if (r[2] == '.') {
+		r = r.substring(0, 2);
+	}
+	return r + '%';
+}
+function truncatedstringFromFloat(f) {
+	if (f > 0) f += 0.00001;
+	else f -= 0.00001;	
+	let r = (f + ' ').substring(0, 4);
+	return r;
+}
 
 function updateStatsum() {
 	var newStatsum = {};
@@ -13,11 +32,11 @@ function updateStatsum() {
 			let mod = testMods[slots[m].mod];
 			let k = Object.keys(mod.effects);
 			for (let i = 0; i < k.length; i++) {
-				let magnitude = mod.effects[k[i]] * (slots[m].rank + 1);
+				let adj = mod.effects[k[i]] * (slots[m].rank + 1);
 				if (newStatsum[k[i]]) {
-					newStatsum[k[i]] += magnitude;
+					newStatsum[k[i]] += adj;
 				} else {
-					newStatsum[k[i]] = magnitude;
+					newStatsum[k[i]] = adj;
 				}
 			}
 			if (mod.set) {
@@ -44,10 +63,11 @@ function describeMod(id, rank = null) {
 		rank = Math.max(0, Math.min(mod.ranks, rank));
 		var k = Object.keys(mod.effects);
 		for (let i = 0; i < k.length; i++) {
-			result += k[i] + ': ' + mod.effects[k[i]] * (rank + 1) + '<br>';
+			let adj = mod.effects[k[i]] * (rank + 1);
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + WFC_mapper.translate(k[i], 'mod_effects') + '<br>';
 		}
 		if (mod.set) {
-			result += 'Set - ' + mod.set;
+			result += WFC_mapper.translate(mod.set);
 		}
 	}	
 	return result;
@@ -85,9 +105,9 @@ function setSlot(slot, id, rank = null) {
 		slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
 		slot.children[2].className = 'slotcost' + polarmatch;
 		slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
-		slot.children[3].innerText = id;
+		slot.children[3].innerText = WFC_mapper.translate(id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = testMods[id].tag;
+		slot.children[5].innerText = WFC_mapper.translate('modtag' + testMods[id].tag);
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
@@ -114,7 +134,7 @@ function swapSlots(a, b) {
 function makeListVisible(id) {
 	var search = document.querySelectorAll(".hide2");
 	for (let i = 0; i < search.length; i++) {
-		if (search[i].parentElement.id == "modslist" && search[i].innerText == id) {
+		if (search[i].parentElement.id == "modslist" && search[i].getAttribute("data-modid") == id) {
 			search[i].classList.remove("hide2");
 			break;
 		}			
@@ -152,8 +172,16 @@ var DragHandler = {
 			if (dragSrc.parentElement.id == "modslist") {
 				if (slots[this.getAttribute("data-num")].mod) {
 					makeListVisible(slots[this.getAttribute("data-num")].mod);
+				} else {					
+					for (let i = 0; i < slots.length; i++) {
+						let conflicts = testMods[dragSrc.getAttribute('data-modid')].conflicts;
+						let conflicts2 = slots[i].mod && testMods[slots[i].mod].conflicts;
+						if (slots[i].mod && ((conflicts2 && conflicts2.indexOf(dragSrc.getAttribute('data-modid')) != -1) || (conflicts && conflicts.indexOf(slots[i].mod) != -1))) {
+							return false;
+						}
+					}
 				}
-				setSlot(this, dragSrc.innerHTML);
+				setSlot(this, dragSrc.getAttribute('data-modid'));
 				dragSrc.classList.add("hide2");
 			} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
 				makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
@@ -181,10 +209,11 @@ function initializeModsList() {
 	
 	for (let i = 0; i < k.length; i++) {
 		let e = document.createElement("div");
+		e.setAttribute("data-modid", k[i]);
 		
 		e.classList.add("tile");
 		e.draggable = true;
-		e.innerText = k[i];
+		e.innerText = WFC_mapper.translate(k[i]);
 		
 		e.addEventListener('dragstart', DragHandler.start, false);
 		e.addEventListener('dragend', DragHandler.end, false);
@@ -195,6 +224,14 @@ function initializeModsList() {
 	dest.addEventListener('dragleave', DragHandler.leave, false);
 	dest.addEventListener('dragend', DragHandler.end, false);
 	dest.addEventListener('drop', DragHandler.drop, false);	
+}
+
+function reinitializeModsList() {
+	var m = document.getElementById('modslist');
+	while (m.children.length > 0) {
+		m.removeChild(m.lastElementChild);
+	}
+	initializeModsList();	
 }
 
 function initializeModSlots() {
@@ -259,4 +296,4 @@ function init() {
 	initializeModSlots();
 }
 
-window.addEventListener("load", init);
+window.addEventListener('load', init);
