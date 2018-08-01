@@ -9,42 +9,9 @@
 <body>
 <form><span id="label_langsel">Language</span> <select id="lang_select"></select></form><br>
 
-<div id="edit_stats" class="hide2">
-	<form>
-	<table>
-		<tr><td id="lbl_impact">Impact</td><td><input name="impact"></td></tr>
-		<tr><td id="lbl_puncture">Puncture</td><td><input name="puncture"></td></tr>
-		<tr><td id="lbl_slash">Slash</td><td><input name="slash"></td></tr>
-		<tr><td id="lbl_cold">Cold</td><td><input name="cold"></td></tr>
-		<tr><td id="lbl_electricity">Electricity</td><td><input name="electricity"></td></tr>
-		<tr><td id="lbl_heat">Heat</td><td><input name="heat"></td></tr>
-		<tr><td id="lbl_toxin">Toxin</td><td><input name="toxin"></td></tr>
-		<tr><td id="lbl_blast">Blast</td><td><input name="blast"></td></tr>
-		<tr><td id="lbl_corrosive">Corrosive</td><td><input name="corrosive"></td></tr>
-		<tr><td id="lbl_gas">Gas</td><td><input name="gas"></td></tr>
-		<tr><td id="lbl_magnetic">Magnetic</td><td><input name="magnetic"></td></tr>
-		<tr><td id="lbl_radiation">Radiation</td><td><input name="radiation"></td></tr>
-		<tr><td id="lbl_viral">Viral</td><td><input name="viral"></td></tr>
-		<tr><td id="lbl_accuracy">Accuracy</td><td><input name="accuracy"></td></tr>
-		<tr><td id="lbl_projectiles">Base Projectiles</td><td><input name="multishot"></td></tr>
-		<tr><td id="lbl_pelletbool">Uses Pellet Logic</td><td><select name="multishottype"><option>No</option><option>Yes</option></select></td></tr>
-		<tr><td id="lbl_firerate">Fire Rate</td><td><input name="firerate"></td></tr>
-		<tr><td id="lbl_chargespeed">Charge Speed</td><td><input name="chargespeed"></td></tr>
-		<tr><td id="lbl_critchance">Critical Chance</td><td><input name="critchance"></td></tr>
-		<tr><td id="lbl_critmulti">Critical Multiplier</td><td><input name="critdmg"></td></tr>
-		<tr><td id="lbl_statuschance">Status Chance</td><td><input name="statuschance"></td></tr>
-		<tr><td id="lbl_magazine">Magazine</td><td><input name="magazine"></td></tr>
-		<tr><td id="lbl_reload">Reload</td><td><input name="reload"></td></tr>
-		<tr><td id="lbl_ammo">Ammo</td><td><input name="ammo"></td></tr>
-		<tr><td id="lbl_ammouse">Ammo Use</td><td><input name="ammouse"></td></tr>		
-		</table>
-	</form>
-</div>
-
-
+<div id="modfilter">Filter: <input id="modfilter"></div>
 <div id="mods">
-	<div class="modsearch">
-		Filter: <input id="modfilter"><br>
+	<div class="modsearch">		
 		<div id="modslist"></div>
 	</div>
 	<div id="slots"></div>
@@ -54,7 +21,6 @@
 <div id="footer">
 Home | <a href="enemy.html">Enemy Scaler</a> | <a href="notes.html">notes</a>
 </div>
-<script src="project/scripts/i18n.min.js"></script>
 <script src="project/scripts/warframe-calc-lang.js"></script>
 <script src="project/scripts/warframe-calc.js"></script>
 </body>

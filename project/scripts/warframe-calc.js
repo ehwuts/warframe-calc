@@ -215,6 +215,25 @@ var slots = [
 
 var dragSrc = null;
 
+function describeMod(id, rank = null) {
+	var result = '';
+	var mod = testMods[id];
+	if (mod) {
+		if (!rank) {
+			rank = 0;
+		}
+		rank = Math.max(0, Math.min(mod.ranks, rank));
+		var k = Object.keys(mod.effects);
+		for (let i = 0; i < k.length; i++) {
+			result += k + ': ' + mod.effects[k[i]] * (rank + 1) + '<br>';
+		}
+		if (mod.set) {
+			result += 'Set: ' + mod.set;
+		}
+	}	
+	return result;
+}
+
 function setSlot(slot, id, rank = null) {
 	var i = slot.getAttribute("data-num");
 	if (id) {
@@ -234,8 +253,7 @@ function setSlot(slot, id, rank = null) {
 	(polarmatch?Math.ceil(polarmatch?cost/2.0:cost*1.25):cost) + ' ' + testMods[id].polarity +
 	'</div>' +
 	'<div class="slotname">'+id+'</div>' +
-	'<div class="sloteffects">'+JSON.stringify(testMods[id].effects)+(testMods[id].set?'<br>'+testMods[id].set:'')+'</div>' +
-	//id + "<br>" + JSON.stringify(testMods[id].effects)+(testMods[id].set?'<br>'+testMods[id].set:'') +
+	'<div class="sloteffects">'+describeMod(id, slots[i].rank)+'</div>' +
 	'<div class="slotcategory">'+testMods[id].tag+'</div>';
 		slot.draggable=true;
 	} else {
@@ -262,71 +280,61 @@ function makeListVisible(id) {
 	}
 }
 
-function handleDragStart(e) {
-	dragSrc = this;
-	//console.log(this);
-	
-	e.dataTransfer.effectAllowed = "move";
-}
-
-function handleDragOver(e) {
-	if (e.preventDefault) {
-		e.preventDefault();
-	}
-	
-	e.dataTransfer.dropEffect = "move";
-	
-	return false;
-}
-
-function handleDragEnter(e) {
-	this.classList.add("over");
-}
-function handleDragLeave(e) {
-	this.classList.remove("over");
-}
-function handleDrop(e) {
-	if (e.stopPropogation) {
-		e.stopPropogation();
-	}
-	
-	if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
-		if (dragSrc.parentElement.id == "modslist") {
-			if (slots[this.getAttribute("data-num")].mod) {
-				makeListVisible(slots[this.getAttribute("data-num")].mod);
-			}
-			setSlot(this, dragSrc.innerHTML);
-			dragSrc.classList.add("hide2");
-		} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
-			makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
-			setSlot(dragSrc, null);
-		} else {
-			swapSlots(dragSrc, this);
+var DragHandler = {
+	'enter': function handleDragEnter(e) {
+		this.classList.add("over");
+	},
+	'start': function handleDragStart(e) {
+		dragSrc = this;
+		//console.log(this);
+		
+		e.dataTransfer.effectAllowed = "move";
+	},
+	'over': function handleDragOver(e) {
+		if (e.preventDefault) {
+			e.preventDefault();
 		}
+		
+		e.dataTransfer.dropEffect = "move";
+		
+		return false;
+	},
+	'leave': function handleDragLeave(e) {
+		this.classList.remove("over");
+	},
+	'drop': function handleDrop(e) {
+		if (e.stopPropogation) {
+			e.stopPropogation();
+		}
+		
+		if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
+			if (dragSrc.parentElement.id == "modslist") {
+				if (slots[this.getAttribute("data-num")].mod) {
+					makeListVisible(slots[this.getAttribute("data-num")].mod);
+				}
+				setSlot(this, dragSrc.innerHTML);
+				dragSrc.classList.add("hide2");
+			} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
+				makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
+				setSlot(dragSrc, null);
+			} else {
+				swapSlots(dragSrc, this);
+			}
+		}
+		
+		return false;
+	},
+	'end': function handleDragEnd(e) {
+		var tiles = document.querySelectorAll('.over');
+		[].forEach.call(tiles, (tile) => {
+			tile.classList.remove("over");
+		});
+		
+		dragSrc = null;
 	}
-	
-	return false;
-}
-function handleDragEnd(e) {
-	var tiles = document.querySelectorAll('.over');
-	[].forEach.call(tiles, (tile) => {
-		tile.classList.remove("over");
-	});
-	
-	dragSrc = null;
-}
+};
 
-function drawFormCustomProjectile() {
-	var dest = document.getElementById("custom_projectile");
-	dest.innerHTML = 
-	"<form id='custom_projectile_form'>" +
-	"<table>" +
-	"<tr><td>" + "a" + "</td><td><input name='cprj_impact'></td></tr>" +
-	"</table>" +
-	"</form>";
-}
-
-function init() {
+function initializeModsList() {
 	var k = Object.keys(testMods);
 	var dest = document.getElementById("modslist");
 	
@@ -337,31 +345,38 @@ function init() {
 		e.draggable = true;
 		e.innerText = k[i];
 		
-		e.addEventListener('dragstart', handleDragStart, false);
-		e.addEventListener('dragend', handleDragEnd, false);
+		e.addEventListener('dragstart', DragHandler.start, false);
+		e.addEventListener('dragend', DragHandler.end, false);
 		
 		dest.appendChild(e);
 	}
-	dest.addEventListener('dragover', handleDragOver, false);
-	dest.addEventListener('dragleave', handleDragLeave, false);
-	dest.addEventListener('dragend', handleDragEnd, false);
-	dest.addEventListener('drop', handleDrop, false);
-	
-	dest = document.getElementById("slots");
+	dest.addEventListener('dragover', DragHandler.over, false);
+	dest.addEventListener('dragleave', DragHandler.leave, false);
+	dest.addEventListener('dragend', DragHandler.end, false);
+	dest.addEventListener('drop', DragHandler.drop, false);	
+}
+
+function initializeModSlots() {
+	var dest = document.getElementById("slots");
 	for (let i = 0; i < slots.length; i++) {
 		let e = document.createElement("div");
 		e.classList.add("slot");
 		e.setAttribute("data-num", i);
 		
-		e.addEventListener('dragstart', handleDragStart, false);
-		e.addEventListener('dragenter', handleDragEnter, false);
-		e.addEventListener('dragover', handleDragOver, false);
-		e.addEventListener('dragleave', handleDragLeave, false);
-		e.addEventListener('dragend', handleDragEnd, false);
-		e.addEventListener('drop', handleDrop, false);
+		e.addEventListener('dragstart', DragHandler.start, false);
+		e.addEventListener('dragenter', DragHandler.enter, false);
+		e.addEventListener('dragover', DragHandler.over, false);
+		e.addEventListener('dragleave', DragHandler.leave, false);
+		e.addEventListener('dragend', DragHandler.end, false);
+		e.addEventListener('drop', DragHandler.drop, false);
 		
 		dest.appendChild(e);
-	}
+	}	
+}
+
+function init() {
+	initializeModsList();
+	initializeModSlots();
 }
 
 window.addEventListener("load", init);
