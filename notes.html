@@ -23,6 +23,8 @@ Damage Effectiveness = 300 / (300 + Armor)<br>
 <br>
 General damage formula<br>
 Damage Effectiveness = (1 + HealthMod) * (1 + ArmorMod) / (1 + Armor * (1 - ArmorMod) / 300)<br>
+Armor formula (the above, inverted)<br>
+Armor = (300 / (1 - ArmorMod)) * ((1 + HealthMod) * (1 + ArmorMod) / DamageEffectiveness - 1)
 <br>
 Shields don't benefit from armor.<br>
 Toxin damage bypasses shields. Gas damage does not bypass shields.<br>
