@@ -2,8 +2,6 @@ var slots = [];
 //{ polarity: '', mod: null, rank: '' }
 var slotsCount = 8;
 
-var modslist = [];
-
 var statsum = {};
 
 var dragSrc = null;
@@ -64,10 +62,10 @@ function describeMod(id, rank = null) {
 		var k = Object.keys(mod.effects);
 		for (let i = 0; i < k.length; i++) {
 			let adj = mod.effects[k[i]] * (rank + 1);
-			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + WFC_mapper.translate(k[i], 'mod_effects') + '<br>';
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i], 'mod_effects') + '<br>';
 		}
 		if (mod.set) {
-			result += WFC_mapper.translate(mod.set);
+			result += Localization.translate(mod.set);
 		}
 	}	
 	return result;
@@ -105,9 +103,9 @@ function setSlot(slot, id, rank = null) {
 		slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
 		slot.children[2].className = 'slotcost' + polarmatch;
 		slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
-		slot.children[3].innerText = WFC_mapper.translate(id);
+		slot.children[3].innerText = Localization.translate(id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = WFC_mapper.translate('modtag' + testMods[id].tag);
+		slot.children[5].innerText = Localization.translate('modtag' + testMods[id].tag);
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
@@ -132,12 +130,15 @@ function swapSlots(a, b) {
 }
 
 function makeListVisible(id) {
-	var search = document.querySelectorAll(".hide2");
-	for (let i = 0; i < search.length; i++) {
-		if (search[i].parentElement.id == "modslist" && search[i].getAttribute("data-modid") == id) {
-			search[i].classList.remove("hide2");
-			break;
-		}			
+	var search = document.querySelector('#modslist [data-modid="'+id+'"]');
+	if (search) {
+		search.classList.remove('hide2');
+	}
+}
+function makeListInvisible(id) {
+	var search = window.document.querySelector('#modslist [data-modid="'+id+'"]');
+	if (search) {
+		search.classList.add('hide2');
 	}
 }
 
@@ -203,6 +204,32 @@ var DragHandler = {
 	}
 };
 
+function reloadSlots() {
+	var ss = document.getElementById('slots').children;
+	for (let i = 0; i < slots.length; i++) {
+		setSlot(ss[i], slots[i].mod, slots[i].rank);
+	}
+}
+
+function sortModsList() {
+	var a = [];
+	var p = document.getElementById('modslist').children;
+	for (let i = 0; i < p.length; i++) {
+		let mod = p[i].getAttribute('data-modid');
+		a.push({id: mod, hide: p[i].classList.contains('hide2'), val: Localization.translate(mod)});
+	}
+	a.sort((x, y) => (x.val>y.val?1:-1));
+	for (let i = 0; i < a.length; i++) {
+		p[i].setAttribute('data-modid', a[i].id);
+		p[i].innerText = a[i].val;
+		if (a[i].hide) {
+			makeListInvisible(a[i].id);
+		} else {
+			makeListVisible(a[i].id);
+		}
+	}
+}
+
 function initializeModsList() {
 	var k = Object.keys(testMods);
 	var dest = document.getElementById("modslist");
@@ -213,7 +240,7 @@ function initializeModsList() {
 		
 		e.classList.add("tile");
 		e.draggable = true;
-		e.innerText = WFC_mapper.translate(k[i]);
+		e.innerText = k[i];
 		
 		e.addEventListener('dragstart', DragHandler.start, false);
 		e.addEventListener('dragend', DragHandler.end, false);
@@ -223,7 +250,9 @@ function initializeModsList() {
 	dest.addEventListener('dragover', DragHandler.over, false);
 	dest.addEventListener('dragleave', DragHandler.leave, false);
 	dest.addEventListener('dragend', DragHandler.end, false);
-	dest.addEventListener('drop', DragHandler.drop, false);	
+	dest.addEventListener('drop', DragHandler.drop, false);
+	
+	sortModsList();
 }
 
 function reinitializeModsList() {
@@ -231,7 +260,12 @@ function reinitializeModsList() {
 	while (m.children.length > 0) {
 		m.removeChild(m.lastElementChild);
 	}
-	initializeModsList();	
+	initializeModsList();
+	for (let i = 0; i < slots.length; i++) {
+		if (slots[i].mod) {
+			makeListInvisible(slots[i].mod);
+		}
+	}
 }
 
 function initializeModSlots() {
@@ -291,7 +325,102 @@ function initializeModSlots() {
 	}	
 }
 
+function reloadDisplay() {	
+	reloadSlots();
+	sortModsList();
+}
+
+var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
+	var locales = {
+		'en': 'English', 
+		'fr': 'Français',
+		//'it': 'Italiano',
+		//'de': 'Deutsch',
+		'sp': 'Español',
+		//'pt': 'Português',
+		//'ru': 'Pусский',
+		//'pl': 'Polski',
+		//'uk': 'Українська',
+		//'tr': 'Türkçe',
+		//'jp': '日本語',
+		//'zh-CN': '中文',
+		//'ko': '한국어'
+	};
+	var localeRegex = /^[a-z][a-z](?:-[a-z][a-z])?$/i;
+	var language = 'en';
+	var dict = i18n.create();
+	
+	function applyLang() {		
+		newlanguage = lang.code;
+		window.document.children[0].lang = newlanguage;
+		dict = i18n.create(lang);
+		
+		reloadDisplay();
+	}
+	
+	function requestLang(e) {
+		var newlanguage = e.target.value;
+		if (language !== newlanguage) {
+			var r = document.getElementById(idSrc);
+			r.parentElement.removeChild(r);
+			var e = document.createElement('script');
+			e.id = idSrc;
+			e.onload = applyLang;
+			e.src = pathSrc + 'lang.' + newlanguage + '.js';
+			document.body.appendChild(e);
+			
+			if (!!window.localStorage) {
+				window.localStorage.setItem('lang', newlanguage);
+			}
+		}
+	}	
+	
+	if (!!window.localStorage) {
+		let v = window.localStorage.getItem('lang');
+		if (v === null) {
+			window.localStorage.setItem('lang', language);
+		}
+	}
+	
+	var obj = {};
+	
+	obj.translate = function (k) {
+		return dict(k);
+	};
+	
+	obj.init = function () {
+		var ls = window.document.getElementById(idSelect);
+		var newlanguage = language;
+		
+		if (!!window.localStorage) {
+			let v = window.localStorage.getItem('lang');
+			if (v !== null) {
+				newlanguage = v;
+			}
+		}
+		
+		var k = Object.keys(locales);
+		for (let i = 0; i < k.length; i++) {
+			let e = window.document.createElement('option');
+			e.text = locales[k[i]];
+			e.value = k[i];
+			if (k[i] == newlanguage) {
+				e.selected = 'selected';
+			}
+			ls.add(e);
+		}
+		ls.onchange = requestLang;
+		applyLang();
+		
+		if (lang.code !== newlanguage) {
+			requestLang({target:{value:newlanguage}});
+		}
+	}
+	return obj;
+})('project/data/', 'langsrc', 'lang_select', window);
+
 function init() {
+	Localization.init();
 	initializeModsList();
 	initializeModSlots();
 }
