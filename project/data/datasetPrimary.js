@@ -1,6 +1,39 @@
-var testMods = {
+var weapons = {
+	'Baza': {
+		name: 'Baza',
+		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		
+		attacks: [
+			{
+				attackName: 'primary',
+				trigger: 'triggerAuto',			
+				noise: 'noiseSilent',
+				
+				'statFireRate': 16.67,
+				'statAccuracy': 80,
+				'statMagazine': 40,
+				'statAmmo': 800,
+				'statReload': 1.4,
+				
+				damage:[
+					['damageImpact', 5.8],
+					['damagePuncture', 6.7],
+					['damageSlash', 3.5]
+				],
+				
+				'statCritChance': 0.26,
+				'statCritDamage': 3,
+				'statStatusChance': 0.10,
+				
+				falloff:[22, 34, 0.5]
+			}
+		]
+	}
+};
+
+var mods = {
 	"modSerration": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 10,
 		polarity: "V",
@@ -9,7 +42,7 @@ var testMods = {
 		},
 	},
 	"modPointStrike": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",
@@ -18,7 +51,7 @@ var testMods = {
 		},		
 	},
 	"modVitalSense": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",
@@ -27,7 +60,7 @@ var testMods = {
 		},		
 	},
 	"modVigilanteArmaments": {
-		tag : "Primary",
+		tag : "weaponTypePrimary",
 		cost : 4,
 		ranks : 5,
 		polarity: "—",
@@ -37,7 +70,7 @@ var testMods = {
 		set: "setVigilante",
 	},
 	"modHellfire": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 5,
 		polarity: "—",
@@ -46,7 +79,7 @@ var testMods = {
 		},		
 	},
 	"modStormbringer": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 5,
 		polarity: "—",
@@ -55,7 +88,7 @@ var testMods = {
 		},		
 	},
 	"modSplitChamber": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 10,
 		ranks : 5,
 		polarity: "V",
@@ -64,7 +97,7 @@ var testMods = {
 		},		
 	},
 	"modCryoRounds": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 5,
 		polarity: "D",
@@ -73,7 +106,7 @@ var testMods = {
 		},		
 	},
 	"modInfectedClip": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 5,
 		polarity: "—",
@@ -82,7 +115,7 @@ var testMods = {
 		},		
 	},
 	"modPrimedCryoRounds": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 10,
 		polarity: "—",
@@ -92,7 +125,7 @@ var testMods = {
 		conflicts: ["modCryoRounds"],
 	},
 	"modHunterMunitions": {
-		tag : "Primary",
+		tag : "weaponTypePrimary",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",
@@ -102,7 +135,7 @@ var testMods = {
 		set : "setHunter",
 	},
 	"modHeavyCaliber": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 10,
 		polarity: "V",
@@ -112,7 +145,7 @@ var testMods = {
 		},		
 	},
 	"modHighVoltage": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
@@ -122,7 +155,7 @@ var testMods = {
 		},		
 	},
 	"modMalignantForce": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
@@ -132,7 +165,7 @@ var testMods = {
 		},		
 	},
 	"modRimeRounds": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
@@ -142,7 +175,7 @@ var testMods = {
 		},		
 	},
 	"modThermiteRounds": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 3,
 		polarity: "V",
@@ -152,7 +185,7 @@ var testMods = {
 		},		
 	},
 	"modRifleAptitude": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "D",
@@ -161,7 +194,7 @@ var testMods = {
 		},		
 	},
 	"modShred": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 5,
 		polarity: "V",
@@ -171,7 +204,7 @@ var testMods = {
 		},		
 	},
 	"modPrimedShred": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 10,
 		polarity: "V",
@@ -182,7 +215,7 @@ var testMods = {
 		conflicts: ["modShred"],
 	},
 	"modSpeedTrigger": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",
@@ -191,7 +224,7 @@ var testMods = {
 		},		
 	},
 	"modVileAcceleration": {
-		tag : "Rifle",
+		tag : "weaponTypeRifle",
 		cost : 4,
 		ranks : 5,
 		polarity: "V",

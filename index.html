@@ -9,9 +9,9 @@
 <body>
 <form><span id="label_langsel">Language</span> <select id="lang_select"></select></form><br>
 
-<div id="modfilter">Filter: <input id="modfilter"></div>
+<div id="modfilter">Filter: <input id="modfilter"> <span id="capacity">0/60</span></div>
 <div id="mods">
-	<div class="modsearch">		
+	<div class="modsearch">
 		<div id="modslist"></div>
 	</div>
 	<div id="slots"></div>
@@ -21,8 +21,8 @@
 <div id="footer">
 Home | <a href="enemy.html">Enemy Scaler</a> | <a href="notes.html">notes</a>
 </div>
-<script src="project/data/wfc_mods.js"></script>
-<script id="langsrc" src="project/data/lang.en.js"></script>
+<script id="datasrc" src="project/data/datasetPrimary.js"></script>
+<script id="langsrc" src="project/data/lang/lang.en.js"></script>
 <script src="project/scripts/i18n.min.js"></script>
 <script src="project/scripts/warframe-calc.js"></script>
 </body>

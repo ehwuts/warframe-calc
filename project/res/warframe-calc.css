@@ -17,6 +17,7 @@ td { border: 1px solid green; }
 	cursor: move;
 }
 
+#capacity { float: right; }
 #mods { display: table; height: 300px; }
 #modslist { overflow-x: hidden; overflow-y: auto; max-height: 100%; }
 
@@ -25,7 +26,7 @@ td { border: 1px solid green; }
 .slot {
 	border: 1px solid blue;
 	height: 150px;
-	width: 23%;
+	width: 24.7%;
 	display: inline-block;
 	position: relative;
 	text-align: center;

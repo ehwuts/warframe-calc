@@ -1,29 +1,64 @@
 var lang = {
 	'code': 'en',
 	'values': {
-		'statDamageGeneric': 'Damage',
-		'statImpact': 'Impact',
-		'statPuncture': 'Puncture',
-		'statSlash': 'Slash',
-		'statCold': 'Cold',
-		'statElectricity': 'Electricity',
-		'statHeat': 'Heat',
-		'statToxin': 'Toxin',
-		'statBlast': 'Blast',
-		'statCorrosive': 'Corrosive',
-		'statGas': 'Gas',
-		'statMagnetic': 'Magnetic',
-		'statRadiation': 'Radiation',
-		'statViral': 'Viral',
+		'damageGeneric': 'Damage',
+		'damageImpact': 'Impact',
+		'damagePuncture': 'Puncture',
+		'damageSlash': 'Slash',
+		'damageCold': 'Cold',
+		'damageElectricity': 'Electricity',
+		'damageHeat': 'Heat',
+		'damageToxin': 'Toxin',
+		'damageBlast': 'Blast',
+		'damageCorrosive': 'Corrosive',
+		'damageGas': 'Gas',
+		'damageMagnetic': 'Magnetic',
+		'damageRadiation': 'Radiation',
+		'damageViral': 'Viral',
 
+		'statFireRate': 'Fire Rate',
+		'statChargeRate': 'Charge Rate',
 		'statAccuracy': 'Accuracy',
+		'statMagazine': 'Magazine',
+		'statAmmo': 'Ammo',
+		'statReload': 'Reload',
+		
 		'statCritChance': 'Critical Chance',
 		'statCritDamage': 'Critical Multiplier',
 		'statStatusChance': 'Status',
 		'statStatusDuration': 'Status Duration',
-		'statFireRate': 'Fire Rate',
 		'statPunchThrough': 'Punch Through',
 		'statMultishot': 'Multishot',
+		
+		'noiseGeneric': 'Noise',
+		'noiseSilent': 'Silent',
+		
+		'triggerGeneric': 'Trigger',
+		'triggerHeld': 'Held',
+		'triggerCharge': 'Charge',
+		'triggerSemi': 'Semi',
+		'triggerBurst': 'Burst',
+		'triggerAuto': 'Auto',
+		
+		'statFalloff': 'Damage Falloff',
+		'%n falloffStart': [
+			[null, null, 'Full damage up to %n meters.']
+		],
+		'%n falloffEnd':[
+			[null, null, 'Minimum damage reached at %n meters.']
+		],
+		'%n falloffAmount':[
+			[null, null, '%n maximum damage penalty from falloff.']
+		],
+		
+		'weaponTypePrimary': 'Primary',
+		'weaponTypeRifle': 'Rifle',
+		'weaponTypeSniper': 'Sniper',
+		'weaponTypeBow': 'Bow',
+		'weaponTypeShotgun': 'Shotgun',
+		'weaponTypeLauncher': 'Launcher',
+		'weaponTypeSecondary': 'Secondary',
+		'weaponTypeMelee': 'Melee',
 		
 		'setVigilante': '5% chance to enhance Critical Hits from Primary Weapons',
 		'setHunter': 'Companions deal 25% Extra Damage against enemies effected by Slash status',
@@ -51,9 +86,6 @@ var lang = {
 		'modPrimedShred': 'Primed Shred',
 		'modSpeedTrigger': 'Speed Trigger',
 		'modVileAcceleration': 'Vile Acceleration',
-		
-		'modtagRifle': 'Rifle',
-		'modtagPrimary': 'Primary',
 		
 		'bonusDamage': 'Damage',
 		'bonusImpact': 'Impact',

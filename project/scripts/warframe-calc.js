@@ -1,10 +1,10 @@
+var dataSets = ['datasetPrimary', 'datasetSecondary', 'datasetMelee', 'datasetWarframe', 'datasetCompanion', 'datasetArchwing', 'datasetArchgun', 'datasetArchmelee'];
+
 var slots = [];
 //{ polarity: '', mod: null, rank: '' }
 var slotsCount = 8;
 
 var statsum = {};
-
-var dragSrc = null;
 
 function percentagestringFromFloat(f) {
 	f *= 100;
@@ -22,12 +22,24 @@ function truncatedstringFromFloat(f) {
 	let r = (f + ' ').substring(0, 4);
 	return r;
 }
+function modCostFromSlot(i) {
+	var id = slots[i].mod;
+	if (id) {
+		let costadj = (slots[i].rank|0)+mods[id].cost;
+		costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
+		
+		return costadj;
+	}
+	return 0;
+}
 
 function updateStatsum() {
 	var newStatsum = {};
+	var capacitySum = 0;
+	
 	for (var m = 0; m < slots.length; m++) {
-		if (slots[m].mod && testMods[slots[m].mod]) {
-			let mod = testMods[slots[m].mod];
+		if (slots[m].mod && mods[slots[m].mod]) {
+			let mod = mods[slots[m].mod];
 			let k = Object.keys(mod.effects);
 			for (let i = 0; i < k.length; i++) {
 				let adj = mod.effects[k[i]] * (slots[m].rank + 1);
@@ -44,16 +56,19 @@ function updateStatsum() {
 					newStatsum[mod.set]  = 1;
 				}
 			}
+			capacitySum += modCostFromSlot(m);
 		}
 	}
 	
 	statsum = newStatsum;
 	document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
+	
+	document.getElementById('capacity').innerText = capacitySum + '/60';
 }
 
 function describeMod(id, rank = null) {
 	var result = '';
-	var mod = testMods[id];
+	var mod = mods[id];
 	if (mod) {
 		if (!rank) {
 			rank = 0;
@@ -62,7 +77,7 @@ function describeMod(id, rank = null) {
 		var k = Object.keys(mod.effects);
 		for (let i = 0; i < k.length; i++) {
 			let adj = mod.effects[k[i]] * (rank + 1);
-			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i], 'mod_effects') + '<br>';
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
 		}
 		if (mod.set) {
 			result += Localization.translate(mod.set);
@@ -74,12 +89,11 @@ function describeMod(id, rank = null) {
 function slotAdjust(slot, delta) {
 	var i = slot.getAttribute('data-num');
 	var id = slots[i].mod;
-	slots[i].rank = Math.max(0, Math.min(testMods[id].ranks, slots[i].rank + delta));
-	slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
+	slots[i].rank = Math.max(0, Math.min(mods[id].ranks, slots[i].rank + delta));
+	slot.children[1].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
 	
-	let costadj = (slots[i].rank|0)+testMods[id].cost;
-	costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==testMods[id].polarity?costadj/2.0:costadj*1.25):costadj);
-	slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
+	let costadj = modCostFromSlot(i);
+	slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
 	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
 	
 	updateStatsum();
@@ -91,21 +105,20 @@ function setSlot(slot, id, rank = null) {
 		if (rank !== null) {
 			slots[i].rank = rank;
 		} else {
-			slots[i].rank = testMods[id].ranks;
+			slots[i].rank = mods[id].ranks;
 		}
 		slots[i].mod = id;
-		let polarmatch = (slots[i].polarity?(slots[i].polarity==testMods[id].polarity?' polaritymatch':' polarityconflict'):'');
-		let cost = (slots[i].rank|0)+testMods[id].cost;
-		let costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==testMods[id].polarity?cost/2.0:cost*1.25):cost);
+		let polarmatch = (slots[i].polarity?(slots[i].polarity==mods[id].polarity?' polaritymatch':' polarityconflict'):'');
+		let costadj = modCostFromSlot(i);
 		
 		slot.children[0].innerText = slots[i].polarity;
 		slot.children[1].className = 'slotrank';
-		slot.children[1].children[1].innerText = slots[i].rank+'/'+testMods[id].ranks;
+		slot.children[1].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
 		slot.children[2].className = 'slotcost' + polarmatch;
-		slot.children[2].innerText = costadj + ' ' + testMods[id].polarity;
+		slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
 		slot.children[3].innerText = Localization.translate(id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = Localization.translate('modtag' + testMods[id].tag);
+		slot.children[5].innerText = Localization.translate(mods[id].tag);
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
@@ -142,67 +155,71 @@ function makeListInvisible(id) {
 	}
 }
 
-var DragHandler = {
-	'enter': function handleDragEnter(e) {
-		this.classList.add("over");
-	},
-	'start': function handleDragStart(e) {
-		dragSrc = this;
-		//console.log(this);
-		
-		e.dataTransfer.effectAllowed = "move";
-	},
-	'over': function handleDragOver(e) {
-		if (e.preventDefault) {
-			e.preventDefault();
-		}
-		
-		e.dataTransfer.dropEffect = "move";
-		
-		return false;
-	},
-	'leave': function handleDragLeave(e) {
-		this.classList.remove("over");
-	},
-	'drop': function handleDrop(e) {
-		if (e.stopPropogation) {
-			e.stopPropogation();
-		}
-		
-		if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
-			if (dragSrc.parentElement.id == "modslist") {
-				if (slots[this.getAttribute("data-num")].mod) {
-					makeListVisible(slots[this.getAttribute("data-num")].mod);
-				} else {					
-					for (let i = 0; i < slots.length; i++) {
-						let conflicts = testMods[dragSrc.getAttribute('data-modid')].conflicts;
-						let conflicts2 = slots[i].mod && testMods[slots[i].mod].conflicts;
-						if (slots[i].mod && ((conflicts2 && conflicts2.indexOf(dragSrc.getAttribute('data-modid')) != -1) || (conflicts && conflicts.indexOf(slots[i].mod) != -1))) {
-							return false;
+var DragHandler = (function(window, undefined){
+	var dragSrc = null;
+	
+	return {
+		'enter': function handleDragEnter(e) {
+			this.classList.add("over");
+		},
+		'start': function handleDragStart(e) {
+			dragSrc = this;
+			//console.log(this);
+			
+			e.dataTransfer.effectAllowed = "move";
+		},
+		'over': function handleDragOver(e) {
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			
+			e.dataTransfer.dropEffect = "move";
+			
+			return false;
+		},
+		'leave': function handleDragLeave(e) {
+			this.classList.remove("over");
+		},
+		'drop': function handleDrop(e) {
+			if (e.stopPropogation) {
+				e.stopPropogation();
+			}
+			
+			if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
+				if (dragSrc.parentElement.id == "modslist") {
+					if (slots[this.getAttribute("data-num")].mod) {
+						makeListVisible(slots[this.getAttribute("data-num")].mod);
+					} else {					
+						for (let i = 0; i < slots.length; i++) {
+							let conflicts = mods[dragSrc.getAttribute('data-modid')].conflicts;
+							let conflicts2 = slots[i].mod && mods[slots[i].mod].conflicts;
+							if (slots[i].mod && ((conflicts2 && conflicts2.indexOf(dragSrc.getAttribute('data-modid')) != -1) || (conflicts && conflicts.indexOf(slots[i].mod) != -1))) {
+								return false;
+							}
 						}
 					}
+					setSlot(this, dragSrc.getAttribute('data-modid'));
+					dragSrc.classList.add("hide2");
+				} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
+					makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
+					setSlot(dragSrc, null);
+				} else {
+					swapSlots(dragSrc, this);
 				}
-				setSlot(this, dragSrc.getAttribute('data-modid'));
-				dragSrc.classList.add("hide2");
-			} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
-				makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
-				setSlot(dragSrc, null);
-			} else {
-				swapSlots(dragSrc, this);
 			}
+			
+			return false;
+		},
+		'end': function handleDragEnd(e) {
+			var tiles = document.querySelectorAll('.over');
+			[].forEach.call(tiles, (tile) => {
+				tile.classList.remove("over");
+			});
+			
+			dragSrc = null;
 		}
-		
-		return false;
-	},
-	'end': function handleDragEnd(e) {
-		var tiles = document.querySelectorAll('.over');
-		[].forEach.call(tiles, (tile) => {
-			tile.classList.remove("over");
-		});
-		
-		dragSrc = null;
-	}
-};
+	};
+})(window);
 
 function reloadSlots() {
 	var ss = document.getElementById('slots').children;
@@ -231,7 +248,7 @@ function sortModsList() {
 }
 
 function initializeModsList() {
-	var k = Object.keys(testMods);
+	var k = Object.keys(mods);
 	var dest = document.getElementById("modslist");
 	
 	for (let i = 0; i < k.length; i++) {
@@ -325,11 +342,6 @@ function initializeModSlots() {
 	}	
 }
 
-function reloadDisplay() {	
-	reloadSlots();
-	sortModsList();
-}
-
 var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	var locales = {
 		'en': 'English', 
@@ -349,13 +361,16 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	var localeRegex = /^[a-z][a-z](?:-[a-z][a-z])?$/i;
 	var language = 'en';
 	var dict = i18n.create();
+	var thingsToUpdate = [];
 	
 	function applyLang() {		
-		newlanguage = lang.code;
-		window.document.children[0].lang = newlanguage;
+		language = lang.code;
+		window.document.children[0].lang = language;
 		dict = i18n.create(lang);
 		
-		reloadDisplay();
+		for (let i = 0; i < thingsToUpdate.length; i++) {
+			thingsToUpdate[i]();
+		}
 	}
 	
 	function requestLang(e) {
@@ -387,6 +402,9 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	obj.translate = function (k) {
 		return dict(k);
 	};
+	obj.addUpdate = function (f) {
+		thingsToUpdate.push(f);
+	};
 	
 	obj.init = function () {
 		var ls = window.document.getElementById(idSelect);
@@ -417,9 +435,11 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 		}
 	}
 	return obj;
-})('project/data/', 'langsrc', 'lang_select', window);
+})('project/data/lang/', 'langsrc', 'lang_select', window);
 
 function init() {
+	Localization.addUpdate(reloadSlots);
+	Localization.addUpdate(sortModsList);
 	Localization.init();
 	initializeModsList();
 	initializeModSlots();
