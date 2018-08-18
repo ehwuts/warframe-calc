@@ -1,7 +1,7 @@
 .hide { visibility: hidden; }
 .center { text-align: center; }
 
-div { border: 1px solid black; }
+div { border: 1px solid grey; }
 span { border: 1px solid darkblue; }
 td { border: 1px solid green; }
 
@@ -48,3 +48,4 @@ td { border: 1px solid green; }
 	border: 1px dashed #000;
 }
 .hide2 { display: none; }
+.hide2b { display: none; } 

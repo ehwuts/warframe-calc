@@ -1,4 +1,4 @@
-var weapons = {
+var items = {
 	'Baza': {
 		name: 'Baza',
 		type: ['weaponTypePrimary', 'weaponTypeRifle'],
@@ -26,6 +26,34 @@ var weapons = {
 				'statStatusChance': 0.10,
 				
 				falloff:[22, 34, 0.5]
+			}
+		]
+	},
+	'Supra_Vandal':{
+		name: 'Supra Vandal',
+		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		
+		attacks: [
+			{
+				attackName: 'primary',
+				trigger: 'triggerAutoSpool',			
+				noise: 'noiseAlarming',
+				
+				'statFireRate': 12.5,
+				'statAccuracy': 26.6,
+				'statMagazine': 300,
+				'statAmmo': 1600,
+				'statReload': 3.0,
+				
+				damage:[
+					['damageImpact', 4.0],
+					['damagePuncture', 30.0],
+					['damageSlash', 6.0]
+				],
+				
+				'statCritChance': 0.16,
+				'statCritDamage': 2,
+				'statStatusChance': 0.30
 			}
 		]
 	}

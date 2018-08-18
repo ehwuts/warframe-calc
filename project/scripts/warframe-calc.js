@@ -1,8 +1,11 @@
 var dataSets = ['datasetPrimary', 'datasetSecondary', 'datasetMelee', 'datasetWarframe', 'datasetCompanion', 'datasetArchwing', 'datasetArchgun', 'datasetArchmelee'];
+var dataset = 'datasetPrimary';
+var item = -1;
 
 var slots = [];
 //{ polarity: '', mod: null, rank: '' }
 var slotsCount = 8;
+var filter = '';
 
 var statsum = {};
 
@@ -31,6 +34,29 @@ function modCostFromSlot(i) {
 		return costadj;
 	}
 	return 0;
+}
+
+function clearFiltering() {
+	console.log('Call to remove filter');
+}
+function applyFiltering() {
+	console.log('Call to change filter to: ' +  filter);
+}
+
+function updateFiltering(e) {
+	var newfilter = e.target.value;
+	if (filter != newfilter) {
+		filter = newfilter;
+		if (newfilter == '') {
+			clearFiltering();
+		} else {
+			applyFiltering();
+		}
+	}
+}
+
+function updateDamageCalcs() {
+	
 }
 
 function updateStatsum() {
@@ -64,6 +90,8 @@ function updateStatsum() {
 	document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
 	
 	document.getElementById('capacity').innerText = capacitySum + '/60';
+	
+	updateDamageCalcs();
 }
 
 function describeMod(id, rank = null) {
@@ -270,6 +298,9 @@ function initializeModsList() {
 	dest.addEventListener('drop', DragHandler.drop, false);
 	
 	sortModsList();
+	
+	document.getElementById('modfilter').onchange = updateFiltering;
+	document.getElementById('modfilter').onkeyup = updateFiltering;
 }
 
 function reinitializeModsList() {
@@ -342,6 +373,101 @@ function initializeModSlots() {
 	}	
 }
 
+function changeDataset(e) {
+	if (e.target.value != dataset && dataSets.includes(e.target.value)) {
+		let ee = document.createElement('script');
+		ee.src = 'project/data/' + e.target.value + '.js';
+		ee.onload = applyDataset;
+		
+		let v = document.getElementById('datasrc');
+		v.parentElement.removeChild(v);
+		document.body.appendChild(ee);
+	}
+}
+
+function displayItem() {
+	if (item === -1 || !items.hasOwnProperty(item)) {
+		document.getElementById('displayItem').innerText = '';
+		return;		
+	}
+	
+	var v = document.getElementById('displayItem');
+	var tags = [];
+	for (let i = 0; i < items[item].type.length; i++) {
+		tags.push(Localization.translate(items[item].type[i]));
+	}
+	
+	v.innerText = items[item].name + "\n"
+	            + tags.join(', ') + "\n\n";
+	return;
+	v.innerText += 'Attacks' + "\n"; 
+	for (let i = 0; i < items[item].attacks.length; i++) {
+		v.innerText += items[item].attacks[i].attackName + "\n"
+		             + Localization.translate('statAccuracy') + ' ' + items[item].attacks[i].statAccuracy + "\n"
+				     + Localization.translate('statCritChance') + ' ' + items[item].attacks[i].statCritChance + "\n"
+					 + Localization.translate('statCritDamage') + ' ' + items[item].attacks[i].statCritDamage + "\n"
+					 + Localization.translate('statFireRate') + ' ' + items[item].attacks[i].statFireRate + "\n"
+					 + Localization.translate('statMagazine') + ' ' + items[item].attacks[i].statMagazine + "\n"
+					 + Localization.translate('noiseGeneric') + ' ' + Localization.translate(items[item].attacks[i].noise) + "\n"
+					 + Localization.translate('statReload') + ' ' + items[item].attacks[i].statReload + "\n"
+					 + Localization.translate('statStatusChance') + ' ' + items[item].attacks[i].statStatusChance + "\n"
+					 + Localization.translate('triggerGeneric') + ' ' + Localization.translate(items[item].attacks[i].statReload) + "\n";
+		if (items[item].attacks[i].falloff) {
+			v.innerText += "\n" + Localization.translate('%n falloffStart', items[item].attacks[i].falloff[0]) + "\n"
+			             + Localization.translate('%n falloffEnd', items[item].attacks[i].falloff[1]) + "\n"
+						 + Localization.translate('%n falloffAmount', items[item].attacks[i].falloff[2]) + "\n";
+		}
+		v.innerText += "\n";
+		for (let j = 0; j < items[item].attacks[i].damage.length; j++) {
+			v.innerText += Localization.translate(items[item].attacks[i].damage[j][0]) + ' ' + items[item].attacks[i].damage[j][1] + "\n";
+		}
+		
+	}
+}
+
+function applyItem(e) {
+	let v = e.target.value;
+	if (v !== -1 && v != item) {
+		item = v;
+		
+		displayItem();
+	}
+}
+
+function applyDataset() {
+	var v = document.getElementById('item_select');
+	while (v.children.length > 0) {
+		v.removeChild(v.lastElementChild);
+	}
+	
+	var e = document.createElement('option');
+	e.value = -1;
+	e.innerText = Localization.translate('selectBlank');
+	v.appendChild(e);
+	
+	var keys = Object.keys(items);
+	for (let i = 0; i < keys.length; i++) {
+		let e = document.createElement('option');
+		e.value = keys[i];
+		e.innerText = items[keys[i]].name;
+		v.appendChild(e);
+	}
+	v.onchange = applyItem;
+}
+
+function initializeItemSelect() {
+	var v = document.getElementById('category_select');
+	for (let i = 0; i < dataSets.length; i++) {
+		let e = document.createElement('option');
+		e.value = dataSets[i];
+		e.innerText = Localization.translate(e.value);
+		v.appendChild(e);
+	}
+	v.onchange = changeDataset;
+	
+	applyDataset();
+}
+
 var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	var locales = {
 		'en': 'English', 
@@ -399,8 +525,8 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	
 	var obj = {};
 	
-	obj.translate = function (k) {
-		return dict(k);
+	obj.translate = function (a, b) {
+		return dict(a, b);
 	};
 	obj.addUpdate = function (f) {
 		thingsToUpdate.push(f);
@@ -440,9 +566,11 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 function init() {
 	Localization.addUpdate(reloadSlots);
 	Localization.addUpdate(sortModsList);
+	Localization.addUpdate(displayItem);
 	Localization.init();
 	initializeModsList();
 	initializeModSlots();
+	initializeItemSelect();
 }
 
 window.addEventListener('load', init);

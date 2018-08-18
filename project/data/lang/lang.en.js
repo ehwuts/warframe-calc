@@ -32,6 +32,7 @@ var lang = {
 		
 		'noiseGeneric': 'Noise',
 		'noiseSilent': 'Silent',
+		'noiseAlarming': 'Alarming',
 		
 		'triggerGeneric': 'Trigger',
 		'triggerHeld': 'Held',
@@ -39,17 +40,29 @@ var lang = {
 		'triggerSemi': 'Semi',
 		'triggerBurst': 'Burst',
 		'triggerAuto': 'Auto',
+		'triggerAutoSpool': 'Spooled Auto',
 		
 		'statFalloff': 'Damage Falloff',
 		'%n falloffStart': [
-			[null, null, 'Full damage up to %n meters.']
+			[0, null, 'Full damage up to %n meters.']
 		],
 		'%n falloffEnd':[
-			[null, null, 'Minimum damage reached at %n meters.']
+			[0, null, 'Minimum damage reached at %n meters.']
 		],
 		'%n falloffAmount':[
-			[null, null, '%n maximum damage penalty from falloff.']
+			[0, null, '%n maximum damage penalty from falloff.']
 		],
+		
+		'datasetPrimary': 'Primary',
+		'datasetSecondary': 'Secondary',
+		'datasetMelee': 'Melee',
+		'datasetWarframe': 'Warframe',
+		'datasetCompanion': 'Companion',
+		'datasetArchwing': 'Archwing',
+		'datasetArchgun': 'Archgun',
+		'datasetArchmelee': 'Archmelee',
+		
+		'selectBlank': '<Choose>',
 		
 		'weaponTypePrimary': 'Primary',
 		'weaponTypeRifle': 'Rifle',
