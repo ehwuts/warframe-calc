@@ -1,0 +1,151 @@
+'range': 1.222,
+'hascurse': 1.25,
+'3rdbuff': 1/1.32,
+'3rdcurse': 2,
+
+'Rifle': {
+	'buff': {
+		'Multishot': 80.16,
+		'Damage': 147.04,
+		'Physical Damage': 106.88,
+		'Critical Chance': 133.68,
+		'Critical Damage': 106.96,
+		'Elemental Damage': 80.16,
+		'Status Chance': 80.16,
+		'Status Duration': 89.12,
+		'Damage to Faction': 40.08,
+		'Fire Rate (x2 for Bows)': 53.52,
+		'Magazine Capacity': 44.56,
+		'Ammo Maximum': 44.48,
+		'Flight Speed': 80.16,
+		'Reload Speed': 44.56,
+		'Weapon Recoil': -80.16,
+		'Zoom': 53.44,
+		'Punch Through': 2.40,
+	},
+	'curse': {
+		'Multishot': -32.08,
+		'Damage': -58.80,
+		'Physical Damage': -42.72,
+		'Critical Chance': -53.44,
+		'Critical Damage': -42.80,
+		'Status Chance': -32.08,
+		'Status Duration': -35.60,
+		'Damage to Faction': -16.00,
+		'Fire Rate (x2 for Bows)': -21.36,
+		'Magazine Capacity': -17.84,
+		'Ammo Maximum': -17.84,
+		'Flight Speed': -32.08,
+		'Reload Speed': -17.84,
+		'Weapon Recoil': 32.08,
+		'Zoom': -21.36,
+	}
+}
+
+'Secondary': {
+	'buff': {
+		'Multishot': 106.64,
+		'Damage': 195.68,
+		'Physical Damage': 106.88,
+		'Critical Chance': 133.68,
+		'Critical Damage': 80.16,
+		'Elemental Damage': 80.16,
+		'Status Chance': 80.16,
+		'Status Duration': 89.12,
+		'Damage to Faction': 40.08,
+		'Fire Rate': 66.56,
+		'Magazine Capacity': 44.56,
+		'Ammo Maximum': 80.16,
+		'Flight Speed': 80.16,
+		'Reload Speed': 44.56,
+		'Weapon Recoil': -80.16,
+		'Zoom': 71.36,
+		'Punch Through': 2.40,
+	},
+	'curse': {
+		'Multishot': -42.64,
+		'Damage': -78.24,
+		'Physical Damage': -42.72,
+		'Critical Chance': -53.44,
+		'Critical Damage': -32.08,
+		'Status Chance': -32.08,
+		'Status Duration': -35.60,
+		'Damage to Faction': -16.00,
+		'Fire Rate': -26.64,
+		'Magazine Capacity': -17.84,
+		'Ammo Maximum': -32.08,
+		'Flight Speed': -32.08,
+		'Reload Speed': -17.84,
+		'Weapon Recoil': 32.08,
+		'Zoom': -28.56
+	}
+}
+
+'Shotgun': {
+	'buff': {
+		'Multishot': 106.64,
+		'Damage': 146.72,
+		'Physical Damage': 106.88,
+		'Critical Chance': 80.16,
+		'Critical Damage': 80.16,
+		'Elemental Damage': 80.16,
+		'Status Chance': 80.16,
+		'Status Duration': 89.12,
+		'Damage to Faction': 40.08,
+		'Fire Rate (x2 for Bows)': 80.16,
+		'Magazine Capacity': 44.56,
+		'Ammo Maximum': 80.16,
+		'Flight Speed': 80.16,
+		'Reload Speed': 44.56,
+		'Weapon Recoil': -80.16,
+		'Punch Through': 2.40
+	},
+	'curse':{
+		'Multishot': -42.64,
+		'Damage': -58.72,
+		'Critical Chance': -32.08,
+		'Critical Damage': -32.08,
+		'Status Chance': -32.08,
+		'Status Duration': -35.60,
+		'Damage to Faction': -16.00,
+		'Fire Rate (x2 for Bows)': -32.08,
+		'Magazine Capacity': -17.84,
+		'Ammo Maximum': -32.08,
+		'Flight Speed': -32.08,
+		'Reload Speed': -17.84,
+		'Weapon Recoil': 32.08
+	}
+}
+
+'Melee': {
+	'buff': {
+		'Melee Damage': 146.72,
+		'Physical Damage': 106.64,
+		'Critical Chance': 80.16,
+		'Critical Damage': 80.16,
+		'Elemental Damage': 80.16,
+		'Status Chance': 80.16,
+		'Status Duration': 89.12,
+		'Damage to Faction': 40.08,
+		'Attack Speed': 48.88,
+		'Channeling Efficiency': 80.16,
+		'Channeling Damage': 133.92,
+		'Finisher Damage': 106.64,
+		'Range': 106.64,
+		'chance for Slide Attack to be a Critical': 80.16,
+		'Combo Duration': 7.20
+	},
+	'curse': {
+		'Physical Damage': -42.64,
+		'Critical Chance': -32.08,
+		'Critical Damage': -32.08,
+		'Status Chance': -32.08,
+		'Status Duration': -35.60,
+		'Damage to Faction': -16.00,
+		'Attack Speed': -19.60,
+		'Finisher Damage': -42.64,
+		'Range': -42.64,
+		'chance for Slide Attack to be a Critical': -32.08,
+		'Combo Duration': -2.88
+	}
+}

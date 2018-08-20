@@ -44,13 +44,13 @@ var lang = {
 		
 		'statFalloff': 'Damage Falloff',
 		'%n falloffStart': [
-			[0, null, 'Full damage up to %n meters.']
+			[null, null, 'Full damage up to %n meters.']
 		],
 		'%n falloffEnd':[
-			[0, null, 'Minimum damage reached at %n meters.']
+			[null, null, 'Minimum damage reached at %n meters.']
 		],
 		'%n falloffAmount':[
-			[0, null, '%n maximum damage penalty from falloff.']
+			[null, null, '%n maximum damage penalty from falloff.']
 		],
 		
 		'datasetPrimary': 'Primary',

@@ -1,6 +1,7 @@
 {
 	name: 'Supra Vandal',
 	type: ['weaponTypePrimary', 'weaponTypeRifle'],
+	rivenDisposition: 1.14,
 	
 	attacks: [
 		{
@@ -13,6 +14,8 @@
 			'statMagazine': 300,
 			'statAmmo': 1600,
 			'statReload': 3.0,
+			'statPunchThrough': 0,
+			'statProjectiles': 1,
 			
 			damage:[
 				['damageImpact', 4.0],

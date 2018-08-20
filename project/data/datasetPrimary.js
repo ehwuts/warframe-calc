@@ -2,6 +2,7 @@ var items = {
 	'Baza': {
 		name: 'Baza',
 		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		rivenDisposition: 1.1,
 		
 		attacks: [
 			{
@@ -14,6 +15,8 @@ var items = {
 				'statMagazine': 40,
 				'statAmmo': 800,
 				'statReload': 1.4,
+				'statPunchThrough': 0,
+				'statProjectiles': 1,
 				
 				damage:[
 					['damageImpact', 5.8],
@@ -32,6 +35,7 @@ var items = {
 	'Supra_Vandal':{
 		name: 'Supra Vandal',
 		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		rivenDisposition: 1.14,
 		
 		attacks: [
 			{
@@ -44,6 +48,8 @@ var items = {
 				'statMagazine': 300,
 				'statAmmo': 1600,
 				'statReload': 3.0,
+				'statPunchThrough': 0,
+				'statProjectiles': 1,
 				
 				damage:[
 					['damageImpact', 4.0],

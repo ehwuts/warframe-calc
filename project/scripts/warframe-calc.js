@@ -9,21 +9,24 @@ var filter = '';
 
 var statsum = {};
 
-function percentagestringFromFloat(f) {
+function percentagestringFromFloat(f, p = 1) {
 	f *= 100;
 	if (f > 0) f += 0.00001;
 	else f -= 0.00001;
-	let r = (f + ' ').substring(0, 3);
+	/*let r = (f + ' ').substring(0, 3);
 	if (r[2] == '.') {
 		r = r.substring(0, 2);
 	}
-	return r + '%';
+	return r + '%';*/
+	return f.toFixed(p) + '%';
 }
-function truncatedstringFromFloat(f) {
+function truncatedstringFromFloat(f, p = 2) {
 	if (f > 0) f += 0.00001;
 	else f -= 0.00001;	
-	let r = (f + ' ').substring(0, 4);
+	/*let r = (f + ' ').substring(0, 4);
 	return r;
+	*/
+	return f.toFixed(p);
 }
 function modCostFromSlot(i) {
 	var id = slots[i].mod;
@@ -56,7 +59,133 @@ function updateFiltering(e) {
 }
 
 function updateDamageCalcs() {
+	var v = document.getElementById('output');
 	
+	if (item === -1 || !items.hasOwnProperty(item)) {
+		v.innerHTML = '';
+		return;
+	}
+	
+	var tags = [];
+	for (let i = 0; i < items[item].type.length; i++) {
+		tags.push(Localization.translate(items[item].type[i]));
+	}
+	tags = tags.join(', ');
+	
+	var stats = JSON.parse(JSON.stringify(items[item].attacks[0]));
+	var baseDamage = 0;
+	for (let i = 0; i < stats.damage.length; i++) {
+		baseDamage += stats.damage[i][1];
+	}
+	
+	var damagePercents = {
+		'damageImpact': 0,
+		'damagePuncture': 0,
+		'damageSlash': 0,
+		'damageCold': 0,
+		'damageElectricity': 0,
+		'damageHeat': 0,
+		'damageToxin': 0,
+		'damageBlast': 0,
+		'damageCorrosive': 0,
+		'damageGas': 0,
+		'damageMagnetic': 0,
+		'damageRadiation': 0,
+		'damageViral': 0
+	};
+	for (let i = 0; i < stats.damage.length; i++) {
+		damagePercents[stats.damage[i][0]] = stats.damage[i][1] / baseDamage;
+	}
+	
+	
+	var critChance = stats.statCritChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0));
+	var critMulti = stats.statCritDamage * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
+	var multishot = stats.statProjectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
+	var punchThrough = stats.statPunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
+	var fireRate = stats.statFireRate * (1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
+	var magazine = stats.statMagazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
+	var reload = stats.statReload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
+	var ammo = stats.statAmmo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
+	
+	function critScale(tier, multi) {
+		return tier * (multi - 1) + 1;
+	}
+	
+	var vigilanteChance = (statsum.setVigilante?(statsum.setVigilante) * 0.05:0);
+	var crits = [];
+	crits[0] = [Math.floor(critChance)];
+	crits[0] = [crits[0][0], (1 - critChance) * (1 - vigilanteChance), critScale(crits[0][0], critMulti)];
+	crits[1] = [crits[0][0] + 1, critChance * (1 - vigilanteChance) + (1 - critChance) * vigilanteChance, critScale(crits[0][0] + 1, critMulti)];
+	crits[2] = [crits[0][0] + 2, vigilanteChance * critChance, critScale(crits[0][0] + 2, critMulti)];	
+	while (crits.length > 0 && crits[crits.length - 1][1] == 0) crits.pop();
+	
+	var critAvg = 0;
+	var descCritSpread = 'LOCALIZEME<br>';
+	for (let i = 0; i < crits.length; i++) {
+		critAvg += crits[i][1] * crits[i][2];
+		descCritSpread += percentagestringFromFloat(crits[i][1]) + ' chance of Tier ' + crits[i][0] + ' crit for ' + truncatedstringFromFloat(crits[i][2]) + 'x damage.<br>';
+	}
+	descCritSpread += 'Average effect from crits: ' + truncatedstringFromFloat(critAvg) + 'x';
+	
+	var clipUseTime = magazine / fireRate;
+	var firingPercent = clipUseTime / (clipUseTime + reload);
+	var ammoEmptyTime = ammo / magazine * (clipUseTime + reload);
+	
+	var descFiring = 'LOCALIZEME<br>';
+	descFiring += 'Time to empty magazine: ' + truncatedstringFromFloat(clipUseTime) + ' seconds.<br>';
+	descFiring += 'Percentage of time spent firing: ' + percentagestringFromFloat(firingPercent) + '.<br>';
+	descFiring += 'Time to out of ammo: ' + truncatedstringFromFloat(ammoEmptyTime) + 'seconds.';
+	
+	
+	baseDamage *= (1 + (statsum.bonusDamage?statsum.bonusDamage:0));
+	
+	var damageBases = {};
+	var statusPool = 1 + (damagePercents.damageImpact + damagePercents.damagePuncture + damagePercents.damageSlash) * 3;
+	var statusPercentages = {};
+	
+	var damageSumPercent = 0;
+	var k = Object.keys(damagePercents);
+	for (let i = 0; i < k.length; i++) {
+		damageSumPercent += damagePercents[k[i]];
+		damageBases[k[i]] = damagePercents[k[i]] * baseDamage;
+		statusPercentages[k[i]] = damagePercents[k[i]] / statusPool;
+	}
+	statusPercentages.damageImpact *= 4;
+	statusPercentages.damagePuncture *= 4;
+	statusPercentages.damageSlash *= 4;
+	
+	var dpsShot = baseDamage * damageSumPercent * multishot * critAvg;
+	var dpsClip = dpsShot * fireRate;
+	var dpsSustained = dpsClip * firingPercent;
+	
+	var result = '<table>' + "\n"
+	           + '<tr><td colspan="4">' + items[item].name + '</td></tr>'
+			   + '<tr><td colspan="4">' + tags + '</td></tr>';
+	
+	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelAdjusted') + '</td><td>' + Localization.translate('labelStatusWeight') + '</td></tr>' + "\n";
+	var k = Object.keys(damagePercents);
+	for (let i = 0; i < k.length; i++) {
+		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]] * multishot * critAvg) + '</td><td>' + percentagestringFromFloat(statusPercentages[k[i]]) + '</td></tr>' + "\n";
+	}
+	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
+	
+	result += '<tr><td>' + Localization.translate('statCritChance') + '</td><td>' + percentagestringFromFloat(critChance) + '</td><td rowspan="4" colspan="2">' + descCritSpread + '</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statCritDamage') + '</td><td>' + truncatedstringFromFloat(critMulti) + 'x</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statMultishot') + '</td><td>' + truncatedstringFromFloat(multishot) + '</td></tr>' + "\n";
+	if (punchThrough) result += '<tr><td>' + Localization.translate('statPunchThrough') + '</td><td>' + truncatedstringFromFloat(punchThrough) + '</td></tr>' + "\n";
+	result += '<tr><td>' + Localization.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statReload') + '</td><td>' + truncatedstringFromFloat(reload) + '</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statAmmo') + '</td><td>' + truncatedstringFromFloat(ammo) + '</td></tr>' + "\n"
+	        + '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('dpsShot') + '</td><td>' + truncatedstringFromFloat(dpsShot) + '</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('dpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('dpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
+			;
+	
+	result += '</table>';
+	
+	v.innerHTML = result;
 }
 
 function updateStatsum() {
@@ -91,7 +220,7 @@ function updateStatsum() {
 	
 	document.getElementById('capacity').innerText = capacitySum + '/60';
 	
-	updateDamageCalcs();
+	if (item) updateDamageCalcs();
 }
 
 function describeMod(id, rank = null) {
@@ -105,7 +234,7 @@ function describeMod(id, rank = null) {
 		var k = Object.keys(mod.effects);
 		for (let i = 0; i < k.length; i++) {
 			let adj = mod.effects[k[i]] * (rank + 1);
-			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
 		}
 		if (mod.set) {
 			result += Localization.translate(mod.set);
@@ -386,6 +515,7 @@ function changeDataset(e) {
 }
 
 function displayItem() {
+	return;
 	if (item === -1 || !items.hasOwnProperty(item)) {
 		document.getElementById('displayItem').innerText = '';
 		return;		

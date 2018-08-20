@@ -1,6 +1,7 @@
 {
 	name: 'Baza',
 	type: ['weaponTypePrimary', 'weaponTypeRifle'],
+	rivenDisposition: 1.1,
 	
 	attacks: [
 		{
@@ -13,6 +14,8 @@
 			'statMagazine': 40,
 			'statAmmo': 800,
 			'statReload': 1.4,
+			'statPunchThrough': 0,
+			'statProjectiles': 1,
 			
 			damage:[
 				['damageImpact', 5.8],
