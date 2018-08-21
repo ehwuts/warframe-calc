@@ -17,11 +17,11 @@
 			'statPunchThrough': 0,
 			'statProjectiles': 1,
 			
-			damage:[
-				['damageImpact', 5.8],
-				['damagePuncture', 6.7],
-				['damageSlash', 3.5]
-			],
+			damage:{
+				'damageImpact': 5.8,
+				'damagePuncture': 6.7,
+				'damageSlash': 3.5
+			},
 			
 			'statCritChance': 0.26,
 			'statCritDamage': 3,

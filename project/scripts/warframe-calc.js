@@ -74,9 +74,63 @@ function updateDamageCalcs() {
 	
 	var stats = JSON.parse(JSON.stringify(items[item].attacks[0]));
 	var baseDamage = 0;
-	for (let i = 0; i < stats.damage.length; i++) {
-		baseDamage += stats.damage[i][1];
+	{
+		let k = Object.keys(stats.damage);
+		for (let i = 0; i < k.length; i++) {
+			baseDamage += stats.damage[k[i]];
+		}
 	}
+	
+	function getCompound(a, b) {
+		var compounds = [['damageCold', 'damageHeat', 'damageBlast'],
+						 ['damageElectricity', 'damageToxin', 'damageCorrosive'],
+						 ['damageHeat', 'damageToxin', 'damageGas'],
+						 ['damageCold', 'damageElectricity', 'damageMagnetic'],
+						 ['damageHeat', 'damageElectricity', 'damageRadiation'],
+						 ['damageCold', 'damageToxin', 'damageViral']];
+		for (let i = 0; i < compounds.length; i++) {
+			if ((compounds[i][0] == a && compounds[i][1] == b) || (compounds[i][1] == a && compounds[i][0] == b)) return compounds[i][2];
+		}
+		return false;
+	}
+	
+	var elementTransductions = {};
+	{
+		let elementalPriority = [];
+		let k = Object.keys(statsum);
+		for (let i = 0; i < k.length; i++) {
+			switch (k[i]) {
+				case 'bonusCold':
+					elementalPriority.push('damageCold');
+					break;
+				case 'bonusHeat':
+					elementalPriority.push('damageHeat');
+					break;
+				case 'bonusToxin':
+					elementalPriority.push('damageToxin');
+					break;
+				case 'bonusElectricity':
+					elementalPriority.push('damageElectricity');
+					break;
+				default:
+			}
+		}
+		if (stats.damage.damageCold && ! elementalPriority.includes('damageCold')) elementalPriority.push('damageCold');
+		if (stats.damage.damageHeat && ! elementalPriority.includes('damageHeat')) elementalPriority.push('damageHeat');
+		if (stats.damage.damageToxin && ! elementalPriority.includes('damageToxin')) elementalPriority.push('damageToxin');
+		if (stats.damage.damageElectricity && ! elementalPriority.includes('damageElectricity')) elementalPriority.push('damageElectricity');
+		//console.log(elementalPriority);
+		
+		for (let i = 0; i < elementalPriority.length - 1; i++) {
+			let k = getCompound(elementalPriority[i], elementalPriority[i+1]);
+			if (k) {
+				elementTransductions[elementalPriority[i]] = [[k, 1]];
+				elementTransductions[elementalPriority[i + 1]] = [[k, 1]];
+				i++;
+			}
+		}
+	}
+	
 	
 	var damagePercents = {
 		'damageImpact': 0,
@@ -93,10 +147,39 @@ function updateDamageCalcs() {
 		'damageRadiation': 0,
 		'damageViral': 0
 	};
-	for (let i = 0; i < stats.damage.length; i++) {
-		damagePercents[stats.damage[i][0]] = stats.damage[i][1] / baseDamage;
+	var statusEffectBaseDuration = {
+		'damageImpact': 1,
+		'damagePuncture': 6,
+		'damageSlash': 6,
+		'damageCold': 6,
+		'damageElectricity': 3,
+		'damageHeat': 6,
+		'damageToxin': 8,
+		'damageBlast': 2,
+		'damageCorrosive': 8,
+		'damageGas': 8 / 16,
+		'damageMagnetic': 4,
+		'damageRadiation': 12,
+		'damageViral': 6
+	};
+	
+	function applyTransducedPercent(key, percent) {
+		//console.log('Transducing ' + key + ' ' + percentagestringFromFloat(percent));
+		if (elementTransductions[key]) {
+			for (let i = 0; i < elementTransductions[key].length; i++) {
+				damagePercents[elementTransductions[key][i][0]] += percent * elementTransductions[key][i][1];
+			}
+		} else {
+			damagePercents[key] += percent;
+		}
 	}
 	
+	{
+		let k = Object.keys(stats.damage);
+		for (let i = 0; i < k.length; i++) {
+			applyTransducedPercent(k[i], stats.damage[k[i]] / baseDamage);
+		}
+	}
 	
 	var critChance = stats.statCritChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0));
 	var critMulti = stats.statCritDamage * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
@@ -106,6 +189,12 @@ function updateDamageCalcs() {
 	var magazine = stats.statMagazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
 	var reload = stats.statReload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
 	var ammo = stats.statAmmo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
+	if (statsum.bonusCold) applyTransducedPercent('damageCold', statsum.bonusCold);
+	if (statsum.bonusElectricity) applyTransducedPercent('damageElectricity', statsum.bonusElectricity);
+	if (statsum.bonusHeat) applyTransducedPercent('damageHeat', statsum.bonusHeat);
+	if (statsum.bonusToxin) applyTransducedPercent('damageToxin', statsum.bonusToxin);
+	var statusChance = stats.statStatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0));
+	var statusDuration = 1 + (statsum.bonusStatusDuration?statsum.bonusStatusDuration:0);
 	
 	function critScale(tier, multi) {
 		return tier * (multi - 1) + 1;
@@ -134,7 +223,7 @@ function updateDamageCalcs() {
 	var descFiring = 'LOCALIZEME<br>';
 	descFiring += 'Time to empty magazine: ' + truncatedstringFromFloat(clipUseTime) + ' seconds.<br>';
 	descFiring += 'Percentage of time spent firing: ' + percentagestringFromFloat(firingPercent) + '.<br>';
-	descFiring += 'Time to out of ammo: ' + truncatedstringFromFloat(ammoEmptyTime) + 'seconds.';
+	descFiring += 'Time to out of ammo: ' + truncatedstringFromFloat(ammoEmptyTime) + ' seconds.';
 	
 	
 	baseDamage *= (1 + (statsum.bonusDamage?statsum.bonusDamage:0));
@@ -142,6 +231,12 @@ function updateDamageCalcs() {
 	var damageBases = {};
 	var statusPool = 1 + (damagePercents.damageImpact + damagePercents.damagePuncture + damagePercents.damageSlash) * 3;
 	var statusPercentages = {};
+	var statusChancePerShot = {};
+	var statusUptimeClip = {};
+	var statusUptimeSustained = {};
+	var statusEffectScaledDuration = {};
+	var statusPerSecond = {};
+	var damageScaled = {};
 	
 	var damageSumPercent = 0;
 	var k = Object.keys(damagePercents);
@@ -149,15 +244,38 @@ function updateDamageCalcs() {
 		damageSumPercent += damagePercents[k[i]];
 		damageBases[k[i]] = damagePercents[k[i]] * baseDamage;
 		statusPercentages[k[i]] = damagePercents[k[i]] / statusPool;
+		if (k[i] == 'damageImpact' || k[i] == 'damagePuncture' || k[i] == 'damageSlash') statusPercentages[k[i]] *= 4;
+		damageScaled[k[i]] = damageBases[k[i]] * multishot * critAvg;
+		statusChancePerShot[k[i]] = statusChance * statusPercentages[k[i]];
+		statusEffectScaledDuration[k[i]] = statusEffectBaseDuration[k[i]] * statusDuration;
+		statusPerSecond[k[i]] = statusChancePerShot[k[i]] * multishot * fireRate;
+		statusUptimeClip[k[i]] = statusPerSecond[k[i]] / (1 / statusEffectScaledDuration[k[i]]);
+		statusUptimeSustained[k[i]] = Math.min(1, statusUptimeClip[k[i]] * firingPercent);
+		statusUptimeClip[k[i]] = Math.min(1, statusUptimeClip[k[i]]);
 	}
-	statusPercentages.damageImpact *= 4;
-	statusPercentages.damagePuncture *= 4;
-	statusPercentages.damageSlash *= 4;
+	
+	var statusDesc = {
+		'damageImpact': 'LOCALIZEME Staggers the target for ' + statusEffectScaledDuration['damageImpact'] + ' seconds.',
+		'damagePuncture': 'LOCALIZEME Reduces damage dealt by the target by 70% for ' + statusEffectScaledDuration['damagePuncture'] + ' seconds.',
+		'damageSlash': 'LOCALIZEME Deals ' + NaN + ' True damage to the darget immediately plus ' + NaN + ' True damage each second for ' + statusEffectScaledDuration['damageSlash'] + ' seconds.',
+		'damageCold': 'LOCALIZEME Reduces the target\'s movement speed, fire rate, and attack speed to half for ' + statusEffectScaledDuration['damageCold'] + ' seconds.',
+		'damageElectricity': 'LOCALIZEME Stuns the target for ' + statusEffectScaledDuration['damageElectricity'] + ' seconds, and deals ' + NaN + ' Electricity damage to the target and enemies within 3 meters of the target.',
+		'damageHeat': 'LOCALIZEME Causes the target to panic and deals ' + NaN + ' Heat damage immediately plus ' + NaN + 'Heat damage per second for ' + statusEffectScaledDuration['damageHeat'] + ' seconds. Does not stack.',
+		'damageToxin': 'LOCALIZEME Deals ' + NaN + ' Toxin damage immediately plus ' + NaN + ' Toxin damage per second for ' + statusEffectScaledDuration['damageToxin'] + ' seconds.',
+		'damageBlast': 'LOCALIZEME Knocks down enemies within 5 meters of the target for an estimated ' + statusEffectScaledDuration['damageBlast'] + ' seconds.',
+		'damageCorrosive': 'LOCALIZEME Permanently reduces the target\'s current armor by 25%.',
+		'damageGas': 'LOCALIZEME Deals ' + NaN + ' Toxin damage to all enemies within 3 meters of the target, and applies a Toxin status effect to each enemy hit.',
+		'damageMagnetic': 'LOCALIZEME Temporarily reduces target\'s maximum shields by 75% for ' + statusEffectScaledDuration['damageMagnetic'] + ' seconds.',
+		'damageRadiation': 'LOCALIZEME Makes target attack and be attacked by enemies for ' + statusEffectScaledDuration['damageRadiation'] + ' seconds.',
+		'damageViral': 'LOCALIZEME Temporarily halves target health, making them take effectively doubled damage for' + statusEffectScaledDuration['damageViral'] + ' seconds.'
+	};
 	
 	var dpsShot = baseDamage * damageSumPercent * multishot * critAvg;
 	var dpsClip = dpsShot * fireRate;
 	var dpsSustained = dpsClip * firingPercent;
 	
+	
+	/* Begin Display Blob */
 	var result = '<table>' + "\n"
 	           + '<tr><td colspan="4">' + items[item].name + '</td></tr>'
 			   + '<tr><td colspan="4">' + tags + '</td></tr>';
@@ -165,13 +283,15 @@ function updateDamageCalcs() {
 	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelAdjusted') + '</td><td>' + Localization.translate('labelStatusWeight') + '</td></tr>' + "\n";
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
-		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]] * multishot * critAvg) + '</td><td>' + percentagestringFromFloat(statusPercentages[k[i]]) + '</td></tr>' + "\n";
+		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusPercentages[k[i]]) + '</td></tr>' + "\n";
 	}
 	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
 	
 	result += '<tr><td>' + Localization.translate('statCritChance') + '</td><td>' + percentagestringFromFloat(critChance) + '</td><td rowspan="4" colspan="2">' + descCritSpread + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statCritDamage') + '</td><td>' + truncatedstringFromFloat(critMulti) + 'x</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statMultishot') + '</td><td>' + truncatedstringFromFloat(multishot) + '</td></tr>' + "\n";
+	        + '<tr><td>' + Localization.translate('statMultishot') + '</td><td>' + truncatedstringFromFloat(multishot) + '</td></tr>' + "\n"
+	        + '<tr><td>' + Localization.translate('statStatusChance') + '</td><td>' + percentagestringFromFloat(statusChance) + '</td></tr>' + "\n";
+	if (statusDuration != 1) result += '<tr><td>' + Localization.translate('statStatusDuration') + '</td><td>' + percentagestringFromFloat(statusDuration) + '</td></tr>' + "\n"
 	if (punchThrough) result += '<tr><td>' + Localization.translate('statPunchThrough') + '</td><td>' + truncatedstringFromFloat(punchThrough) + '</td></tr>' + "\n";
 	result += '<tr><td>' + Localization.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
@@ -182,8 +302,16 @@ function updateDamageCalcs() {
 			+ '<tr><td>' + Localization.translate('dpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
 			+ '<tr><td>' + Localization.translate('dpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
 			;
-	
+	if (statusChance > 0) {
+		result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
+		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusChancePerShot') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
+		let k = Object.keys(damagePercents);
+		for (let i = 0; i < k.length; i++) {
+			if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
+		}
+	}
 	result += '</table>';
+	/* End Display Blob */
 	
 	v.innerHTML = result;
 }
@@ -216,7 +344,7 @@ function updateStatsum() {
 	}
 	
 	statsum = newStatsum;
-	document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
+	//document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
 	
 	document.getElementById('capacity').innerText = capacitySum + '/60';
 	

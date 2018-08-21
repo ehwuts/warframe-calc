@@ -111,7 +111,7 @@ var lang = {
 		'bonusMultishot': 'Multishot',
 		'bonusHeat': 'Heat',
 		'bonusToxin': 'Toxin',
-		'bonusElectric': 'Electric',
+		'bonusElectricity': 'Electric',
 		'bonusCold': 'Cold',
 		'bonusAccuracy': 'Accuracy',
 		'bonusFireRate': 'Fire Rate (x2 for Bows)',

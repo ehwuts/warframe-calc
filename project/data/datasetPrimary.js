@@ -18,11 +18,11 @@ var items = {
 				'statPunchThrough': 0,
 				'statProjectiles': 1,
 				
-				damage:[
-					['damageImpact', 5.8],
-					['damagePuncture', 6.7],
-					['damageSlash', 3.5]
-				],
+				damage:{
+					'damageImpact': 5.8,
+					'damagePuncture': 6.7,
+					'damageSlash': 3.5
+				},
 				
 				'statCritChance': 0.26,
 				'statCritDamage': 3,
@@ -51,11 +51,11 @@ var items = {
 				'statPunchThrough': 0,
 				'statProjectiles': 1,
 				
-				damage:[
-					['damageImpact', 4.0],
-					['damagePuncture', 30.0],
-					['damageSlash', 6.0]
-				],
+				damage:{
+					'damageImpact': 4.0,
+					'damagePuncture': 30.0,
+					'damageSlash': 6.0
+				},
 				
 				'statCritChance': 0.16,
 				'statCritDamage': 2,
@@ -118,7 +118,7 @@ var mods = {
 		ranks : 5,
 		polarity: "—",
 		effects : {
-			bonusElectric : 0.15,
+			bonusElectricity : 0.15,
 		},		
 	},
 	"modSplitChamber": {
@@ -184,7 +184,7 @@ var mods = {
 		ranks : 3,
 		polarity: "V",
 		effects : {
-			bonusElectric: 0.15,
+			bonusElectricity: 0.15,
 			bonusStatusChance: 0.15,
 		},		
 	},
