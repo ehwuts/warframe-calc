@@ -194,6 +194,9 @@ function updateDamageCalcs() {
 	if (statsum.bonusHeat) applyTransducedPercent('damageHeat', statsum.bonusHeat);
 	if (statsum.bonusToxin) applyTransducedPercent('damageToxin', statsum.bonusToxin);
 	var statusChance = stats.statStatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0));
+	if (stats.usePelletLogic && stats.userPelletLogic == true) {
+		statusChance = 1 - Math.pow(1 - statusChance, 1 / stats.statProjectiles);
+	}
 	var statusDuration = 1 + (statsum.bonusStatusDuration?statsum.bonusStatusDuration:0);
 	
 	function critScale(tier, multi) {
@@ -280,10 +283,10 @@ function updateDamageCalcs() {
 	           + '<tr><td colspan="4">' + items[item].name + '</td></tr>'
 			   + '<tr><td colspan="4">' + tags + '</td></tr>';
 	
-	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelAdjusted') + '</td><td>' + Localization.translate('labelStatusWeight') + '</td></tr>' + "\n";
+	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelAdjusted') + '</td><td>' + Localization.translate('statStatusChance') + '</td></tr>' + "\n";
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
-		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusPercentages[k[i]]) + '</td></tr>' + "\n";
+		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
 	}
 	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
 	
@@ -304,10 +307,10 @@ function updateDamageCalcs() {
 			;
 	if (statusChance > 0) {
 		result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
-		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusChancePerShot') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
+		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
 		let k = Object.keys(damagePercents);
 		for (let i = 0; i < k.length; i++) {
-			if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
+			if (damageBases[k[i]]||(k[i]=='damageToxin'&&damageBases['damageGas'])) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
 		}
 	}
 	result += '</table>';
