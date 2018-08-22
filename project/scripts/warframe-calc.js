@@ -147,6 +147,21 @@ function updateDamageCalcs() {
 		'damageRadiation': 0,
 		'damageViral': 0
 	};
+	var damagePercentsFinal = {
+		'damageImpact': 0,
+		'damagePuncture': 0,
+		'damageSlash': 0,
+		'damageCold': 0,
+		'damageElectricity': 0,
+		'damageHeat': 0,
+		'damageToxin': 0,
+		'damageBlast': 0,
+		'damageCorrosive': 0,
+		'damageGas': 0,
+		'damageMagnetic': 0,
+		'damageRadiation': 0,
+		'damageViral': 0
+	};
 	var statusEffectBaseDuration = {
 		'damageImpact': 1,
 		'damagePuncture': 6,
@@ -163,21 +178,21 @@ function updateDamageCalcs() {
 		'damageViral': 6
 	};
 	
-	function applyTransducedPercent(key, percent) {
+	function applyTransducedPercent(key, percent, table = damagePercentsFinal) {
 		//console.log('Transducing ' + key + ' ' + percentagestringFromFloat(percent));
 		if (elementTransductions[key]) {
 			for (let i = 0; i < elementTransductions[key].length; i++) {
-				damagePercents[elementTransductions[key][i][0]] += percent * elementTransductions[key][i][1];
+				table[elementTransductions[key][i][0]] += percent * elementTransductions[key][i][1];
 			}
 		} else {
-			damagePercents[key] += percent;
+			table[key] += percent;
 		}
 	}
 	
 	{
 		let k = Object.keys(stats.damage);
 		for (let i = 0; i < k.length; i++) {
-			applyTransducedPercent(k[i], stats.damage[k[i]] / baseDamage);
+			damagePercents[k[i]] += stats.damage[k[i]] / baseDamage;
 		}
 	}
 	
@@ -189,10 +204,10 @@ function updateDamageCalcs() {
 	var magazine = stats.statMagazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
 	var reload = stats.statReload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
 	var ammo = stats.statAmmo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
-	if (statsum.bonusCold) applyTransducedPercent('damageCold', statsum.bonusCold);
-	if (statsum.bonusElectricity) applyTransducedPercent('damageElectricity', statsum.bonusElectricity);
-	if (statsum.bonusHeat) applyTransducedPercent('damageHeat', statsum.bonusHeat);
-	if (statsum.bonusToxin) applyTransducedPercent('damageToxin', statsum.bonusToxin);
+	if (statsum.bonusCold) damagePercents['damageCold'] += statsum.bonusCold;
+	if (statsum.bonusElectricity) damagePercents['damageElectricity'] += statsum.bonusElectricity;
+	if (statsum.bonusHeat) damagePercents['damageHeat'] += statsum.bonusHeat;
+	if (statsum.bonusToxin) damagePercents['damageToxin'] += statsum.bonusToxin;
 	var statusChance = stats.statStatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0));
 	if (stats.usePelletLogic && stats.userPelletLogic == true) {
 		statusChance = 1 - Math.pow(1 - statusChance, 1 / stats.statProjectiles);
@@ -244,9 +259,10 @@ function updateDamageCalcs() {
 	var damageSumPercent = 0;
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
-		damageSumPercent += damagePercents[k[i]];
-		damageBases[k[i]] = damagePercents[k[i]] * baseDamage;
-		statusPercentages[k[i]] = damagePercents[k[i]] / statusPool;
+		applyTransducedPercent(k[i], damagePercents[k[i]]);
+		damageSumPercent += damagePercentsFinal[k[i]];
+		damageBases[k[i]] = damagePercentsFinal[k[i]] * baseDamage;
+		statusPercentages[k[i]] = damagePercentsFinal[k[i]] / statusPool;
 		if (k[i] == 'damageImpact' || k[i] == 'damagePuncture' || k[i] == 'damageSlash') statusPercentages[k[i]] *= 4;
 		damageScaled[k[i]] = damageBases[k[i]] * multishot * critAvg;
 		statusChancePerShot[k[i]] = statusChance * statusPercentages[k[i]];
