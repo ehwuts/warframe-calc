@@ -81,6 +81,24 @@ function updateDamageCalcs() {
 		}
 	}
 	
+	var getStatusTickDamage = {
+		'damageImpact': () => {return 0},
+		'damagePuncture': () => {return 0},
+		'damageSlash': () => {return 0.35 * baseDamage * damagePercentsFinal.damageSlash},
+		'damageSlash2': () => {return 0.35 * baseDamage * (1 + damagePercentsFinal.damageSlash)},
+		'damageCold': () => {return 0},
+		'damageElectricity': () => {return 0.5 * baseDamage * (1 + damagePercentsFinal.damageElectricity)},
+		'damageHeat': () => {return 0.5 * baseDamage * (1 + damagePercentsFinal.damageHeat)},
+		'damageToxin': () => {return 0.5 * baseDamage * (1 + damagePercentsFinal.damageToxin)},
+		'damageToxin2': () => {return 0.25 * baseDamage * (1 + damagePercentsFinal.damageToxin) * (1 + damagePercentsFinal.damageToxin)},
+		'damageBlast': () => {return 0},
+		'damageCorrosive': () => {return 0},
+		'damageGas': () => {return 0.5 * baseDamage * damagePercentsFinal.damageToxin},
+		'damageMagnetic': () => {return 0},
+		'damageRadiation': () => {return 0},
+		'damageViral': () => {return 0},
+	};
+	
 	function getCompound(a, b) {
 		var compounds = [['damageCold', 'damageHeat', 'damageBlast'],
 						 ['damageElectricity', 'damageToxin', 'damageCorrosive'],
@@ -227,12 +245,14 @@ function updateDamageCalcs() {
 	while (crits.length > 0 && crits[crits.length - 1][1] == 0) crits.pop();
 	
 	var critAvg = 0;
+	var critAvgHead = 0;
 	var descCritSpread = 'LOCALIZEME<br>';
 	for (let i = 0; i < crits.length; i++) {
 		critAvg += crits[i][1] * crits[i][2];
+		critAvgHead += crits[i][1] * crits[i][2] * 2 * (crits[i][0] > 0?2:1);
 		descCritSpread += percentagestringFromFloat(crits[i][1]) + ' chance of Tier ' + crits[i][0] + ' crit for ' + truncatedstringFromFloat(crits[i][2]) + 'x damage.<br>';
 	}
-	descCritSpread += 'Average effect from crits: ' + truncatedstringFromFloat(critAvg) + 'x';
+	descCritSpread += 'Average effect from crits: ' + truncatedstringFromFloat(critAvg) + 'x<br>Average multiplier for headshots: ' + truncatedstringFromFloat(critAvgHead) + 'x';
 	
 	var clipUseTime = magazine / fireRate;
 	var firingPercent = clipUseTime / (clipUseTime + reload);
@@ -274,19 +294,19 @@ function updateDamageCalcs() {
 	}
 	
 	var statusDesc = {
-		'damageImpact': 'LOCALIZEME Staggers the target for ' + statusEffectScaledDuration['damageImpact'] + ' seconds.',
-		'damagePuncture': 'LOCALIZEME Reduces damage dealt by the target by 70% for ' + statusEffectScaledDuration['damagePuncture'] + ' seconds.',
-		'damageSlash': 'LOCALIZEME Deals ' + NaN + ' True damage to the darget immediately plus ' + NaN + ' True damage each second for ' + statusEffectScaledDuration['damageSlash'] + ' seconds.',
-		'damageCold': 'LOCALIZEME Reduces the target\'s movement speed, fire rate, and attack speed to half for ' + statusEffectScaledDuration['damageCold'] + ' seconds.',
-		'damageElectricity': 'LOCALIZEME Stuns the target for ' + statusEffectScaledDuration['damageElectricity'] + ' seconds, and deals ' + NaN + ' Electricity damage to the target and enemies within 3 meters of the target.',
-		'damageHeat': 'LOCALIZEME Causes the target to panic and deals ' + NaN + ' Heat damage immediately plus ' + NaN + 'Heat damage per second for ' + statusEffectScaledDuration['damageHeat'] + ' seconds. Does not stack.',
-		'damageToxin': 'LOCALIZEME Deals ' + NaN + ' Toxin damage immediately plus ' + NaN + ' Toxin damage per second for ' + statusEffectScaledDuration['damageToxin'] + ' seconds.',
-		'damageBlast': 'LOCALIZEME Knocks down enemies within 5 meters of the target for an estimated ' + statusEffectScaledDuration['damageBlast'] + ' seconds.',
+		'damageImpact': 'LOCALIZEME Staggers the target for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageImpact']) + ' seconds.',
+		'damagePuncture': 'LOCALIZEME Reduces damage dealt by the target by 70% for ' + truncatedstringFromFloat(statusEffectScaledDuration['damagePuncture']) + ' seconds.',
+		'damageSlash': 'LOCALIZEME Deals ' + truncatedstringFromFloat(getStatusTickDamage['damageSlash']()) + ' True damage to the target immediately plus ' + truncatedstringFromFloat(getStatusTickDamage['damageSlash']()) + ' True damage each second for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageSlash']) + ' seconds.',
+		'damageCold': 'LOCALIZEME Reduces the target\'s movement speed, fire rate, and attack speed to half for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageCold']) + ' seconds.',
+		'damageElectricity': 'LOCALIZEME Stuns the target for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageElectricity']) + ' seconds, and deals ' + truncatedstringFromFloat(getStatusTickDamage['damageElectricity']()) + ' Electricity damage to the target and enemies within 3 meters of the target.',
+		'damageHeat': 'LOCALIZEME Causes the target to panic and deals ' + truncatedstringFromFloat(getStatusTickDamage['damageHeat']()) + ' Heat damage immediately plus ' + truncatedstringFromFloat(getStatusTickDamage['damageHeat']()) + 'Heat damage per second for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageHeat']) + ' seconds. Does not stack.',
+		'damageToxin': 'LOCALIZEME Deals ' + truncatedstringFromFloat(getStatusTickDamage['damageToxin']()) + ' Toxin damage immediately plus ' + truncatedstringFromFloat(getStatusTickDamage['damageToxin']()) + ' Toxin damage per second for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageToxin']) + ' seconds.',
+		'damageBlast': 'LOCALIZEME Knocks down enemies within 5 meters of the target for an estimated ' + truncatedstringFromFloat(statusEffectScaledDuration['damageBlast']) + ' seconds.',
 		'damageCorrosive': 'LOCALIZEME Permanently reduces the target\'s current armor by 25%.',
-		'damageGas': 'LOCALIZEME Deals ' + NaN + ' Toxin damage to all enemies within 3 meters of the target, and applies a Toxin status effect to each enemy hit.',
-		'damageMagnetic': 'LOCALIZEME Temporarily reduces target\'s maximum shields by 75% for ' + statusEffectScaledDuration['damageMagnetic'] + ' seconds.',
-		'damageRadiation': 'LOCALIZEME Makes target attack and be attacked by enemies for ' + statusEffectScaledDuration['damageRadiation'] + ' seconds.',
-		'damageViral': 'LOCALIZEME Temporarily halves target health, making them take effectively doubled damage for' + statusEffectScaledDuration['damageViral'] + ' seconds.'
+		'damageGas': 'LOCALIZEME Deals ' + truncatedstringFromFloat(getStatusTickDamage['damageGas']()) + ' Toxin damage to all enemies within 3 meters of the target, and applies a Toxin status effect to each enemy hit.',
+		'damageMagnetic': 'LOCALIZEME Temporarily reduces target\'s maximum shields by 75% for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageMagnetic']) + ' seconds.',
+		'damageRadiation': 'LOCALIZEME Makes target attack and be attacked by enemies for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageRadiation']) + ' seconds.',
+		'damageViral': 'LOCALIZEME Temporarily halves target health, making them take effectively doubled damage for ' + truncatedstringFromFloat(statusEffectScaledDuration['damageViral']) + ' seconds.'
 	};
 	
 	var dpsShot = baseDamage * damageSumPercent * multishot * critAvg;
@@ -304,7 +324,7 @@ function updateDamageCalcs() {
 	for (let i = 0; i < k.length; i++) {
 		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
 	}
-	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
+	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n";
 	
 	result += '<tr><td>' + Localization.translate('statCritChance') + '</td><td>' + percentagestringFromFloat(critChance) + '</td><td rowspan="4" colspan="2">' + descCritSpread + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statCritDamage') + '</td><td>' + truncatedstringFromFloat(critMulti) + 'x</td></tr>' + "\n"
@@ -317,16 +337,16 @@ function updateDamageCalcs() {
 	        + '<tr><td>' + Localization.translate('statReload') + '</td><td>' + truncatedstringFromFloat(reload) + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statAmmo') + '</td><td>' + truncatedstringFromFloat(ammo) + '</td></tr>' + "\n"
 	        + '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('dpsShot') + '</td><td>' + truncatedstringFromFloat(dpsShot) + '</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('dpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('dpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('labelDpsShot') + '</td><td>' + truncatedstringFromFloat(dpsShot) + '</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('labelDpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
+			+ '<tr><td>' + Localization.translate('labelDpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
 			;
 	if (statusChance > 0) {
 		result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
-		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
+		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('statStatusDuration') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
 		let k = Object.keys(damagePercents);
 		for (let i = 0; i < k.length; i++) {
-			if (damageBases[k[i]]||(k[i]=='damageToxin'&&damageBases['damageGas'])) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
+			if (damageBases[k[i]]||(k[i]=='damageToxin'&&damageBases['damageGas'])) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + truncatedstringFromFloat(statusEffectScaledDuration[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
 		}
 	}
 	result += '</table>';

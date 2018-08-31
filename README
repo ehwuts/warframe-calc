@@ -1,8 +1,6 @@
-Local App Usage: When using a local deployment, certain 
-browsers block AJAX from requesting files no the local machine. 
-This can be worked around by using a lightweight webserver such 
-as python's SimpleHTTPServer or with browser-specific options 
-such as Chrome's --allow-file-access-from-files.
+USAGE
+Hopefully intuitive given knowledge of use of the source 
+material.
 
 GOALS
 The goal of this project is to produce a fully featured weapon 
@@ -13,7 +11,6 @@ Goal Features:
         * Leaning async json to load weapon/enemy 
           stats, trading increased file requests 
           for reduced standing memory?
-    2 ?Display as per ingame.
     3 Display actual, with "Effective" unmerged.
     4 Display Single shot/Burst/Sustained DPS
         * merged and per-type
@@ -28,6 +25,9 @@ Secondary Features:
       as to be meaningful.
     4 Damage effectiveness for enemy resource combinations
     5 Tileset-based enemy spreads for #4
+Undecided:
+	1 Display as per ingame.
+	2 Import from WFB
 	
 LICENSING
 This project is licensed under the Unlicense. A copy of the 

@@ -115,6 +115,15 @@ var lang = {
 		'bonusCold': 'Cold',
 		'bonusAccuracy': 'Accuracy',
 		'bonusFireRate': 'Fire Rate (x2 for Bows)',
-		'flatPunchThrough': 'Punch Through'
+		'flatPunchThrough': 'Punch Through',
+		
+		'labelStatusResult': 'Status Explanation',
+		'labelStatusUptimeClip': 'Effect Uptime (Clip)',
+		'labelStatusType': 'Status Type',
+		'labelStatusPerSecondClip': 'Instances/s (Clip)',
+		'labelDpsShot': 'Damage (Shot)',
+		'labelDpsClip': 'DPS (Clip)',
+		'labelDpsSustained': 'DPS (Sustained)'
+		
 	}
 };
