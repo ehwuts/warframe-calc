@@ -218,7 +218,7 @@ function updateDamageCalcs() {
 	var critMulti = stats.statCritDamage * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
 	var multishot = stats.statProjectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
 	var punchThrough = stats.statPunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
-	var fireRate = stats.statFireRate * (1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
+	var fireRate = (stats.trigger == 'triggerCharge' ? 1 / stats.statFireRate : stats.statFireRate)* (1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
 	var magazine = stats.statMagazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
 	var reload = stats.statReload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
 	var ammo = stats.statAmmo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));

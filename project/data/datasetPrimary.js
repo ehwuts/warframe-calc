@@ -63,8 +63,7 @@ var items = {
 			}
 		]
 	},
-	{
-		name: 'Lanka',
+	'Lanka': {
 		type: ['weaponTypePrimary', 'weaponTypeSniper', 'weaponTypeRifle'],
 		rivenDisposition: 1.1,
 		
