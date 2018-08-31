@@ -1,0 +1,35 @@
+Base
+* Replace page layout with something decent.
+* Convert composite data files and loading to use compression.
+* Scripts to pregenerate generate and compress composite data files from raw/*
+** Warning generation for unlocalized terms per language.
+
+Calculator-Generic
+* Warning generation for unprocessed stats.
+* Status - output cleanup.
+* Status - damage.
+* Status - indirect effects.
+* Status - Verify status damage formulae.
+* Auras
+* Rivens
+* Flesh out the multiattack support
+
+* Populate the datasets
+
+Calculator-Guns
+* Charge shot specifics
+* Bow specifics
+
+Calculator-Melee
+* Everything
+* Stance data
+
+Enemy Scaler
+* Everything
+* Remember to treat armor and health types as a single table internally so that certain enemies don't require specialcasing.
+* Cross reference to weapon output spread.
+
+FrameCalc
+* Decide to even add this featureset 
+* Merge Auras
+* Disturbing amount of special-casing.
