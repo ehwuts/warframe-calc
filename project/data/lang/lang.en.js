@@ -99,6 +99,7 @@ var lang = {
 		'modPrimedShred': 'Primed Shred',
 		'modSpeedTrigger': 'Speed Trigger',
 		'modVileAcceleration': 'Vile Acceleration',
+		'modVigilanteFervor': 'Vigilante Fervor',
 		
 		'bonusDamage': 'Damage',
 		'bonusImpact': 'Impact',

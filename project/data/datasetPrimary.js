@@ -64,6 +64,7 @@ var items = {
 		]
 	},
 	'Lanka': {
+		name: 'Lanka',
 		type: ['weaponTypePrimary', 'weaponTypeSniper', 'weaponTypeRifle'],
 		rivenDisposition: 1.1,
 		
@@ -331,5 +332,15 @@ var mods = {
 			bonusFireRate: 0.15,
 			bonusDamage: -0.025,
 		},		
+	},
+	"modVigilanteFervor": {
+		tag: "weaponTypePrimary",
+		cost: 4,
+		ranks: 5,
+		polarity: 'V',
+		effects: {
+			bonusFireRate: 0.075,
+		},
+		set: "setVigilante"
 	},
 };
