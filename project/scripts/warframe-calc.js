@@ -235,13 +235,14 @@ function updateDamageCalcs() {
 	function critScale(tier, multi) {
 		return tier * (multi - 1) + 1;
 	}
+	//            tier, chance, multi
+	var crits = [[Math.floor(critChance), Math.floor(critChance) + 1 - critChance, critScale(Math.floor(critChance), critMulti)]];
+	crits[1]  =  [crits[0][0] + 1, 1 - crits[0][1], critScale(crits[0][0] + 1, critMulti)];	
 	
 	var vigilanteChance = (statsum.setVigilante?(statsum.setVigilante) * 0.05:0);
-	var crits = [];
-	crits[0] = [Math.floor(critChance)];
-	crits[0] = [crits[0][0], (1 - critChance) * (1 - vigilanteChance), critScale(crits[0][0], critMulti)];
-	crits[1] = [crits[0][0] + 1, critChance * (1 - vigilanteChance) + (1 - critChance) * vigilanteChance, critScale(crits[0][0] + 1, critMulti)];
-	crits[2] = [crits[0][0] + 2, vigilanteChance * critChance, critScale(crits[0][0] + 2, critMulti)];	
+	crits[2] = [crits[1][0] + 1, vigilanteChance * crits[1][1], critScale(crits[0][0] + 2, critMulti)];
+	crits[0][1] = crits[0][1] * (1 - vigilanteChance);
+	crits[1][1] = (1 - crits[2][1] - crits[0][1]);	
 	while (crits.length > 0 && crits[crits.length - 1][1] == 0) crits.pop();
 	
 	var critAvg = 0;
