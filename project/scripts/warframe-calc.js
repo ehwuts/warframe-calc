@@ -90,7 +90,7 @@ function updateDamageCalcs() {
 		'damageElectricity': () => {return 0.5 * baseDamage * (1 + damagePercentsFinal.damageElectricity)},
 		'damageHeat': () => {return 0.5 * baseDamage * (1 + damagePercentsFinal.damageHeat)},
 		'damageToxin': () => {return 0.5 * baseDamage * (1 + damagePercents.damageToxin)},
-		'damageToxin2': () => {return 0.25 * baseDamage * (1 + damagePercents.damageToxin) * (1 + damagePercentsFinal.damageToxin)},
+		'damageToxin2': () => {return 0.25 * baseDamage * (1 + damagePercents.damageToxin) * (1 + damagePercents.damageToxin)},
 		'damageBlast': () => {return 0},
 		'damageCorrosive': () => {return 0},
 		'damageGas': () => {return 0.5 * baseDamage * damagePercentsFinal.damageToxin},
