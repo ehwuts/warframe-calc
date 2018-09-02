@@ -3,7 +3,7 @@ var dataset = 'datasetPrimary';
 var item = -1;
 
 var slots = [];
-//{ polarity: '', mod: null, rank: '' }
+//{ polarity: ' ', mod: null, rank: '' }
 var slotsCount = 8;
 var filter = '';
 
@@ -32,7 +32,7 @@ function modCostFromSlot(i) {
 	var id = slots[i].mod;
 	if (id) {
 		let costadj = (slots[i].rank|0)+mods[id].cost;
-		costadj = (slots[i].polarity?Math.ceil(slots[i].polarity==mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
+		costadj = (slots[i].polarity!=' '?Math.ceil(slots[i].polarity==mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
 		
 		return costadj;
 	}
@@ -433,12 +433,12 @@ function setSlot(slot, id, rank = null) {
 			slots[i].rank = mods[id].ranks;
 		}
 		slots[i].mod = id;
-		let polarmatch = (slots[i].polarity?(slots[i].polarity==mods[id].polarity?' polaritymatch':' polarityconflict'):'');
+		let polarmatch = (slots[i].polarity!=' '?(slots[i].polarity==mods[id].polarity?' polaritymatch':' polarityconflict'):'');
 		let costadj = modCostFromSlot(i);
 		
-		slot.children[0].innerText = slots[i].polarity;
-		slot.children[1].className = 'slotrank';
-		slot.children[1].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
+		slot.children[0].className = 'slotrank';
+		slot.children[0].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
+		slot.children[1].innerText = slots[i].polarity;
 		slot.children[2].className = 'slotcost' + polarmatch;
 		slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
 		slot.children[3].innerText = Localization.translate(id);
@@ -447,8 +447,8 @@ function setSlot(slot, id, rank = null) {
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
-		slot.children[0].innerText = slots[i].polarity;
-		slot.children[1].className = 'slotrank hide';
+		slot.children[0].className = 'slotrank hide';
+		slot.children[1].innerText = slots[i].polarity;
 		slot.children[2].className = 'slotcost';
 		slot.children[2].innerText = '';
 		slot.children[3].innerText = '';
@@ -613,9 +613,20 @@ function reinitializeModsList() {
 	}
 }
 
+function cyclePolarity(e) {
+	var slot = e.target.parentElement;
+	var id = slot.getAttribute("data-num");
+	
+	var polarities = [' ', 'V', 'D', '—', '=', 'R', 'Y', 'U'];
+	var polarityCycle = polarities[(polarities.indexOf(slots[id].polarity) + 1) % polarities.length];
+	
+	slots[id].polarity = polarityCycle;
+	setSlot(slot, slots[id].mod, slots[id].rank);
+}
+
 function initializeModSlots() {
 	for (let i = 0; i < slotsCount; i++) {
-		slots[i] = { polarity: '', mod: null, rank: '' };
+		slots[i] = { polarity: ' ', mod: null, rank: '' };
 	}
 	
 	var dest = document.getElementById("slots");
@@ -632,10 +643,6 @@ function initializeModSlots() {
 		e.addEventListener('drop', DragHandler.drop, false);
 		
 		let ee = document.createElement('div');
-		ee.className = 'slotpolarity';
-		e.appendChild(ee);
-		
-		ee = document.createElement('div');
 		ee.className = 'slotrank hide';
 		let eee = document.createElement('button');
 		eee.innerText = '-';
@@ -648,6 +655,12 @@ function initializeModSlots() {
 		eee.innerText = '+';
 		eee.onclick = (e) => slotAdjust(e.target.parentElement.parentElement, 1);
 		ee.appendChild(eee);		
+		e.appendChild(ee);
+		
+		ee = document.createElement('div');
+		ee.className = 'slotpolarity';
+		ee.innerText = ' ';
+		ee.onclick = cyclePolarity;
 		e.appendChild(ee);
 		
 		ee = document.createElement('div');
