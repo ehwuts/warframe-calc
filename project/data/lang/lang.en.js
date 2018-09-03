@@ -63,6 +63,7 @@ var lang = {
 		'datasetArchmelee': 'Archmelee',
 		
 		'selectBlank': '<Choose>',
+		'selectNone': '<None>',
 		
 		'weaponTypePrimary': 'Primary',
 		'weaponTypeRifle': 'Rifle',
@@ -100,6 +101,8 @@ var lang = {
 		'modSpeedTrigger': 'Speed Trigger',
 		'modVileAcceleration': 'Vile Acceleration',
 		'modVigilanteFervor': 'Vigilante Fervor',
+		'modRivenRifle': 'Rifle Riven',
+		'modRivenShotgun': 'Shotgun Riven',
 		
 		'bonusDamage': 'Damage',
 		'bonusImpact': 'Impact',

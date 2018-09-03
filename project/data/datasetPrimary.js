@@ -2,6 +2,7 @@ var items = {
 	'Baza': {
 		name: 'Baza',
 		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		rivenType: 'weaponTypeRifle',
 		rivenDisposition: 1.1,
 		
 		attacks: [
@@ -35,6 +36,7 @@ var items = {
 	'Supra_Vandal':{
 		name: 'Supra Vandal',
 		type: ['weaponTypePrimary', 'weaponTypeRifle'],
+		rivenType: 'weaponTypeRifle',
 		rivenDisposition: 1.14,
 		
 		attacks: [
@@ -66,6 +68,7 @@ var items = {
 	'Lanka': {
 		name: 'Lanka',
 		type: ['weaponTypePrimary', 'weaponTypeSniper', 'weaponTypeRifle'],
+		rivenType: 'weaponTypeRifle',
 		rivenDisposition: 1.1,
 		
 		attacks: [
@@ -132,6 +135,22 @@ var items = {
 };
 
 var mods = {
+	"modRivenShotgun": {
+		tag: "weaponTypeShotgun",
+		cost: 8,
+		ranks: 8,
+		polarity: 'V',
+		effects: {},
+		sharedID: "modRiven"
+	},
+	"modRivenRifle": {
+		tag: "weaponTypeRifle",
+		cost: 8,
+		ranks: 8,
+		polarity: 'V',
+		effects: {},
+		sharedID: "modRiven"
+	},
 	"modSerration": {
 		tag : "weaponTypeRifle",
 		cost : 4,
@@ -204,6 +223,7 @@ var mods = {
 		effects : {
 			bonusCold : 0.15,
 		},		
+		sharedID: "modCryoRounds"
 	},
 	"modInfectedClip": {
 		tag : "weaponTypeRifle",
@@ -222,7 +242,7 @@ var mods = {
 		effects : {
 			bonusCold : 0.15,
 		},
-		conflicts: ["modCryoRounds"],
+		sharedID: "modCryoRounds"
 	},
 	"modHunterMunitions": {
 		tag : "weaponTypePrimary",
@@ -302,6 +322,7 @@ var mods = {
 			bonusFireRate: 0.05,
 			flatPunchThrough: 0.2,
 		},		
+		sharedID: "modShred",
 	},
 	"modPrimedShred": {
 		tag : "weaponTypeRifle",
@@ -311,8 +332,8 @@ var mods = {
 		effects : {
 			bonusFireRate: 0.05,
 			flatPunchThrough: 0.2,
-		},		
-		conflicts: ["modShred"],
+		},
+		sharedID: "modShred",
 	},
 	"modSpeedTrigger": {
 		tag : "weaponTypeRifle",

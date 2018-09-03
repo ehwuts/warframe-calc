@@ -7,6 +7,7 @@ var slots = [];
 var slotsCount = 8;
 var filter = '';
 
+var rivenEffects = {};
 var statsum = {};
 
 function percentagestringFromFloat(f, p = 1) {
@@ -363,13 +364,25 @@ function updateStatsum() {
 	for (var m = 0; m < slots.length; m++) {
 		if (slots[m].mod && mods[slots[m].mod]) {
 			let mod = mods[slots[m].mod];
-			let k = Object.keys(mod.effects);
-			for (let i = 0; i < k.length; i++) {
-				let adj = mod.effects[k[i]] * (slots[m].rank + 1);
-				if (newStatsum[k[i]]) {
-					newStatsum[k[i]] += adj;
-				} else {
-					newStatsum[k[i]] = adj;
+			if (mod.sharedID && mod.sharedID == 'modRiven') {
+				let k = Object.keys(rivenEffects);
+				for (let i = 0; i < k.length; i++) {
+					let adj = rivenEffects[k[i]] * (slots[m].rank + 1);
+					if (newStatsum[k[i]]) {
+						newStatsum[k[i]] += adj;
+					} else {
+						newStatsum[k[i]] = adj;
+					}
+				}				
+			} else {
+				let k = Object.keys(mod.effects);
+				for (let i = 0; i < k.length; i++) {
+					let adj = mod.effects[k[i]] * (slots[m].rank + 1);
+					if (newStatsum[k[i]]) {
+						newStatsum[k[i]] += adj;
+					} else {
+						newStatsum[k[i]] = adj;
+					}
 				}
 			}
 			if (mod.set) {
@@ -399,10 +412,19 @@ function describeMod(id, rank = null) {
 			rank = 0;
 		}
 		rank = Math.max(0, Math.min(mod.ranks, rank));
-		var k = Object.keys(mod.effects);
-		for (let i = 0; i < k.length; i++) {
-			let adj = mod.effects[k[i]] * (rank + 1);
-			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
+		
+		if (mod.sharedID && mod.sharedID == 'modRiven') {
+			var k = Object.keys(rivenEffects);
+			for (let i = 0; i < k.length; i++) {
+				let adj = rivenEffects[k[i]] * (rank + 1);
+				result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
+			}
+		} else {			
+			var k = Object.keys(mod.effects);
+			for (let i = 0; i < k.length; i++) {
+				let adj = mod.effects[k[i]] * (rank + 1);
+				result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
+			}
 		}
 		if (mod.set) {
 			result += Localization.translate(mod.set);
@@ -415,13 +437,24 @@ function slotAdjust(slot, delta) {
 	var i = slot.getAttribute('data-num');
 	var id = slots[i].mod;
 	slots[i].rank = Math.max(0, Math.min(mods[id].ranks, slots[i].rank + delta));
-	slot.children[1].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
+	slot.children[0].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
 	
 	let costadj = modCostFromSlot(i);
 	slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
 	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
 	
 	updateStatsum();
+}
+
+function displayRivenEditor() {
+	for (let i = 0; i < slots.length; i++) {
+		if (slots[i].mod && mods[slots[i].mod] && mods[slots[i].mod].sharedID && mods[slots[i].mod].sharedID == 'modRiven') {
+			document.getElementById('rivenedit').classList.remove('hide2');
+			return;
+		}
+	}
+	document.getElementById('rivenedit').classList.add('hide2');
+	return;
 }
 
 function setSlot(slot, id, rank = null) {
@@ -457,6 +490,7 @@ function setSlot(slot, id, rank = null) {
 		slot.draggable = null;
 	}
 	
+	displayRivenEditor();
 	updateStatsum();
 }
 
@@ -516,9 +550,9 @@ var DragHandler = (function(window, undefined){
 						makeListVisible(slots[this.getAttribute("data-num")].mod);
 					} else {					
 						for (let i = 0; i < slots.length; i++) {
-							let conflicts = mods[dragSrc.getAttribute('data-modid')].conflicts;
-							let conflicts2 = slots[i].mod && mods[slots[i].mod].conflicts;
-							if (slots[i].mod && ((conflicts2 && conflicts2.indexOf(dragSrc.getAttribute('data-modid')) != -1) || (conflicts && conflicts.indexOf(slots[i].mod) != -1))) {
+							let conflicts = mods[dragSrc.getAttribute('data-modid')].sharedID;
+							let conflicts2 = slots[i].mod && mods[slots[i].mod].sharedID;
+							if (conflicts2 && conflicts && conflicts2 == conflicts) {
 								return false;
 							}
 						}
@@ -736,11 +770,176 @@ function displayItem() {
 	}
 }
 
+function updateRivenMod() {
+	var boon1ID = document.getElementById('rivenBoon1ID').value;
+	var boon1Val = document.getElementById('rivenBoon1').value;
+	var boon2ID = document.getElementById('rivenBoon2ID').value;
+	var boon2Val = document.getElementById('rivenBoon2').value;
+	var boon3ID = document.getElementById('rivenBoon3ID').value;
+	var boon3Val = document.getElementById('rivenBoon3').value;
+	var curseID = document.getElementById('rivenCurseID').value;
+	var curseVal = document.getElementById('rivenCurse').value;
+	
+	var newRivenEffects = {};
+	
+	if (boon1ID) newRivenEffects[boon1ID] = boon1Val / 9 / 100;
+	if (boon2ID) newRivenEffects[boon2ID] = boon2Val / 9 / 100;
+	if (boon3ID) newRivenEffects[boon3ID] = boon3Val / 9 / 100;
+	if (curseID) newRivenEffects[curseID] = curseVal / 9 / 100;
+	
+	rivenEffects = newRivenEffects;
+	
+	reloadSlots();
+}
+
+function updateRivenStatRanges() {
+	var boon1ID = document.getElementById('rivenBoon1ID').value;
+	var boon2ID = document.getElementById('rivenBoon2ID').value;
+	var boon3ID = document.getElementById('rivenBoon3ID').value;
+	var curseID = document.getElementById('rivenCurseID').value;
+	
+	var tristat = (boon1ID && boon2ID && boon3ID ? true : false);
+	var hascurse = (curseID ? true : false);
+	
+	if (boon1ID && rivenData.categories[items[item].rivenType].buff[boon1ID]) {
+		let base = rivenData.categories[items[item].rivenType].buff[boon1ID];
+		base *= items[item].rivenDisposition;
+		if (hascurse) base *= rivenData.logic.hascurse;
+		if (tristat) base *= rivenData.logic["3rdbuff"];
+		
+		document.getElementById('rivenBoon1Min').innerText = truncatedstringFromFloat(base);
+		document.getElementById('rivenBoon1Max').innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+	} else {
+		document.getElementById('rivenBoon1Min').innerText = '';
+		document.getElementById('rivenBoon1Max').innerText = '';		
+	}
+	
+	if (boon2ID && rivenData.categories[items[item].rivenType].buff[boon2ID]) {
+		let base = rivenData.categories[items[item].rivenType].buff[boon2ID];
+		base *= items[item].rivenDisposition;
+		if (hascurse) base *= rivenData.logic.hascurse;
+		if (tristat) base *= rivenData.logic["3rdbuff"];
+		
+		document.getElementById('rivenBoon2Min').innerText = truncatedstringFromFloat(base);
+		document.getElementById('rivenBoon2Max').innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+	} else {
+		document.getElementById('rivenBoon2Min').innerText = '';
+		document.getElementById('rivenBoon2Max').innerText = '';		
+	}
+	
+	if (boon3ID && rivenData.categories[items[item].rivenType].buff[boon3ID]) {
+		let base = rivenData.categories[items[item].rivenType].buff[boon3ID];
+		base *= items[item].rivenDisposition;
+		if (hascurse) base *= rivenData.logic.hascurse;
+		if (tristat) base *= rivenData.logic["3rdbuff"];
+		
+		document.getElementById('rivenBoon3Min').innerText = truncatedstringFromFloat(base);
+		document.getElementById('rivenBoon3Max').innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+	} else {
+		document.getElementById('rivenBoon3Min').innerText = '';
+		document.getElementById('rivenBoon3Max').innerText = '';		
+	}
+	
+	if (curseID && rivenData.categories[items[item].rivenType].curse[curseID]) {
+		let base = rivenData.categories[items[item].rivenType].curse[curseID];
+		base *= items[item].rivenDisposition;
+		if (hascurse) base *= rivenData.logic.hascurse;
+		if (tristat) base *= rivenData.logic["3rdcurse"];
+		
+		document.getElementById('rivenCurseMin').innerText = truncatedstringFromFloat(base);
+		document.getElementById('rivenCurseMax').innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+	} else {
+		document.getElementById('rivenCurseMin').innerText = '';
+		document.getElementById('rivenCurseMax').innerText = '';		
+	}
+}
+
+function updateRivenForm() {
+	var v = document.getElementById('rivenBoon1ID');
+	while (v.children.length > 0) {
+		v.removeChild(v.lastElementChild);
+	}
+	
+	var opt = document.createElement('option');
+	opt.value = '';
+	opt.innerText = Localization.translate('selectNone');
+	v.appendChild(opt);	
+	var k = Object.keys(rivenData.categories[items[item].rivenType].buff);
+	for (let i = 0; i < k.length; i++) {
+		opt = document.createElement('option');
+		opt.value = k[i];
+		opt.innerText = Localization.translate(k[i]);
+		v.appendChild(opt);
+	}
+	v.onchange = updateRivenStatRanges;
+	
+	v = document.getElementById('rivenBoon2ID');
+	while (v.children.length > 0) {
+		v.removeChild(v.lastElementChild);
+	}	
+	opt = document.createElement('option');
+	opt.value = '';
+	opt.innerText = Localization.translate('selectNone');
+	v.appendChild(opt);	
+	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
+	for (let i = 0; i < k.length; i++) {
+		opt = document.createElement('option');
+		opt.value = k[i];
+		opt.innerText = Localization.translate(k[i]);
+		v.appendChild(opt);
+	}
+	v.onchange = updateRivenStatRanges;
+	
+	v = document.getElementById('rivenBoon3ID');
+	while (v.children.length > 0) {
+		v.removeChild(v.lastElementChild);
+	}	
+	opt = document.createElement('option');
+	opt.value = '';
+	opt.innerText = Localization.translate('selectNone');
+	v.appendChild(opt);	
+	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
+	for (let i = 0; i < k.length; i++) {
+		opt = document.createElement('option');
+		opt.value = k[i];
+		opt.innerText = Localization.translate(k[i]);
+		v.appendChild(opt);
+	}
+	v.onchange = updateRivenStatRanges;
+	
+	v = document.getElementById('rivenCurseID');
+	while (v.children.length > 0) {
+		v.removeChild(v.lastElementChild);
+	}	
+	opt = document.createElement('option');
+	opt.value = '';
+	opt.innerText = Localization.translate('selectNone');
+	v.appendChild(opt);	
+	k = Object.keys(rivenData.categories[items[item].rivenType].curse);
+	for (let i = 0; i < k.length; i++) {
+		opt = document.createElement('option');
+		opt.value = k[i];
+		opt.innerText = Localization.translate(k[i]);
+		v.appendChild(opt);
+	}
+	v.onchange = updateRivenStatRanges;
+	
+	document.getElementById('rivenBoon1').onchange = updateRivenMod;
+	document.getElementById('rivenBoon1').onkeyup = updateRivenMod;
+	document.getElementById('rivenBoon2').onchange = updateRivenMod;
+	document.getElementById('rivenBoon2').onkeyup = updateRivenMod;
+	document.getElementById('rivenBoon3').onchange = updateRivenMod;
+	document.getElementById('rivenBoon3').onkeyup = updateRivenMod;
+	document.getElementById('rivenCurse').onchange = updateRivenMod;
+	document.getElementById('rivenCurse').onkeyup = updateRivenMod;
+}
+
 function applyItem(e) {
 	let v = e.target.value;
 	if (v !== -1 && v != item) {
 		item = v;
 		
+		updateRivenForm();
 		displayItem();
 	}
 }
