@@ -364,25 +364,14 @@ function updateStatsum() {
 	for (var m = 0; m < slots.length; m++) {
 		if (slots[m].mod && mods[slots[m].mod]) {
 			let mod = mods[slots[m].mod];
-			if (mod.sharedID && mod.sharedID == 'modRiven') {
-				let k = Object.keys(rivenEffects);
-				for (let i = 0; i < k.length; i++) {
-					let adj = rivenEffects[k[i]] * (slots[m].rank + 1);
-					if (newStatsum[k[i]]) {
-						newStatsum[k[i]] += adj;
-					} else {
-						newStatsum[k[i]] = adj;
-					}
-				}				
-			} else {
-				let k = Object.keys(mod.effects);
-				for (let i = 0; i < k.length; i++) {
-					let adj = mod.effects[k[i]] * (slots[m].rank + 1);
-					if (newStatsum[k[i]]) {
-						newStatsum[k[i]] += adj;
-					} else {
-						newStatsum[k[i]] = adj;
-					}
+			let effects = (mod.sharedID && mod.sharedID == 'modRiven' ? rivenEffects : mod.effects);
+			let k = Object.keys(effects);
+			for (let i = 0; i < k.length; i++) {
+				let adj = effects[k[i]] * (slots[m].rank + 1);
+				if (newStatsum[k[i]]) {
+					newStatsum[k[i]] += adj;
+				} else {
+					newStatsum[k[i]] = adj;
 				}
 			}
 			if (mod.set) {
@@ -413,18 +402,11 @@ function describeMod(id, rank = null) {
 		}
 		rank = Math.max(0, Math.min(mod.ranks, rank));
 		
-		if (mod.sharedID && mod.sharedID == 'modRiven') {
-			var k = Object.keys(rivenEffects);
-			for (let i = 0; i < k.length; i++) {
-				let adj = rivenEffects[k[i]] * (rank + 1);
-				result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
-			}
-		} else {			
-			var k = Object.keys(mod.effects);
-			for (let i = 0; i < k.length; i++) {
-				let adj = mod.effects[k[i]] * (rank + 1);
-				result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
-			}
+		let effects = (mod.sharedID && mod.sharedID == 'modRiven' ? rivenEffects : mod.effects);
+		var k = Object.keys(effects);
+		for (let i = 0; i < k.length; i++) {
+			let adj = effects[k[i]] * (rank + 1);
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
 		}
 		if (mod.set) {
 			result += Localization.translate(mod.set);

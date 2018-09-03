@@ -1,8 +1,9 @@
 Base
 * Replace page layout with something decent.
 * Convert composite data files and loading to use compression.
-* Scripts to pregenerate generate and compress composite data files from raw/*
+* Scripts to pregenerate and compress composite data files from raw/*
 ** Warning generation for unlocalized terms per language.
+* Populate the datasets
 
 Calculator-Generic
 * Warning generation for unprocessed stats.
@@ -17,8 +18,6 @@ Calculator-Generic
 * Make the filter actually filter
 * mod "value" comparisons
 * isolate component code so that changes are saner
-
-* Populate the datasets
 
 Calculator-Guns
 * Charge shot specifics
