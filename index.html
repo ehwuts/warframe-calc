@@ -19,7 +19,16 @@
 	</div>
 	<div id="slots"></div>
 </div>
-
+<form id="rivenedit" class="hide2">
+LOCALIZEME
+	<table>
+	<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Min</td><td>Max</td></tr>
+	<tr><td>Boon1</td><td><select id="rivenBoon1ID"></select></td><td><input id="rivenBoon1" size="4"></td><td id="rivenBoon1Min"></td><td id="rivenBoon1Max"></td></tr>
+	<tr><td>Boon2</td><td><select id="rivenBoon2ID"></select></td><td><input id="rivenBoon2" size="4"></td><td id="rivenBoon2Min"></td><td id="rivenBoon2Max"></td></tr>
+	<tr><td>Boon3</td><td><select id="rivenBoon3ID"></select></td><td><input id="rivenBoon3" size="4"></td><td id="rivenBoon3Min"></td><td id="rivenBoon3Max"></td></tr>
+	<tr><td>Curse</td><td><select id="rivenCurseID"></select></td><td><input id="rivenCurse" size="4"></td><td id="rivenCurseMin"></td><td id="rivenCurseMax"></td></tr>
+	</table>
+</form>
 <pre id="testdiv"></pre>
 <div id="output"></div>
 <div id="footer">
@@ -27,6 +36,7 @@ Home | <a href="enemy.html">Enemy Scaler</a> | <a href="notes.html">notes</a>
 </div>
 <script id="datasrc" src="project/data/datasetPrimary.js"></script>
 <script id="langsrc" src="project/data/lang/lang.en.js"></script>
+<script src="project/data/rivenstemp.js"></script>
 <script src="project/scripts/i18n.min.js"></script>
 <script src="project/scripts/warframe-calc.js"></script>
 </body>

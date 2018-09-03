@@ -11,8 +11,12 @@ Calculator-Generic
 * Status - indirect effects.
 * Status - Verify status damage formulae.
 * Auras
-* Rivens
+* ~~Rivens~~
+** Clean up Riven code's mess
 * Flesh out the multiattack support
+* Make the filter actually filter
+* mod "value" comparisons
+* isolate component code so that changes are saner
 
 * Populate the datasets
 
