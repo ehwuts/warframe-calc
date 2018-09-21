@@ -18,10 +18,13 @@ Calculator-Generic
 * Make the filter actually filter
 * mod "value" comparisons
 * isolate component code so that changes are saner
+* minimum activation damage
 
 Calculator-Guns
 * Charge shot specifics
 * Bow specifics
+* sniper combo
+* sniper zoom
 
 Calculator-Melee
 * Everything
