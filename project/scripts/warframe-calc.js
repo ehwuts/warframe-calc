@@ -366,6 +366,7 @@ function updateStatsum() {
 			let mod = mods[slots[m].mod];
 			let effects = (mod.sharedID && mod.sharedID == 'modRiven' ? rivenEffects : mod.effects);
 			let k = Object.keys(effects);
+			if (mod.sharedID && mod.sharedID == 'modRiven') k.reverse();
 			for (let i = 0; i < k.length; i++) {
 				let adj = effects[k[i]] * (slots[m].rank + 1);
 				if (newStatsum[k[i]]) {
@@ -863,7 +864,7 @@ function updateRivenForm() {
 	v = document.getElementById('rivenBoon2ID');
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
-	}	
+	}
 	opt = document.createElement('option');
 	opt.value = '';
 	opt.innerText = Localization.translate('selectNone');
@@ -880,7 +881,7 @@ function updateRivenForm() {
 	v = document.getElementById('rivenBoon3ID');
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
-	}	
+	}
 	opt = document.createElement('option');
 	opt.value = '';
 	opt.innerText = Localization.translate('selectNone');
@@ -897,7 +898,7 @@ function updateRivenForm() {
 	v = document.getElementById('rivenCurseID');
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
-	}	
+	}
 	opt = document.createElement('option');
 	opt.value = '';
 	opt.innerText = Localization.translate('selectNone');
