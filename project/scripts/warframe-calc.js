@@ -908,12 +908,20 @@ function updateRivenForm() {
 	
 	document.getElementById('rivenBoon1').onchange = updateRivenMod;
 	document.getElementById('rivenBoon1').onkeyup = updateRivenMod;
+	document.getElementById('rivenBoon1ID').onchange = updateRivenMod;
+	document.getElementById('rivenBoon1ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenBoon2').onchange = updateRivenMod;
 	document.getElementById('rivenBoon2').onkeyup = updateRivenMod;
+	document.getElementById('rivenBoon2ID').onchange = updateRivenMod;
+	document.getElementById('rivenBoon2ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenBoon3').onchange = updateRivenMod;
 	document.getElementById('rivenBoon3').onkeyup = updateRivenMod;
+	document.getElementById('rivenBoon3ID').onchange = updateRivenMod;
+	document.getElementById('rivenBoon3ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenCurse').onchange = updateRivenMod;
 	document.getElementById('rivenCurse').onkeyup = updateRivenMod;
+	document.getElementById('rivenCurseID').onchange = updateRivenMod;
+	document.getElementById('rivenCurseID').onkeyup = updateRivenMod;
 }
 
 function applyItem(e) {
