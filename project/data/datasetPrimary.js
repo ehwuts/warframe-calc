@@ -238,7 +238,7 @@ var mods = {
 		tag : "weaponTypeRifle",
 		cost : 6,
 		ranks : 10,
-		polarity: "—",
+		polarity: "D",
 		effects : {
 			bonusCold : 0.15,
 		},
