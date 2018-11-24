@@ -847,6 +847,8 @@ function updateRivenComposite() {
 
 function updateRivenForm() {
 	var v = document.getElementById('rivenBoon1ID');
+	var keep = (Object.keys(rivenEffects).length > 0);
+	var oldval = v.value;
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
 	}
@@ -859,12 +861,14 @@ function updateRivenForm() {
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
+		if (keep && k[i] == oldval) opt.selected = 'selected';
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenBoon2ID');
+	oldval = v.value;
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
 	}
@@ -876,12 +880,14 @@ function updateRivenForm() {
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
+		if (keep && k[i] == oldval) opt.selected = 'selected';
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenBoon3ID');
+	oldval = v.value;
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
 	}
@@ -893,12 +899,14 @@ function updateRivenForm() {
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
+		if (keep && k[i] == oldval) opt.selected = 'selected';
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenCurseID');
+	oldval = v.value;
 	while (v.children.length > 0) {
 		v.removeChild(v.lastElementChild);
 	}
@@ -910,6 +918,7 @@ function updateRivenForm() {
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
+		if (keep && k[i] == oldval) opt.selected = 'selected';
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
@@ -933,9 +942,10 @@ function updateRivenForm() {
 function applyItem(e) {
 	let v = e.target.value;
 	if (v !== -1 && v != item) {
+		if (items[item] && items[item].rivenType != items[v].rivenType) rivenEffects = {};
 		item = v;
-		
 		updateRivenForm();
+		updateRivenStatRanges();
 		displayItem();
 	}
 }
