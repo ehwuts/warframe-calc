@@ -227,6 +227,9 @@ function updateDamageCalcs() {
 	if (statsum.bonusElectricity) damagePercents['damageElectricity'] += statsum.bonusElectricity;
 	if (statsum.bonusHeat) damagePercents['damageHeat'] += statsum.bonusHeat;
 	if (statsum.bonusToxin) damagePercents['damageToxin'] += statsum.bonusToxin;
+	if (statsum.bonusImpact) damagePercents['damageImpact'] *= (1 + statsum.bonusImpact);
+	if (statsum.bonusPuncture) damagePercents['damagePuncture']  *= (1 + statsum.bonusPuncture);
+	if (statsum.bonusSlash) damagePercents['damageSlash']  *= (1 + statsum.bonusSlash);
 	var statusChance = stats.statStatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0));
 	if (stats.usePelletLogic && stats.userPelletLogic == true) {
 		statusChance = 1 - Math.pow(1 - statusChance, 1 / stats.statProjectiles);
