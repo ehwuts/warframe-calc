@@ -269,19 +269,21 @@ function updateDamageCalcs() {
 	descFiring += 'Percentage of time spent firing: ' + percentagestringFromFloat(firingPercent) + '.<br>';
 	descFiring += 'Time to out of ammo: ' + truncatedstringFromFloat(ammoEmptyTime) + ' seconds.';
 	
+	var statusPool = 0;
 	{
 		var k = Object.keys(damagePercents);
 		for (let i = 0; i < k.length; i++) {
 			if (damagePercents[k[i]] < 0) {
 				damagePercents[k[i]] = 0;
 			}
+			statusPool += damagePercents[k[i]];
 		}
 	}
+	statusPool += (damagePercents.damageImpact + damagePercents.damagePuncture + damagePercents.damageSlash) * 3;
 	
 	baseDamage *= (1 + (statsum.bonusDamage?statsum.bonusDamage:0));
 	
 	var damageBases = {};
-	var statusPool = 1 + (damagePercents.damageImpact + damagePercents.damagePuncture + damagePercents.damageSlash) * 3;
 	var statusPercentages = {};
 	var statusChancePerShot = {};
 	var statusUptimeClip = {};
