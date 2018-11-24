@@ -59,6 +59,7 @@ function updateFiltering(e) {
 	}
 }
 
+
 function updateDamageCalcs() {
 	var v = document.getElementById('output');
 	
@@ -268,6 +269,14 @@ function updateDamageCalcs() {
 	descFiring += 'Percentage of time spent firing: ' + percentagestringFromFloat(firingPercent) + '.<br>';
 	descFiring += 'Time to out of ammo: ' + truncatedstringFromFloat(ammoEmptyTime) + ' seconds.';
 	
+	{
+		var k = Object.keys(damagePercents);
+		for (let i = 0; i < k.length; i++) {
+			if (damagePercents[k[i]] < 0) {
+				damagePercents[k[i]] = 0;
+			}
+		}
+	}
 	
 	baseDamage *= (1 + (statsum.bonusDamage?statsum.bonusDamage:0));
 	
