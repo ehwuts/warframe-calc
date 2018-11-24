@@ -836,6 +836,11 @@ function updateRivenStatRanges() {
 	}
 }
 
+function updateRivenComposite() {
+	updateRivenStatRanges();
+	updateRivenMod();
+}
+
 function updateRivenForm() {
 	var v = document.getElementById('rivenBoon1ID');
 	while (v.children.length > 0) {
@@ -853,7 +858,7 @@ function updateRivenForm() {
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
-	v.onchange = updateRivenStatRanges;
+	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenBoon2ID');
 	while (v.children.length > 0) {
@@ -870,7 +875,7 @@ function updateRivenForm() {
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
-	v.onchange = updateRivenStatRanges;
+	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenBoon3ID');
 	while (v.children.length > 0) {
@@ -887,7 +892,7 @@ function updateRivenForm() {
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
-	v.onchange = updateRivenStatRanges;
+	v.onchange = updateRivenComposite;
 	
 	v = document.getElementById('rivenCurseID');
 	while (v.children.length > 0) {
@@ -904,24 +909,21 @@ function updateRivenForm() {
 		opt.innerText = Localization.translate(k[i]);
 		v.appendChild(opt);
 	}
-	v.onchange = updateRivenStatRanges;
+	v.onchange = updateRivenComposite;
 	
 	document.getElementById('rivenBoon1').onchange = updateRivenMod;
 	document.getElementById('rivenBoon1').onkeyup = updateRivenMod;
-	document.getElementById('rivenBoon1ID').onchange = updateRivenMod;
 	document.getElementById('rivenBoon1ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenBoon2').onchange = updateRivenMod;
 	document.getElementById('rivenBoon2').onkeyup = updateRivenMod;
-	document.getElementById('rivenBoon2ID').onchange = updateRivenMod;
 	document.getElementById('rivenBoon2ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenBoon3').onchange = updateRivenMod;
 	document.getElementById('rivenBoon3').onkeyup = updateRivenMod;
-	document.getElementById('rivenBoon3ID').onchange = updateRivenMod;
 	document.getElementById('rivenBoon3ID').onkeyup = updateRivenMod;
 	document.getElementById('rivenCurse').onchange = updateRivenMod;
 	document.getElementById('rivenCurse').onkeyup = updateRivenMod;
-	document.getElementById('rivenCurseID').onchange = updateRivenMod;
 	document.getElementById('rivenCurseID').onkeyup = updateRivenMod;
+	
 }
 
 function applyItem(e) {
