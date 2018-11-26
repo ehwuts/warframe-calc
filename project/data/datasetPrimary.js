@@ -32,6 +32,44 @@ var items = {
 				falloff:[22, 34, 0.5]
 			}
 		]
+	},	
+	'Rubico_Prime': {
+		name: 'Rubico Prime',
+		type: ['weaponTypePrimary', 'weaponTypeRifle', 'weaponTypeSniper'],
+		rivenType: 'weaponTypeRifle',
+		rivenDisposition: 0.95,
+		
+		attacks: [
+			{
+				attackName: 'primary',
+				trigger: 'triggerSemi',			
+				noise: 'noiseAlarming',
+				
+				'statFireRate': 3.67,
+				'statAccuracy': 13.3,
+				'statMagazine': 5,
+				'statAmmo': 72,
+				'statReload': 2,
+				'statPunchThrough': 1,
+				'statProjectiles': 1,
+				
+				damage:{
+					'damageImpact': 149.6,
+					'damagePuncture': 28.1,
+					'damageSlash': 9.3
+				},
+				zoom: [
+					{'statZoom': 2.5, effects : { 'bonusCritDamage': .35 }},
+					{'statZoom': 5, effects : { 'bonusCritDamage': .5 }}
+				],
+				
+				'statCritChance': 0.38,
+				'statCritDamage': 3,
+				'statStatusChance': 0.16,
+				
+				falloff:[400, 600, 0.5]
+			}
+		]
 	},
 	'Supra_Vandal':{
 		name: 'Supra Vandal',
@@ -204,7 +242,7 @@ var mods = {
 		polarity: "—",
 		effects : {
 			bonusElectricity : 0.15,
-		},		
+		},
 	},
 	"modSplitChamber": {
 		tag : "weaponTypeRifle",
