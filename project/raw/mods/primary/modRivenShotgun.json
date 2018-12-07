@@ -1,0 +1,11 @@
+{
+	"id": "modRivenShotgun",
+	"data": {
+		"tag": "weaponTypeShotgun",
+		"cost": 8,
+		"ranks": 8,
+		"polarity": "V",
+		"effects": {},
+		"sharedID": "modRiven"
+	}
+}
