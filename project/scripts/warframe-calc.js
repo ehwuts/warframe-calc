@@ -216,7 +216,7 @@ function updateDamageCalcs() {
 		}
 	}
 	
-	var critChance = stats.statCritChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0));
+	var critChance = stats.statCritChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0)) + (statsum.flatCritChance?statsum.flatCritChance:0);
 	var critMulti = stats.statCritDamage * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
 	var multishot = stats.statProjectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
 	var punchThrough = stats.statPunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
@@ -290,7 +290,10 @@ function updateDamageCalcs() {
 	var statusUptimeSustained = {};
 	var statusEffectScaledDuration = {};
 	var statusPerSecond = {};
+	var damageMinimum = {};
 	var damageScaled = {};
+	//console.log(Math.floor(multishot + 0.00000001));
+	//console.log(crits[0][2]);
 	
 	var damageSumPercent = 0;
 	var k = Object.keys(damagePercents);
@@ -300,6 +303,7 @@ function updateDamageCalcs() {
 		damageBases[k[i]] = damagePercentsFinal[k[i]] * baseDamage;
 		statusPercentages[k[i]] = damagePercentsFinal[k[i]] / statusPool;
 		if (k[i] == 'damageImpact' || k[i] == 'damagePuncture' || k[i] == 'damageSlash') statusPercentages[k[i]] *= 4;
+		damageMinimum[k[i]] = damageBases[k[i]] * Math.floor(multishot + 0.00000001) * crits[0][2];
 		damageScaled[k[i]] = damageBases[k[i]] * multishot * critAvg;
 		statusChancePerShot[k[i]] = statusChance * statusPercentages[k[i]];
 		statusEffectScaledDuration[k[i]] = statusEffectBaseDuration[k[i]] * statusDuration;
@@ -332,13 +336,13 @@ function updateDamageCalcs() {
 	
 	/* Begin Display Blob */
 	var result = '<table>' + "\n"
-	           + '<tr><td colspan="4">' + items[item].name + '</td></tr>'
+	           + '<tr><td colspan="4">' + items[item].name + ' - ' + items[item].attacks[0].attackName + '</td></tr>'
 			   + '<tr><td colspan="4">' + tags + '</td></tr>';
 	
-	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelAdjusted') + '</td><td>' + Localization.translate('statStatusChance') + '</td></tr>' + "\n";
+	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelMinimum') + '</td><td>' + Localization.translate('labelAverage') + '</td><td>' + Localization.translate('statStatusChance') + '</td></tr>' + "\n";
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
-		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
+		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageMinimum[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
 	}
 	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n";
 	
@@ -348,8 +352,9 @@ function updateDamageCalcs() {
 	        + '<tr><td>' + Localization.translate('statStatusChance') + '</td><td>' + percentagestringFromFloat(statusChance) + '</td></tr>' + "\n";
 	if (statusDuration != 1) result += '<tr><td>' + Localization.translate('statStatusDuration') + '</td><td>' + percentagestringFromFloat(statusDuration) + '</td></tr>' + "\n"
 	if (punchThrough) result += '<tr><td>' + Localization.translate('statPunchThrough') + '</td><td>' + truncatedstringFromFloat(punchThrough) + '</td></tr>' + "\n";
-	result += '<tr><td>' + Localization.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
+	if (stats.trigger == 'triggerCharge') result += '<tr><td>' + Localization.translate('statChargeRate') + '</td><td>' + truncatedstringFromFloat(1 / fireRate) + '</td></tr>' + "\n";
+	result += '<tr><td>' + Localization.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n";
+	result += '<tr><td>' + Localization.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statReload') + '</td><td>' + truncatedstringFromFloat(reload) + '</td></tr>' + "\n"
 	        + '<tr><td>' + Localization.translate('statAmmo') + '</td><td>' + truncatedstringFromFloat(ammo) + '</td></tr>' + "\n"
 	        + '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
@@ -397,6 +402,18 @@ function updateStatsum() {
 				}
 			}
 			capacitySum += modCostFromSlot(m);
+		}
+	}
+	var zoom = document.getElementById('zoom').value;
+	if (items[item].attacks[0].zoom && zoom !== '' && items[item].attacks[0].zoom[zoom]) {
+		let k = Object.keys(items[item].attacks[0].zoom[zoom].effects);
+		//console.log(k);
+		for (let i = 0; i < k.length; i++) {
+			if (newStatsum[k[i]]) {
+				newStatsum[k[i]] += items[item].attacks[0].zoom[zoom].effects[k[i]];
+			} else {
+				newStatsum[k[i]] = items[item].attacks[0].zoom[zoom].effects[k[i]];
+			}
 		}
 	}
 	
@@ -727,11 +744,11 @@ function changeDataset(e) {
 }
 
 function displayItem() {
-	return;
 	if (item === -1 || !items.hasOwnProperty(item)) {
 		document.getElementById('displayItem').innerText = '';
 		return;		
 	}
+	return;
 	
 	var v = document.getElementById('displayItem');
 	var tags = [];
@@ -741,7 +758,6 @@ function displayItem() {
 	
 	v.innerText = items[item].name + "\n"
 	            + tags.join(', ') + "\n\n";
-	return;
 	v.innerText += 'Attacks' + "\n"; 
 	for (let i = 0; i < items[item].attacks.length; i++) {
 		v.innerText += items[item].attacks[i].attackName + "\n"
@@ -950,13 +966,43 @@ function updateRivenForm() {
 	
 }
 
+function updateMiscForm() {
+	var v = document.getElementById('zoom');
+	v.onchange = updateStatsum;
+	var oldval = v.value;
+	if (items[item].attacks[0].zoom) {
+		while (v.children.length > 0) {
+			v.removeChild(v.lastElementChild);
+		}
+		
+		var e = document.createElement('option');
+		e.value = '';
+		e.innerText = Localization.translate('selectBlank');
+		e.selected = 'selected';
+		v.appendChild(e);
+		
+		for (let i = 0; i < items[item].attacks[0].zoom.length; i++) {
+			e = document.createElement('option');
+			e.value = i;
+			e.innerText = items[item].attacks[0].zoom[i].statZoom;
+			v.appendChild(e);
+		}
+		v.parentElement.classList.remove('hide2');
+		v.onchange();
+	} else {
+		v.parentElement.classList.add('hide2');
+	}
+}
+
 function applyItem(e) {
 	let v = e.target.value;
 	if (v !== -1 && v != item) {
 		if (items[item] && items[item].rivenType != items[v].rivenType) rivenEffects = {};
 		item = v;
+		
 		updateRivenForm();
 		updateRivenStatRanges();
+		updateMiscForm();
 		displayItem();
 	}
 }
@@ -981,6 +1027,10 @@ function applyDataset() {
 	}
 	v.onchange = applyItem;
 }
+
+function displayMisc() {
+	//TODO localize that form
+};
 
 function initializeItemSelect() {
 	var v = document.getElementById('category_select');
@@ -1094,6 +1144,7 @@ function init() {
 	Localization.addUpdate(reloadSlots);
 	Localization.addUpdate(sortModsList);
 	Localization.addUpdate(displayItem);
+	Localization.addUpdate(displayMisc);
 	Localization.init();
 	initializeModsList();
 	initializeModSlots();
