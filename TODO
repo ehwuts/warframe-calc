@@ -21,10 +21,11 @@ Calculator-Generic
 * minimum activation damage
 
 Calculator-Guns
-* Charge shot specifics
+*~~Charge shot specifics~~
 * Bow specifics
 * sniper combo
 *~~sniper zoom~~
+* Beam-specific shenanigans
 
 Calculator-Melee
 * Everything
