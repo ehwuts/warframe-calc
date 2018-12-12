@@ -1,0 +1,12 @@
+{
+	"id": "modRimeRounds",
+	"group": "Primary",
+		"tag": "weaponTypeRifle",
+		"cost": 4,
+		"ranks": 3,
+		"polarity": "V",
+		"effects": {
+			"bonusCold": 0.15,
+			"bonusStatusChance": 0.15
+		}
+	}

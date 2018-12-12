@@ -63,9 +63,19 @@ var lang = {
 		'datasetArchmelee': 'Archmelee',
 		
 		'selectBlank': '<Choose>',
+		"selectBlankWeapon": "<Choose Weapon",
 		'selectNone': '<None>',
 		
-		'weaponTypePrimary': 'Primary',
+		"weaponGroupPrimary": "Primary",
+		"weaponGroupSecondary": "Secondary",
+		"weaponGroupMelee": "Melee",
+		"weaponGroupRobotic": "Robotic",
+		"weaponGroupArch-Gun": "Arch-Gun",
+		"weaponGroupArch-Melee": "Arch-Melee",
+		
+		"weaponSubGroupRifle": "Rifle",
+		"weaponSubGroupSniper": "Sniper",
+		
 		'weaponTypeRifle': 'Rifle',
 		'weaponTypeSniper': 'Sniper',
 		'weaponTypeBow': 'Bow',

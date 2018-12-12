@@ -1,0 +1,11 @@
+{
+	"id": "modHellfire",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusHeat" : 0.15
+	}
+}

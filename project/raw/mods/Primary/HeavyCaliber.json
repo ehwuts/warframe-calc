@@ -1,0 +1,12 @@
+{
+	"id":"modHeavyCaliber",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 6,
+	"ranks" : 10,
+	"polarity": "V",
+	"effects" : {
+		"bonusDamage" : 0.15,
+		"bonusAccuracy": -0.05
+	}
+}

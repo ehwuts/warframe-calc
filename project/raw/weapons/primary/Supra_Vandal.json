@@ -1,31 +1,30 @@
 {
-	name: 'Supra Vandal',
-	type: ['weaponTypePrimary', 'weaponTypeRifle'],
-	rivenDisposition: 1.14,
-	
-	attacks: [
-		{
-			attackName: 'primary',
-			trigger: 'triggerAutoSpool',			
-			noise: 'noiseAlarming',
-			
-			'statFireRate': 12.5,
-			'statAccuracy': 26.6,
-			'statMagazine': 300,
-			'statAmmo': 1600,
-			'statReload': 3.0,
-			'statPunchThrough': 0,
-			'statProjectiles': 1,
-			
-			damage:{
-				'damageImpact': 4.0,
-				'damagePuncture': 30.0,
-				'damageSlash': 6.0
-			},
-			
-			'statCritChance': 0.16,
-			'statCritDamage': 2,
-			'statStatusChance': 0.30
+	"Name": "Supra Vandal",
+	"Group": "Primary",
+	"SubGroup": "Rifle",
+	"Disposition": 1.14,
+
+	"Magazine": 300,
+	"Ammo": 1600,
+	"Reload": 3,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerAutoSpool",
+			"Noise": "noiseAlarming",
+			"FireRate": 12.5,
+			"Accuracy": 26.6,
+			"PunchThrough": 0,
+			"Projectiles": 1,
+			"CriticalChance": 0.16,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.3,
+
+			"Damage": {
+				"Impact": 4,
+				"Puncture": 30,
+				"Slash": 6
+			}			
 		}
-	]
+	}
 }

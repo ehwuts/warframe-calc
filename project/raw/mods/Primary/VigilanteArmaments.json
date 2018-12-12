@@ -1,0 +1,12 @@
+{
+	"id": "modVigilanteArmaments",
+	"group": "Primary",
+	"tag": "weaponTypePrimary",
+	"cost": 4,
+	"ranks": 5,
+	"polarity": "—",
+	"effects": {
+		"bonusMultishot": 0.1
+	},
+	"set": "setVigilante"
+}

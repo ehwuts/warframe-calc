@@ -1,38 +1,37 @@
 {
-	name: 'Rubico Prime',
-	type: ['weaponTypePrimary', 'weaponTypeRifle', 'weaponTypeSniper'],
-	rivenType: 'weaponTypeRifle',
-	rivenDisposition: 0.95,
+	"Name": "Rubico Prime",
+	"Group": "Primary",
+	"SubGroup": "Sniper",
+	"Disposition": 0.95,
+
+	"Magazine": 5,
+	"Ammo": 72,
+	"Reload": 2,
 	
-	attacks: [
-		{
-			attackName: 'primary',
-			trigger: 'triggerSemi',			
-			noise: 'noiseAlarming',
-			
-			'statFireRate': 3.67,
-			'statAccuracy': 13.3,
-			'statMagazine': 5,
-			'statAmmo': 72,
-			'statReload': 2,
-			'statPunchThrough': 1,
-			'statProjectiles': 1,
-			
-			damage:{
-				'damageImpact': 149.6,
-				'damagePuncture': 28.1,
-				'damageSlash': 9.3
-			},
-			zoom: [
-				{'statZoom': 2.5, effects : { 'bonusCritDamage': .35 }},
-				{'statZoom': 5, effects : { 'bonusCritDamage': .5 }}
-			],
-			
-			'statCritChance': 0.38,
-			'statCritDamage': 3,
-			'statStatusChance': 0.16,
-			
-			falloff:[400, 600, 0.5]
+	"ComboTimeout": 2,
+	"Zoom": [
+		{"statZoom": 2.5, "Effects" : { "bonusCritDamage": 0.35 }},
+		{"statZoom": 5, "Effects" : { "bonusCritDamage": 0.5 }}			
+	],
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerSemi",
+			"Noise": "noiseAlarming",
+			"FallOff": [400, 600, 0.5],
+			"FireRate": 3.67,
+			"Accuracy": 13.3,
+			"PunchThrough": 1,
+			"Projectiles": 1,
+			"CriticalChance": 0.38,
+			"CriticalMultiplier": 3,
+			"StatusChance": 0.16,
+
+			"Damage": {
+				"Impact": 149.6,
+				"Puncture": 28.1,
+				"Slash": 9.3
+			}			
 		}
-	]
+	}
 }

@@ -1,0 +1,11 @@
+{
+	"id": "modSerration",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 4,
+	"ranks" : 10,
+	"polarity": "V",
+	"effects" : {
+		"bonusDamage" : 0.15
+	}
+}

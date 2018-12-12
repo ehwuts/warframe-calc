@@ -1,0 +1,12 @@
+	{
+	"id":"modVigilanteFervor",
+	"group": "Primary",
+		"tag": "weaponTypePrimary",
+		"cost": 4,
+		"ranks": 5,
+		"polarity": "V",
+		"effects": {
+			"bonusFireRate": 0.075
+		},
+		"set": "setVigilante"
+	}

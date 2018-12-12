@@ -1,0 +1,12 @@
+{
+	"id":"modMalignantForce",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 4,
+	"ranks" : 3,
+	"polarity": "V",
+	"effects" : {
+		"bonusToxin": 0.15,
+		"bonusStatusChance": 0.15
+	}
+}

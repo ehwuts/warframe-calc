@@ -1032,19 +1032,6 @@ function displayMisc() {
 	//TODO localize that form
 };
 
-function initializeItemSelect() {
-	var v = document.getElementById('category_select');
-	for (let i = 0; i < dataSets.length; i++) {
-		let e = document.createElement('option');
-		e.value = dataSets[i];
-		e.innerText = Localization.translate(e.value);
-		v.appendChild(e);
-	}
-	v.onchange = changeDataset;
-	
-	applyDataset();
-}
-
 var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	var locales = {
 		'en': 'English', 
@@ -1139,8 +1126,158 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 	}
 	return obj;
 })('project/data/lang/', 'langsrc', 'lang_select', window);
+WFC = {};
+WFC.Data = {
+	"Weapon": null
+};
+WFC.Util = {
+	"doDebug": true,
+	"addElement": function (parentElement, typeElement, props = {}) {
+		var e = document.createElement(typeElement);
+		
+		var k = Object.keys(props);
+		for (let i = 0; i < k.length; i++) {
+			e[k[i]] = props[k[i]];
+		}
+		parentElement.appendChild(e);
+		
+		//WFC.Util.debug("Warning: fancy element creationfunc called: " + JSON.stringify(arguments));
+		return e;
+	},
+	"debug": function (v)  {
+		if (this.doDebug) {
+			var debugBox = document.getElementById("debug");
+			if (!debugBox) {
+				debugBox = this.addElement(document.body, "pre", {"id": "debug"});
+			}
+			debugBox.innerText += v + "\n";
+		}
+	},
+};
+
+WFC.Weapons = (function(WFC, window, undefined) {
+	var srcWeaponList = "project/data/WeaponData.json";
+	var formID = "formWeaponChoice";
+	var Weapons;
+	var Group;
+	var localization = [];
+	
+	function changeWeaponSelect(e) {
+		WFC.Util.debug("Weapons.changeWeaponSelect - " + e.target.value);
+		if (Group === e.target.value) {
+			return;
+		}
+		Group = e.target.value;
+		
+		var children = document.getElementById("inputWeaponSelect").children;
+		for (let i = 0; i < children.length; i++) {
+			if (children[i].tagName === "OPTGROUP") {
+				if (children[i].getAttribute("data-parent") === Group) {
+					children[i].disabled = false;
+					children[i].hidden = false;
+				} else {
+					children[i].disabled = true;
+					children[i].hidden = true;					
+				}
+			}
+		}
+		document.getElementById("inputWeaponSelect").selectedIndex = 0;
+	}
+	
+	function changeWeapon(e) {
+		WFC.Util.debug("Weapons.changeWeapon - " + e.target.value);
+		
+		WFC.Data.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
+		document.getElementById("tempWeaponDisplay").innerText = JSON.stringify(WFC.Data.Weapon, null, "\t");
+	}
+	
+	function applyLocalization() {
+		WFC.Util.debug('Weapons.applyLocalization: ' + JSON.stringify(localization));
+		for (let i = 0; i < localization.length; i++) {
+			document.getElementById(localization[i].id).label = Localization.translate(localization[i].key);
+		}
+	}
+
+	function initForm() {
+		WFC.Util.debug("Weapons.initForm");
+		
+		document.getElementById(formID).onsubmit = function () { return false; };
+		
+		var selectCategory = document.getElementById("inputWeaponSelectCategory");
+		var selectWeapon = document.getElementById("inputWeaponSelect");
+		
+		var groups = Object.keys(Weapons.Tree);
+		for (let iGroup = 0; iGroup < groups.length; iGroup++) {
+			let eG = WFC.Util.addElement(selectCategory, "option", {
+				"id": "optionWeaponGroup" + groups[iGroup],
+				"value": groups[iGroup],
+				"label": groups[iGroup]
+			});
+			localization.push({
+				"id": eG.id,
+				"key": "weaponGroup" + groups[iGroup]
+			});
+			
+			let subGroups = Object.keys(Weapons.Tree[groups[iGroup]]);
+			for (let iSub = 0; iSub < subGroups.length; iSub++) {
+				let eSG = WFC.Util.addElement(selectWeapon, "optgroup", {
+					"id": "optionWeaponSubGroup" + subGroups[iSub],
+					"label": subGroups[iSub]
+				});
+				eSG.setAttribute("data-parent", groups[iGroup]);
+				localization.push({
+					"id": eSG.id,
+					"key": "weaponSubGroup" + subGroups[iSub]
+				});
+				
+				let weapons = Weapons.Tree[groups[iGroup]][subGroups[iSub]];
+				for (let iWeapon = 0; iWeapon < weapons.length; iWeapon++) {
+					WFC.Util.addElement(eSG, "option", {
+						"value": weapons[iWeapon],
+						"label": weapons[iWeapon]
+					});
+				}
+			}
+		}
+		
+		selectCategory.onchange = changeWeaponSelect;
+		selectWeapon.onchange = changeWeapon;
+		applyLocalization();
+		
+		changeWeaponSelect({"target":{"value":groups[0]}});
+	}
+	
+	function initData() {
+		WFC.Util.debug("Weapons.initData");
+		try {
+			Weapons = this.response;
+			
+			initForm();
+		} catch (e) {
+			console.log("Failed to initialize the basic weapon selection form. Panic!");
+			console.log(e);
+		}
+	}
+	
+	var obj = {};
+	obj.translate = applyLocalization;
+	obj.init = function () {
+		WFC.Util.debug("Weapons.init");
+		localization.push({
+			"id": "optionWeaponSelectBlank", 
+			"key": "selectBlankWeapon"
+		});
+		var request = new XMLHttpRequest();
+		request.open("GET", srcWeaponList);
+		request.responseType = "json";
+		request.onload = initData;
+		request.send();
+	};
+	return obj;
+})(WFC, window);
 
 function init() {
+	Localization.addUpdate(WFC.Weapons.translate);
 	Localization.addUpdate(reloadSlots);
 	Localization.addUpdate(sortModsList);
 	Localization.addUpdate(displayItem);
@@ -1148,7 +1285,7 @@ function init() {
 	Localization.init();
 	initializeModsList();
 	initializeModSlots();
-	initializeItemSelect();
+	WFC.Weapons.init();
 }
 
 window.addEventListener('load', init);

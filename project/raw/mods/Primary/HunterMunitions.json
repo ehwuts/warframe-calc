@@ -1,0 +1,12 @@
+{
+	"id": "modHunterMunitions",
+	"group": "Primary",
+	"tag" : "weaponTypePrimary",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"specialeffectHunterMunitions": 0.05
+	},
+	"set" : "setHunter"
+}

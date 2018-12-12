@@ -1,0 +1,11 @@
+ {
+ "id":"modSpeedTrigger",
+	"group": "Primary",
+		"tag": "weaponTypeRifle",
+		"cost": 4,
+		"ranks": 5,
+		"polarity": "V",
+		"effects": {
+			"bonusFireRate": 0.1
+		}
+	}

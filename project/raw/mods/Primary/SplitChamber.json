@@ -1,0 +1,11 @@
+{
+	"id": "modSplitChamber",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 10,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"bonusMultishot" : 0.15
+	}	
+}

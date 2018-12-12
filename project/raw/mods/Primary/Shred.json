@@ -1,0 +1,13 @@
+	 {
+	 "id": "modShred",
+	"group": "Primary",
+		"tag": "weaponTypeRifle",
+		"cost": 6,
+		"ranks": 5,
+		"polarity": "V",
+		"effects": {
+			"bonusFireRate": 0.05,
+			"flatPunchThrough": 0.2
+		},
+		"sharedID": "modShred"
+	}

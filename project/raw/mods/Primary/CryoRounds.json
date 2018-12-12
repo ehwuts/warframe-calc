@@ -1,0 +1,12 @@
+{
+	"id": "modCryoRounds",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "D",
+	"effects" : {
+		"bonusCold" : 0.15
+	},		
+	"sharedID": "modCryoRounds"
+}

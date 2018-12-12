@@ -1,66 +1,50 @@
 {
-	name: 'Lanka',
-	type: ['weaponTypePrimary', 'weaponTypeSniper', 'weaponTypeRifle'],
-	rivenDisposition: 1.1,
+	"Name": "Lanka",
+	"Group": "Primary",
+	"SubGroup": "Sniper",
+	"Disposition": 1.1,
+
+	"Magazine": 10,
+	"Ammo": 72,
+	"Reload": 2,
 	
-	attacks: [
-		{
-			attackName: 'Charged Shot',
-			trigger: 'triggerCharge',			
-			noise: 'noiseAlarming',
-			
-			'statFireRate': 1,
-			'statAccuracy': 100,
-			'statMagazine': 10,
-			'statAmmo': 72,
-			'statReload': 2.0,
-			'statPunchThrough': 5,
-			'statProjectiles': 1,
-			
-			'statComboDecay' : 6,
-			
-			zoom: [
-				{'statZoom': 3, effects : { 'flatCritChance': .2 }},
-				{'statZoom': 5, effects : { 'flatCritChance': .3 }},
-				{'statZoom': 8, effects : { 'flatCritChance': .5 }}
-			],
-			
-			damage:{
-				'damageElectricity': 525
-			},
-			
-			'statCritChance': 0.25,
-			'statCritDamage': 2,
-			'statStatusChance': 0.25
+	"ComboTimeout": 6,
+	"Zoom": [
+		{"statZoom": 3, "Effects" : { "flatCritChance": 0.2 }},
+		{"statZoom": 5, "Effects" : { "flatCritChance": 0.3 }},
+		{"statZoom": 8, "Effects" : { "flatCritChance": 0.5 }}			
+	],
+
+	"Attacks": {
+		"Charged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"ChargeTime": 1,
+			"Accuracy": 100,
+			"PunchThrough": 5,
+			"Projectiles": 1,
+			"CriticalChance": 0.25,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.25,
+
+			"Damage": {
+				"Electricity": 525
+			}			
 		},
-		{
-			attackName: 'Uncharged Shot',
-			trigger: 'triggerCharge',			
-			noise: 'noiseAlarming',
-			
-			'statFireRate': 0.33,
-			'statAccuracy': 100,
-			'statMagazine': 10,
-			'statAmmo': 72,
-			'statReload': 2.0,
-			'statPunchThrough': 5,
-			'statProjectiles': 1,
-			
-			'statComboDecay' : 6,
-			
-			zoom: [
-				{'statZoom': 3, effects : { 'flatCritChance': .2 }},
-				{'statZoom': 5, effects : { 'flatCritChance': .3 }},
-				{'statZoom': 8, effects : { 'flatCritChance': .5 }}
-			],
-			
-			damage:{
-				'damageElectricity': 200
-			},
-			
-			'statCritChance': 0.25,
-			'statCritDamage': 2,
-			'statStatusChance': 0.25
+		"Uncharged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"ChargeTime": 0.33,
+			"Accuracy": 100,
+			"PunchThrough": 5,
+			"Projectiles": 1,
+			"CriticalChance": 0.25,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.25,
+
+			"Damage": {
+				"Electricity": 200
+			}			
 		}
-	]
+	}
 }

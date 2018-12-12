@@ -1,0 +1,11 @@
+{
+	"id": "modInfectedClip",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusToxin" : 0.15
+	}
+}

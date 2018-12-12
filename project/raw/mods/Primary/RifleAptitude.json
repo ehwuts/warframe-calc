@@ -1,0 +1,11 @@
+{
+"id":"modRifleAptitude",
+	"group": "Primary",
+		"tag": "weaponTypeRifle",
+		"cost": 4,
+		"ranks": 5,
+		"polarity": "D",
+		"effects": {
+			"bonusStatusChance": 0.025
+		}
+	}

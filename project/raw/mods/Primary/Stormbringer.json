@@ -1,0 +1,11 @@
+{
+	"id": "modStormbringer",
+	"group": "Primary",
+	"tag" : "weaponTypeRifle",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusElectricity" : 0.15
+	}
+}

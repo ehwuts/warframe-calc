@@ -1,0 +1,32 @@
+{		
+	"modSerration": "Serration",
+	"modPointStrike": "Point Strike",
+	"modVitalSense": "Vital Sense",
+	"modVigilanteArmaments": "Vigilante Armaments",
+	"modHellfire": "Hellfire",
+	"modStormbringer": "Stormbringer",
+	"modSplitChamber": "Split Chamber",
+	"modCryoRounds": "Cryo Rounds",
+	"modInfectedClip": "Infected Clip",
+	"modPrimedCryoRounds": "Primed Cryo Rounds",
+	"modHunterMunitions": "Hunter Munitions",
+	"modHeavyCaliber": "Heavy Caliber",
+	"modHighVoltage": "High Voltage",
+	"modMalignantForce": "Malignant Force",
+	"modRimeRounds": "Rime Rounds",
+	"modThermiteRounds": "Thermite Rounds",
+	"modRifleAptitude": "Rifle Aptitude",
+	"modShred": "Shred",
+	"modPrimedShred": "Primed Shred",
+	"modSpeedTrigger": "Speed Trigger",
+	"modVileAcceleration": "Vile Acceleration",
+	"modVigilanteFervor": "Vigilante Fervor",
+	"modRivenRifle": "Rifle Riven",
+	"modRivenShotgun": "Shotgun Riven",
+	
+	
+	"setVigilante": "5% chance to enhance Critical Hits from Primary Weapons",
+	"setHunter": "Companions deal 25% Extra Damage against enemies effected by Slash status",
+		
+	"specialeffectHunterMunitions": "chance to apply Slash status to an enemy on Critical Hit"
+}
