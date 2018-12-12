@@ -1,0 +1,38 @@
+critAvg = 1 + CritChance*CritMulti - CritChance
+
+
+=1 + min(1, viralPS / (1 / (6 * statusAdj)))
+
+=(heatPS + floor(min(6 * statusAdj, 1 / heatPS))) * (base + heatD) / 2
+=(1 + min(1, 1/heatPS)) * (base + heatD) / 2
+7 * ((base + heat) / 2) / 6s
+
+heat/s * (base + heatD) / 2
+min (1 / heat/s * heatval, heatval)
++ min (6 * statusAdj * ((base + heat) / 2) / 6s / statusAdj)
+6 * ((base + heat) / 2) / 6s
+
+heat/s * (base + heatD) / 2
++ (statusAdj * 6 / (heat/s / 6s / statusAdj)) * (base + heatD) / 2
+
+heat/s * (base + heatD) / 2
++ floor(6 * statusAdj) * (base + heatD) / 2
+
+heatPS * (base + heatD) / 2
+(heatPS + floor(min(6 * statusAdj, 1 / heatPS))) * (base + heatD) / 2
+
+heatPS * (base + heatD) / 2
+
+heatPS * 1 + uptime
+
+min(1, 1 / heatPS)
+
+=(A3 + floor(min(6 * A5, 1 / A3))) * (A9 + A11) / 2
+
+
+Damage Effectiveness = (1 + HealthMod) * (1 + ArmorMod) / (1 + Armor * (1 - ArmorMod) / 300)
+Mod = [-0.5, -0.25, -0.15, 0, 0.15, 0.25, 0.5, 0.75]
+
+
+
+Armor = 300 * (-1 + (1 + HealthMod) * (1 + ArmorMod) / Damage Effectiveness) / (1 - ArmorMod)

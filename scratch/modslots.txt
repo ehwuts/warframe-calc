@@ -1,0 +1,8 @@
+Primary - 8
+Secondary - 8
+Melee - 8 + Stance
+Archgun - 8
+Archmelee - 8
+Frame - 8 + Aura + Exilus
+Companion - 10
+SentinelGun - 8
