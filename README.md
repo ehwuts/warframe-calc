@@ -1,4 +1,5 @@
 # Warframe Calculator
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3810dc416c99410b90302f29d3d35b6f)](https://www.codacy.com/app/ehwuts/warframe-calc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ehwuts/warframe-calc&amp;utm_campaign=Badge_Grade)
 ## Usage
 Hopefully intuitive given knowledge of use of the source material.
 
