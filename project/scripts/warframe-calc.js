@@ -67,23 +67,19 @@ function updateFiltering(e) {
 function updateDamageCalcs() {
 	var v = document.getElementById("output");
 
-	if (item === -1 || !items.hasOwnProperty(item)) {
+	if (!WFC.SharedData.Weapon) {
 		v.innerHTML = "";
 		return;
 	}
 
-	var tags = [];
-	for (let i = 0; i < items[item].type.length; i++) {
-		tags.push(WFC.Translate.translate(items[item].type[i]));
-	}
-	tags = tags.join(", ");
+	var tags = WFC.Translate.translate(WFC.SharedData.Weapon.Group) + ", " + WFC.Translate.translate(WFC.SharedData.Weapon.SubGroup);
 
-	var stats = JSON.parse(JSON.stringify(items[item].attacks[0]));
+	var stats = JSON.parse(JSON.stringify(WFC.SharedData.Weapon.Attacks[Object.keys(WFC.SharedData.Weapon.Attacks)[0]]));
 	var baseDamage = 0;
 	{
-		let k = Object.keys(stats.damage);
+		let k = Object.keys(stats.Damage);
 		for (let i = 0; i < k.length; i++) {
-			baseDamage += stats.damage[k[i]];
+			baseDamage += stats.Damage[k[i]];
 		}
 	}
 
@@ -139,10 +135,10 @@ function updateDamageCalcs() {
 				default:
 			}
 		}
-		if (stats.damage.damageCold && ! elementalPriority.includes("damageCold")) elementalPriority.push("damageCold");
-		if (stats.damage.damageHeat && ! elementalPriority.includes("damageHeat")) elementalPriority.push("damageHeat");
-		if (stats.damage.damageToxin && ! elementalPriority.includes("damageToxin")) elementalPriority.push("damageToxin");
-		if (stats.damage.damageElectricity && ! elementalPriority.includes("damageElectricity")) elementalPriority.push("damageElectricity");
+		if (stats.Damage.Cold && ! elementalPriority.includes("damageCold")) elementalPriority.push("damageCold");
+		if (stats.Damage.Heat && ! elementalPriority.includes("damageHeat")) elementalPriority.push("damageHeat");
+		if (stats.Damage.Toxin && ! elementalPriority.includes("damageToxin")) elementalPriority.push("damageToxin");
+		if (stats.Damage.Electricity && ! elementalPriority.includes("damageElectricity")) elementalPriority.push("damageElectricity");
 		//console.log(elementalPriority);
 
 		for (let i = 0; i < elementalPriority.length - 1; i++) {
@@ -214,20 +210,20 @@ function updateDamageCalcs() {
 	}
 
 	{
-		let k = Object.keys(stats.damage);
+		let k = Object.keys(stats.Damage);
 		for (let i = 0; i < k.length; i++) {
-			damagePercents[k[i]] += stats.damage[k[i]] / baseDamage;
+			damagePercents["damage" + k[i]] += stats.Damage[k[i]] / baseDamage;
 		}
 	}
 
-	var critChance = stats.statCritChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0)) + (statsum.flatCritChance?statsum.flatCritChance:0);
-	var critMulti = stats.statCritDamage * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
-	var multishot = stats.statProjectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
-	var punchThrough = stats.statPunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
-	var fireRate = (stats.trigger == "triggerCharge" ? 1 / stats.statFireRate : stats.statFireRate)* (1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
-	var magazine = stats.statMagazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
-	var reload = stats.statReload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
-	var ammo = stats.statAmmo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
+	var critChance = stats.CriticalChance * (1 + (statsum.bonusCritChance?statsum.bonusCritChance:0)) + (statsum.flatCritChance?statsum.flatCritChance:0);
+	var critMulti = stats.CriticalMultiplier * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
+	var multishot = stats.Projectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
+	var punchThrough = stats.PunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
+	var fireRate = (stats.Trigger == "triggerCharge" ? 1 / stats.ChargeTime : stats.FireRate) *(1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
+	var magazine = WFC.SharedData.Weapon.Magazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
+	var reload = WFC.SharedData.Weapon.Reload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
+	var ammo = WFC.SharedData.Weapon.Ammo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
 	if (statsum.bonusCold) damagePercents["damageCold"] += statsum.bonusCold;
 	if (statsum.bonusElectricity) damagePercents["damageElectricity"] += statsum.bonusElectricity;
 	if (statsum.bonusHeat) damagePercents["damageHeat"] += statsum.bonusHeat;
@@ -235,10 +231,7 @@ function updateDamageCalcs() {
 	if (statsum.bonusImpact) damagePercents["damageImpact"] *= (1 + statsum.bonusImpact);
 	if (statsum.bonusPuncture) damagePercents["damagePuncture"]  *= (1 + statsum.bonusPuncture);
 	if (statsum.bonusSlash) damagePercents["damageSlash"]  *= (1 + statsum.bonusSlash);
-	var statusChance = stats.statStatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0));
-	if (stats.usePelletLogic && stats.userPelletLogic == true) {
-		statusChance = 1 - Math.pow(1 - statusChance, 1 / stats.statProjectiles);
-	}
+	var statusChance =  1 - Math.pow(1 - stats.StatusChance * (1 + (statsum.bonusStatusChance?statsum.bonusStatusChance:0)), 1 / stats.Projectiles);
 	var statusDuration = 1 + (statsum.bonusStatusDuration?statsum.bonusStatusDuration:0);
 
 	function critScale(tier, multi) {
@@ -340,7 +333,7 @@ function updateDamageCalcs() {
 
 	/* Begin Display Blob */
 	var result = "<table>" + "\n"
-	           + "<tr><td colspan=\"4\">" + items[item].name + " - " + items[item].attacks[0].attackName + "</td></tr>"
+	           + "<tr><td colspan=\"4\">" + WFC.SharedData.Weapon.Name + " - " + Object.keys(WFC.SharedData.Weapon.Attacks)[0] + "</td></tr>"
 			   + "<tr><td colspan=\"4\">" + tags + "</td></tr>";
 
 	result += "<tr><td>&nbsp;</td><td>" + WFC.Translate.translate("labelBase") + "<td>" + WFC.Translate.translate("labelMinimum") + "</td><td>" + WFC.Translate.translate("labelAverage") + "</td><td>" + WFC.Translate.translate("statStatusChance") + "</td></tr>" + "\n";
