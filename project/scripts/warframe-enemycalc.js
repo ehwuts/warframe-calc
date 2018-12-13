@@ -1,27 +1,30 @@
-var WFC_enemy = {};
+if (!WFC) {
+	WFC = {};
+}
+var WFC.Enemy = {};
 
-WFC_enemy.scaleFactor = function(delta, base, coeff, exp) {
+WFC.Enemy.scaleFactor = function(delta, base, coeff, exp) {
 	return base * (1 + coeff * Math.pow(delta, exp));
 };
 
-WFC_enemy.updateDisplay = function() {	
-	var stat = WFC_enemy.enemy.getShield();	
-	WFC_enemy.ref.scaled_shield.innerHTML = (stat|0);
-	WFC_enemy.ref.scaled_shield.title = stat;
+WFC.Enemy.updateDisplay = function() {	
+	var stat = WFC.Enemy.enemy.getShield();	
+	WFC.Enemy.ref.scaled_shield.innerHTML = (stat|0);
+	WFC.Enemy.ref.scaled_shield.title = stat;
 	
-	stat = WFC_enemy.enemy.getHealth();
-	WFC_enemy.ref.scaled_health.innerHTML = (stat|0);
-	WFC_enemy.ref.scaled_health.title = stat;
+	stat = WFC.Enemy.enemy.getHealth();
+	WFC.Enemy.ref.scaled_health.innerHTML = (stat|0);
+	WFC.Enemy.ref.scaled_health.title = stat;
 	
-	stat = WFC_enemy.enemy.getArmor();
-	WFC_enemy.ref.scaled_armor.innerHTML = (stat|0);
-	WFC_enemy.ref.scaled_armor.title = stat;
+	stat = WFC.Enemy.enemy.getArmor();
+	WFC.Enemy.ref.scaled_armor.innerHTML = (stat|0);
+	WFC.Enemy.ref.scaled_armor.title = stat;
 };
 
-WFC_enemy.updateEnemy 
+WFC.Enemy.updateEnemy 
 
-WFC_enemy.init = function() {
-	WFC_enemy.enemy = {
+WFC.Enemy.init = function() {
+	WFC.Enemy.enemy = {
 		"type" : {
 			"faction" : "corpus",
 			"shield" : "shield",
@@ -35,13 +38,13 @@ WFC_enemy.init = function() {
 			"armor" : 5
 		},
 		"level" : 50,
-		"getShield" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.shield, 0.0075, 2); },
-		"getHealth" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.health, 0.015, 2); },
-		"getArmor" : function() { return WFC_enemy.scaleFactor(WFC_enemy.enemy.level - WFC_enemy.enemy.base.level, WFC_enemy.enemy.base.armor, 0.005, 1.75); }
+		"getShield"() { return WFC.Enemy.scaleFactor(WFC.Enemy.enemy.level - WFC.Enemy.enemy.base.level, WFC.Enemy.enemy.base.shield, 0.0075, 2); },
+		"getHealth"() { return WFC.Enemy.scaleFactor(WFC.Enemy.enemy.level - WFC.Enemy.enemy.base.level, WFC.Enemy.enemy.base.health, 0.015, 2); },
+		"getArmor"() { return WFC.Enemy.scaleFactor(WFC.Enemy.enemy.level - WFC.Enemy.enemy.base.level, WFC.Enemy.enemy.base.armor, 0.005, 1.75); }
 		
 	};
 	
-	WFC_enemy.ref = {
+	WFC.Enemy.ref = {
 		"base_level" : document.getElementById("base_level"),
 		"base_shield" : document.getElementById("base_shield"),
 		"base_health" : document.getElementById("base_health"),
@@ -53,11 +56,11 @@ WFC_enemy.init = function() {
 		"select_enemy" : document.getElementById("select_enemy")
 	};
 	
-	WFC_enemy.ref.base_level.onkeyup = function() { WFC_enemy.enemy.base.level = WFC_enemy.ref.base_level.value; WFC_enemy.updateDisplay(); };
-	WFC_enemy.ref.scaled_level.onkeyup = function() { WFC_enemy.enemy.level = WFC_enemy.ref.scaled_level.value; WFC_enemy.updateDisplay(); };
-	document.getElementById("select_load").onlick = WFC_enemy.updateEnemy();
+	WFC.Enemy.ref.base_level.onkeyup = function() { WFC.Enemy.enemy.base.level = WFC.Enemy.ref.base_level.value; WFC.Enemy.updateDisplay(); };
+	WFC.Enemy.ref.scaled_level.onkeyup = function() { WFC.Enemy.enemy.level = WFC.Enemy.ref.scaled_level.value; WFC.Enemy.updateDisplay(); };
+	document.getElementById("select_load").onlick = WFC.Enemy.updateEnemy();
 	
-	WFC_enemy.updateDisplay();
+	WFC.Enemy.updateDisplay();
 };
 
-window.addEventListener("load", WFC_enemy.init);
+window.addEventListener("load", WFC.Enemy.init);
