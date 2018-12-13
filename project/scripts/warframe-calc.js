@@ -340,17 +340,17 @@ function updateDamageCalcs() {
 
 	/* Begin Display Blob */
 	var result = "<table>" + "\n"
-	           + "<tr><td colspan="4">" + items[item].name + " - " + items[item].attacks[0].attackName + "</td></tr>"
-			   + "<tr><td colspan="4">" + tags + "</td></tr>";
+	           + "<tr><td colspan=\"4\">" + items[item].name + " - " + items[item].attacks[0].attackName + "</td></tr>"
+			   + "<tr><td colspan=\"4\">" + tags + "</td></tr>";
 
 	result += "<tr><td>&nbsp;</td><td>" + WFC.Translate.translate("labelBase") + "<td>" + WFC.Translate.translate("labelMinimum") + "</td><td>" + WFC.Translate.translate("labelAverage") + "</td><td>" + WFC.Translate.translate("statStatusChance") + "</td></tr>" + "\n";
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
 		if (damageBases[k[i]]) result += "<tr><td>" + WFC.Translate.translate(k[i]) + "</td><td>" + truncatedstringFromFloat(damageBases[k[i]]) + "</td><td>" + truncatedstringFromFloat(damageMinimum[k[i]]) + "</td><td>" + truncatedstringFromFloat(damageScaled[k[i]]) + "</td><td>" + percentagestringFromFloat(statusChancePerShot[k[i]]) + "</td></tr>" + "\n";
 	}
-	result += "<tr><td colspan="4">&nbsp;</td></tr>" + "\n";
+	result += "<tr><td colspan=\"4\">&nbsp;</td></tr>" + "\n";
 
-	result += "<tr><td>" + WFC.Translate.translate("statCritChance") + "</td><td>" + percentagestringFromFloat(critChance) + "</td><td rowspan="4" colspan="2">" + descCritSpread + "</td></tr>" + "\n"
+	result += "<tr><td>" + WFC.Translate.translate("statCritChance") + "</td><td>" + percentagestringFromFloat(critChance) + "</td><td rowspan=\"4\" colspan=\"2\">" + descCritSpread + "</td></tr>" + "\n"
 	        + "<tr><td>" + WFC.Translate.translate("statCritDamage") + "</td><td>" + truncatedstringFromFloat(critMulti) + "x</td></tr>" + "\n"
 	        + "<tr><td>" + WFC.Translate.translate("statMultishot") + "</td><td>" + truncatedstringFromFloat(multishot) + "</td></tr>" + "\n"
 	        + "<tr><td>" + WFC.Translate.translate("statStatusChance") + "</td><td>" + percentagestringFromFloat(statusChance) + "</td></tr>" + "\n";
@@ -358,16 +358,16 @@ function updateDamageCalcs() {
 	if (punchThrough) result += "<tr><td>" + WFC.Translate.translate("statPunchThrough") + "</td><td>" + truncatedstringFromFloat(punchThrough) + "</td></tr>" + "\n";
 	if (stats.trigger == "triggerCharge") result += "<tr><td>" + WFC.Translate.translate("statChargeRate") + "</td><td>" + truncatedstringFromFloat(1 / fireRate) + "</td></tr>" + "\n";
 	result += "<tr><td>" + WFC.Translate.translate("statFireRate") + "</td><td>" + truncatedstringFromFloat(fireRate) + "</td></tr>" + "\n";
-	result += "<tr><td>" + WFC.Translate.translate("statMagazine") + "</td><td>" + truncatedstringFromFloat(magazine) + "</td><td colspan="2" rowspan="3">" + descFiring + "</td></tr>" + "\n"
+	result += "<tr><td>" + WFC.Translate.translate("statMagazine") + "</td><td>" + truncatedstringFromFloat(magazine) + "</td><td colspan=\"2\" rowspan=\"3\">" + descFiring + "</td></tr>" + "\n"
 	        + "<tr><td>" + WFC.Translate.translate("statReload") + "</td><td>" + truncatedstringFromFloat(reload) + "</td></tr>" + "\n"
 	        + "<tr><td>" + WFC.Translate.translate("statAmmo") + "</td><td>" + truncatedstringFromFloat(ammo) + "</td></tr>" + "\n"
-	        + "<tr><td colspan="4">&nbsp;</td></tr>" + "\n"
+	        + "<tr><td colspan=\"4\">&nbsp;</td></tr>" + "\n"
 			+ "<tr><td>" + WFC.Translate.translate("labelDpsShot") + "</td><td>" + truncatedstringFromFloat(dpsShot) + "</td></tr>" + "\n"
 			+ "<tr><td>" + WFC.Translate.translate("labelDpsClip") + "</td><td>" + truncatedstringFromFloat(dpsClip) + "</td></tr>" + "\n"
 			+ "<tr><td>" + WFC.Translate.translate("labelDpsSustained") + "</td><td>" + truncatedstringFromFloat(dpsSustained) + "</td></tr>" + "\n"
 			;
 	if (statusChance > 0) {
-		result += "<tr><td colspan="4">&nbsp;</td></tr>" + "\n"
+		result += "<tr><td colspan=\"4\">&nbsp;</td></tr>" + "\n"
 		        + "<tr><td>" + WFC.Translate.translate("labelStatusType") + "</td><td>" + WFC.Translate.translate("labelStatusPerSecondClip") + "</td><td>" + WFC.Translate.translate("statStatusDuration") + "</td><td>" + WFC.Translate.translate("labelStatusUptimeClip") + "</td><td>" + WFC.Translate.translate("labelStatusResult") + "</td></tr>";
 		let k = Object.keys(damagePercents);
 		for (let i = 0; i < k.length; i++) {
