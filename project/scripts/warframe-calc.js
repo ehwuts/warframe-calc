@@ -1,5 +1,4 @@
 var WFC = {};
-var item = -1;
 
 var slots = [];
 //{ polarity: ' ', mod: null, rank: '' }
@@ -31,8 +30,8 @@ function truncatedstringFromFloat(f, p = 2) {
 function modCostFromSlot(i) {
 	var id = slots[i].mod;
 	if (id) {
-		let costadj = (slots[i].rank|0)+mods[id].cost;
-		costadj = (slots[i].polarity!=' '?Math.ceil(slots[i].polarity==mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
+		let costadj = (slots[i].rank|0)+WFC.SharedData.Mods[id].cost;
+		costadj = (slots[i].polarity!=' '?Math.ceil(slots[i].polarity==WFC.SharedData.Mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
 		
 		return costadj;
 	}
@@ -60,7 +59,8 @@ function updateFiltering(e) {
 
 
 function updateDamageCalcs() {
-	var v = document.getElementById('output');
+	return;
+	var v = document.getElementById('output');	
 	
 	if (item === -1 || !items.hasOwnProperty(item)) {
 		v.innerHTML = '';
@@ -380,8 +380,8 @@ function updateStatsum() {
 	var capacitySum = 0;
 	
 	for (var m = 0; m < slots.length; m++) {
-		if (slots[m].mod && mods[slots[m].mod]) {
-			let mod = mods[slots[m].mod];
+		if (slots[m].mod && WFC.SharedData.Mods[slots[m].mod]) {
+			let mod = WFC.SharedData.Mods[slots[m].mod];
 			let effects = (mod.sharedID && mod.sharedID == 'modRiven' ? rivenEffects : mod.effects);
 			let k = Object.keys(effects);
 			if (mod.sharedID && mod.sharedID == 'modRiven') k.reverse();
@@ -403,15 +403,16 @@ function updateStatsum() {
 			capacitySum += modCostFromSlot(m);
 		}
 	}
+	
 	var zoom = document.getElementById('zoom').value;
-	if (items[item].attacks[0].zoom && zoom !== '' && items[item].attacks[0].zoom[zoom]) {
-		let k = Object.keys(items[item].attacks[0].zoom[zoom].effects);
+	if (zoom !== '' && WFC.SharedData.Weapon.Zoom && WFC.SharedData.Weapon.Zoom[zoom]) {
+		let k = Object.keys(WFC.SharedData.Weapon.Zoom[zoom].effects);
 		//console.log(k);
 		for (let i = 0; i < k.length; i++) {
 			if (newStatsum[k[i]]) {
-				newStatsum[k[i]] += items[item].attacks[0].zoom[zoom].effects[k[i]];
+				newStatsum[k[i]] += WFC.SharedData.Weapon.Zoom[zoom].effects[k[i]];
 			} else {
-				newStatsum[k[i]] = items[item].attacks[0].zoom[zoom].effects[k[i]];
+				newStatsum[k[i]] = WFC.SharedData.Weapon.Zoom[zoom].effects[k[i]];
 			}
 		}
 	}
@@ -421,12 +422,14 @@ function updateStatsum() {
 	
 	document.getElementById('capacity').innerText = capacitySum + '/60';
 	
-	if (item) updateDamageCalcs();
+	if (WFC.SharedData.Weapon) {		
+		updateDamageCalcs();
+	}
 }
 
 function describeMod(id, rank = null) {
 	var result = '';
-	var mod = mods[id];
+	var mod = WFC.SharedData.Mods[id];
 	if (mod) {
 		if (!rank) {
 			rank = 0;
@@ -449,11 +452,11 @@ function describeMod(id, rank = null) {
 function slotAdjust(slot, delta) {
 	var i = slot.getAttribute('data-num');
 	var id = slots[i].mod;
-	slots[i].rank = Math.max(0, Math.min(mods[id].ranks, slots[i].rank + delta));
-	slot.children[0].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
+	slots[i].rank = Math.max(0, Math.min(WFC.SharedData.Mods[id].ranks, slots[i].rank + delta));
+	slot.children[0].children[1].innerText = slots[i].rank+'/'+WFC.SharedData.Mods[id].ranks;
 	
 	let costadj = modCostFromSlot(i);
-	slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
+	slot.children[2].innerText = costadj + ' ' + WFC.SharedData.Mods[id].polarity;
 	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
 	
 	updateStatsum();
@@ -461,7 +464,7 @@ function slotAdjust(slot, delta) {
 
 function displayRivenEditor() {
 	for (let i = 0; i < slots.length; i++) {
-		if (slots[i].mod && mods[slots[i].mod] && mods[slots[i].mod].sharedID && mods[slots[i].mod].sharedID == 'modRiven') {
+		if (slots[i].mod && WFC.SharedData.Mods[slots[i].mod] && WFC.SharedData.Mods[slots[i].mod].sharedID && WFC.SharedData.Mods[slots[i].mod].sharedID == 'modRiven') {
 			document.getElementById('rivenedit').classList.remove('hide2');
 			return;
 		}
@@ -476,20 +479,20 @@ function setSlot(slot, id, rank = null) {
 		if (rank !== null) {
 			slots[i].rank = rank;
 		} else {
-			slots[i].rank = mods[id].ranks;
+			slots[i].rank = WFC.SharedData.Mods[id].ranks;
 		}
 		slots[i].mod = id;
-		let polarmatch = (slots[i].polarity!=' '?(slots[i].polarity==mods[id].polarity?' polaritymatch':' polarityconflict'):'');
+		let polarmatch = (slots[i].polarity!=' '?(slots[i].polarity==WFC.SharedData.Mods[id].polarity?' polaritymatch':' polarityconflict'):'');
 		let costadj = modCostFromSlot(i);
 		
 		slot.children[0].className = 'slotrank';
-		slot.children[0].children[1].innerText = slots[i].rank+'/'+mods[id].ranks;
+		slot.children[0].children[1].innerText = slots[i].rank+'/'+WFC.SharedData.Mods[id].ranks;
 		slot.children[1].innerText = slots[i].polarity;
 		slot.children[2].className = 'slotcost' + polarmatch;
-		slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
+		slot.children[2].innerText = costadj + ' ' + WFC.SharedData.Mods[id].polarity;
 		slot.children[3].innerText = WFC.Translate.translate(id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = WFC.Translate.translate(mods[id].tag);
+		slot.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[id].tag);
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
@@ -563,8 +566,8 @@ var DragHandler = (function(window, undefined){
 						makeListVisible(slots[this.getAttribute("data-num")].mod);
 					} else {					
 						for (let i = 0; i < slots.length; i++) {
-							let conflicts = mods[dragSrc.getAttribute('data-modid')].sharedID;
-							let conflicts2 = slots[i].mod && mods[slots[i].mod].sharedID;
+							let conflicts = WFC.SharedData.Mods[dragSrc.getAttribute('data-modid')].sharedID;
+							let conflicts2 = slots[i].mod && WFC.SharedData.Mods[slots[i].mod].sharedID;
 							if (conflicts2 && conflicts && conflicts2 == conflicts) {
 								return false;
 							}
@@ -620,7 +623,7 @@ function sortModsList() {
 }
 
 function initializeModsList() {
-	var k = Object.keys(mods);
+	var k = Object.keys(WFC.SharedData.Mods);
 	var dest = document.getElementById("modslist");
 	
 	for (let i = 0; i < k.length; i++) {
@@ -728,18 +731,6 @@ function initializeModSlots() {
 		
 		dest.appendChild(e);
 	}	
-}
-
-function changeDataset(e) {
-	if (e.target.value != dataset && dataSets.includes(e.target.value)) {
-		let ee = document.createElement('script');
-		ee.src = 'project/data/' + e.target.value + '.js';
-		ee.onload = applyDataset;
-		
-		let v = document.getElementById('datasrc');
-		v.parentElement.removeChild(v);
-		document.body.appendChild(ee);
-	}
 }
 
 function displayItem() {
@@ -1006,38 +997,38 @@ function applyItem(e) {
 	}
 }
 
-function applyDataset() {
-	var v = document.getElementById('item_select');
-	while (v.children.length > 0) {
-		v.removeChild(v.lastElementChild);
-	}
-	
-	var e = document.createElement('option');
-	e.value = -1;
-	e.innerText = WFC.Translate.translate('selectBlank');
-	v.appendChild(e);
-	
-	var keys = Object.keys(items);
-	for (let i = 0; i < keys.length; i++) {
-		let e = document.createElement('option');
-		e.value = keys[i];
-		e.innerText = items[keys[i]].name;
-		v.appendChild(e);
-	}
-	v.onchange = applyItem;
-}
-
 function displayMisc() {
 	//TODO localize that form
 };
 
 WFC.SharedData = {
-	"Weapon": null
+	"Weapon": null,
+	"Mods": null
 };
 
-WFC.Modding = (function (WFC, window, undefined) {
+WFC.Modding = (function (WFC, srcData, window, undefined) {
+	var Mods;
 	
-})(WFC, window);
+	function initData() {
+		WFC.Util.debug("Modding.initData");
+		WFC.SharedData.Mods = this.response.Mods;
+		initializeModsList();
+		initializeModSlots();
+	}
+	
+	var obj = {};
+	
+	obj.init = function() {
+		WFC.Util.debug("Modding.init");
+		var request = new XMLHttpRequest();
+		request.open("GET", srcData);
+		request.responseType = "json";
+		request.onload = initData;
+		request.send();		
+	};
+	
+	return obj;
+})(WFC, "project/data/ModData.json", window);
 
 WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	var locales = {
@@ -1268,11 +1259,8 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 	return obj;
 })(WFC, "project/data/WeaponData.json", "formWeaponChoice", "inputWeaponSelectGroup", "inputWeaponSelect", window);
 
-function init() {
-	initializeModsList();
-	initializeModSlots();
+window.addEventListener("load", function () {
+	WFC.Modding.init();
 	WFC.Weapons.init();
-	WFC.Translate.init();
-}
-
-window.addEventListener('load', init);
+	WFC.Translate.init();	
+});
