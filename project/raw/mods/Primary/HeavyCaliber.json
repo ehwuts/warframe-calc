@@ -1,7 +1,7 @@
 {
 	"id":"modHeavyCaliber",
 	"group": "Primary",
-	"tag" : "weaponTypeRifle",
+	"tag" : "weaponSubGroupRifle",
 	"cost" : 6,
 	"ranks" : 10,
 	"polarity": "V",

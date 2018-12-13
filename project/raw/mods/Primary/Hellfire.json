@@ -1,7 +1,7 @@
 {
 	"id": "modHellfire",
 	"group": "Primary",
-	"tag" : "weaponTypeRifle",
+	"tag" : "weaponSubGroupRifle",
 	"cost" : 6,
 	"ranks" : 5,
 	"polarity": "—",

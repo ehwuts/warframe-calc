@@ -1,7 +1,7 @@
 {
 	"id":"modHighVoltage",
 	"group": "Primary",
-	"tag" : "weaponTypeRifle",
+	"tag" : "weaponSubGroupRifle",
 	"cost" : 4,
 	"ranks" : 3,
 	"polarity": "V",

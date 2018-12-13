@@ -76,14 +76,6 @@
 		"weaponSubGroupRifle": "Rifle",
 		"weaponSubGroupSniper": "Sniper",
 
-		"weaponTypeRifle": "Rifle",
-		"weaponTypeSniper": "Sniper",
-		"weaponTypeBow": "Bow",
-		"weaponTypeShotgun": "Shotgun",
-		"weaponTypeLauncher": "Launcher",
-		"weaponTypeSecondary": "Secondary",
-		"weaponTypeMelee": "Melee",
-
 		"setVigilante": "5% chance to enhance Critical Hits from Primary Weapons",
 		"setHunter": "Companions deal 25% Extra Damage against enemies effected by Slash status",
 

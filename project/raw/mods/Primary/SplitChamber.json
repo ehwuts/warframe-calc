@@ -1,7 +1,7 @@
 {
 	"id": "modSplitChamber",
 	"group": "Primary",
-	"tag" : "weaponTypeRifle",
+	"tag" : "weaponSubGroupRifle",
 	"cost" : 10,
 	"ranks" : 5,
 	"polarity": "V",

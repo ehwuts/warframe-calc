@@ -1,7 +1,7 @@
 {
 	"id": "modVigilanteArmaments",
 	"group": "Primary",
-	"tag": "weaponTypePrimary",
+	"tag": "weaponGroupPrimary",
 	"cost": 4,
 	"ranks": 5,
 	"polarity": "—",

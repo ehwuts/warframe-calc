@@ -1,7 +1,7 @@
 {
 	"id": "modPointStrike",
 	"group": "Primary",
-	"tag" : "weaponTypeRifle",
+	"tag" : "weaponSubGroupRifle",
 	"cost" : 4,
 	"ranks" : 5,
 	"polarity": "V",

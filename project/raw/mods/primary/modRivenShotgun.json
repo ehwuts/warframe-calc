@@ -2,7 +2,7 @@
 	"id": "modRivenShotgun",
 	"group": "Primary",
 	"data": {
-		"tag": "weaponTypeShotgun",
+		"tag": "weaponSubGroupShotgun",
 		"cost": 8,
 		"ranks": 8,
 		"polarity": "V",
