@@ -1,6 +1,4 @@
 var WFC = {};
-var dataSets = ['datasetPrimary', 'datasetSecondary', 'datasetMelee', 'datasetWarframe', 'datasetCompanion', 'datasetArchwing', 'datasetArchgun', 'datasetArchmelee'];
-var dataset = 'datasetPrimary';
 var item = -1;
 
 var slots = [];
@@ -378,7 +376,6 @@ function updateDamageCalcs() {
 }
 
 function updateStatsum() {
-	return;
 	var newStatsum = {};
 	var capacitySum = 0;
 	
@@ -1201,7 +1198,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		WFC.Util.debug("Weapons.changeWeapon - " + e.target.value);
 		
 		WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
-		document.getElementById("tempWeaponDisplay").innerText = JSON.stringify(WFC.SharedData.Weapon, null, "\t");
+		document.getElementById("displayWeapon").innerText = JSON.stringify(WFC.SharedData.Weapon, null, "\t");
 	}
 
 	function initForm() {
