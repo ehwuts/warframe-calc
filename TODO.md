@@ -1,5 +1,5 @@
-#TODO
-##Base
+# TODO
+## Base
 * Replace page layout with something decent.
 * Isolate component code so that changes are saner
 * Convert composite data files and loading to use compression.
@@ -10,11 +10,11 @@
   * Coverage for Warframes
   * Coverage for Companions
 
-#Calculator-Aux
+# Calculator-Aux
 * Auras
 * Buffs
 
-#Calculator-Weapons-Generic
+# Calculator-Weapons-Generic
 * Warning generation for unprocessed stats.
 * Status cleanup
   * Output niceness
@@ -42,7 +42,7 @@
   * ~~Riven stats~~
 
 
-##Calculator-Guns
+## Calculator-Guns
 * Charge shot specifics
   * Charge Time versus Fire Rate
 * Verify base Pellet logic
@@ -54,17 +54,17 @@
 * Beam Specifics
   * multishot doesn't add status chances?
 
-##Calculator-Melee
+## Calculator-Melee
 * Everything
 * Stances
 * Melee Combo
 
-##Enemy Scaler
+## Enemy Scaler
 * Everything
 * Remember to treat armor and health types as a single table internally so that certain enemies don't require specialcasing.
 * Cross reference to weapon output spread.
 
-##FrameCalc
+## FrameCalc
 * Decide to even add this featureset 
 * Merge Auras
 * Disturbing amount of special-casing.
@@ -74,7 +74,7 @@
   * Archwing - 0/5
   * Arcanes
 
-##CompanionCalc
+## CompanionCalc
 * Decide to even add this featureset 
 * Disturbing amount of special-casing.
 * Data
