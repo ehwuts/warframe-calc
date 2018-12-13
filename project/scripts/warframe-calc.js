@@ -1,3 +1,4 @@
+var WFC = {};
 var dataSets = ['datasetPrimary', 'datasetSecondary', 'datasetMelee', 'datasetWarframe', 'datasetCompanion', 'datasetArchwing', 'datasetArchgun', 'datasetArchmelee'];
 var dataset = 'datasetPrimary';
 var item = -1;
@@ -70,7 +71,7 @@ function updateDamageCalcs() {
 	
 	var tags = [];
 	for (let i = 0; i < items[item].type.length; i++) {
-		tags.push(Localization.translate(items[item].type[i]));
+		tags.push(WFC.Translate.translate(items[item].type[i]));
 	}
 	tags = tags.join(', ');
 	
@@ -339,35 +340,35 @@ function updateDamageCalcs() {
 	           + '<tr><td colspan="4">' + items[item].name + ' - ' + items[item].attacks[0].attackName + '</td></tr>'
 			   + '<tr><td colspan="4">' + tags + '</td></tr>';
 	
-	result += '<tr><td>&nbsp;</td><td>' + Localization.translate('labelBase') + '<td>' + Localization.translate('labelMinimum') + '</td><td>' + Localization.translate('labelAverage') + '</td><td>' + Localization.translate('statStatusChance') + '</td></tr>' + "\n";
+	result += '<tr><td>&nbsp;</td><td>' + WFC.Translate.translate('labelBase') + '<td>' + WFC.Translate.translate('labelMinimum') + '</td><td>' + WFC.Translate.translate('labelAverage') + '</td><td>' + WFC.Translate.translate('statStatusChance') + '</td></tr>' + "\n";
 	var k = Object.keys(damagePercents);
 	for (let i = 0; i < k.length; i++) {
-		if (damageBases[k[i]]) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageMinimum[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
+		if (damageBases[k[i]]) result += '<tr><td>' + WFC.Translate.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(damageBases[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageMinimum[k[i]]) + '</td><td>' + truncatedstringFromFloat(damageScaled[k[i]]) + '</td><td>' + percentagestringFromFloat(statusChancePerShot[k[i]]) + '</td></tr>' + "\n";
 	}
 	result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n";
 	
-	result += '<tr><td>' + Localization.translate('statCritChance') + '</td><td>' + percentagestringFromFloat(critChance) + '</td><td rowspan="4" colspan="2">' + descCritSpread + '</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statCritDamage') + '</td><td>' + truncatedstringFromFloat(critMulti) + 'x</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statMultishot') + '</td><td>' + truncatedstringFromFloat(multishot) + '</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statStatusChance') + '</td><td>' + percentagestringFromFloat(statusChance) + '</td></tr>' + "\n";
-	if (statusDuration != 1) result += '<tr><td>' + Localization.translate('statStatusDuration') + '</td><td>' + percentagestringFromFloat(statusDuration) + '</td></tr>' + "\n"
-	if (punchThrough) result += '<tr><td>' + Localization.translate('statPunchThrough') + '</td><td>' + truncatedstringFromFloat(punchThrough) + '</td></tr>' + "\n";
-	if (stats.trigger == 'triggerCharge') result += '<tr><td>' + Localization.translate('statChargeRate') + '</td><td>' + truncatedstringFromFloat(1 / fireRate) + '</td></tr>' + "\n";
-	result += '<tr><td>' + Localization.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n";
-	result += '<tr><td>' + Localization.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statReload') + '</td><td>' + truncatedstringFromFloat(reload) + '</td></tr>' + "\n"
-	        + '<tr><td>' + Localization.translate('statAmmo') + '</td><td>' + truncatedstringFromFloat(ammo) + '</td></tr>' + "\n"
+	result += '<tr><td>' + WFC.Translate.translate('statCritChance') + '</td><td>' + percentagestringFromFloat(critChance) + '</td><td rowspan="4" colspan="2">' + descCritSpread + '</td></tr>' + "\n"
+	        + '<tr><td>' + WFC.Translate.translate('statCritDamage') + '</td><td>' + truncatedstringFromFloat(critMulti) + 'x</td></tr>' + "\n"
+	        + '<tr><td>' + WFC.Translate.translate('statMultishot') + '</td><td>' + truncatedstringFromFloat(multishot) + '</td></tr>' + "\n"
+	        + '<tr><td>' + WFC.Translate.translate('statStatusChance') + '</td><td>' + percentagestringFromFloat(statusChance) + '</td></tr>' + "\n";
+	if (statusDuration != 1) result += '<tr><td>' + WFC.Translate.translate('statStatusDuration') + '</td><td>' + percentagestringFromFloat(statusDuration) + '</td></tr>' + "\n"
+	if (punchThrough) result += '<tr><td>' + WFC.Translate.translate('statPunchThrough') + '</td><td>' + truncatedstringFromFloat(punchThrough) + '</td></tr>' + "\n";
+	if (stats.trigger == 'triggerCharge') result += '<tr><td>' + WFC.Translate.translate('statChargeRate') + '</td><td>' + truncatedstringFromFloat(1 / fireRate) + '</td></tr>' + "\n";
+	result += '<tr><td>' + WFC.Translate.translate('statFireRate') + '</td><td>' + truncatedstringFromFloat(fireRate) + '</td></tr>' + "\n";
+	result += '<tr><td>' + WFC.Translate.translate('statMagazine') + '</td><td>' + truncatedstringFromFloat(magazine) + '</td><td colspan="2" rowspan="3">' + descFiring + '</td></tr>' + "\n"
+	        + '<tr><td>' + WFC.Translate.translate('statReload') + '</td><td>' + truncatedstringFromFloat(reload) + '</td></tr>' + "\n"
+	        + '<tr><td>' + WFC.Translate.translate('statAmmo') + '</td><td>' + truncatedstringFromFloat(ammo) + '</td></tr>' + "\n"
 	        + '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('labelDpsShot') + '</td><td>' + truncatedstringFromFloat(dpsShot) + '</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('labelDpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
-			+ '<tr><td>' + Localization.translate('labelDpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
+			+ '<tr><td>' + WFC.Translate.translate('labelDpsShot') + '</td><td>' + truncatedstringFromFloat(dpsShot) + '</td></tr>' + "\n"
+			+ '<tr><td>' + WFC.Translate.translate('labelDpsClip') + '</td><td>' + truncatedstringFromFloat(dpsClip) + '</td></tr>' + "\n"
+			+ '<tr><td>' + WFC.Translate.translate('labelDpsSustained') + '</td><td>' + truncatedstringFromFloat(dpsSustained) + '</td></tr>' + "\n"
 			;
 	if (statusChance > 0) {
 		result += '<tr><td colspan="4">&nbsp;</td></tr>' + "\n"
-		        + '<tr><td>' + Localization.translate('labelStatusType') + '</td><td>' + Localization.translate('labelStatusPerSecondClip') + '</td><td>' + Localization.translate('statStatusDuration') + '</td><td>' + Localization.translate('labelStatusUptimeClip') + '</td><td>' + Localization.translate('labelStatusResult') + '</td></tr>';
+		        + '<tr><td>' + WFC.Translate.translate('labelStatusType') + '</td><td>' + WFC.Translate.translate('labelStatusPerSecondClip') + '</td><td>' + WFC.Translate.translate('statStatusDuration') + '</td><td>' + WFC.Translate.translate('labelStatusUptimeClip') + '</td><td>' + WFC.Translate.translate('labelStatusResult') + '</td></tr>';
 		let k = Object.keys(damagePercents);
 		for (let i = 0; i < k.length; i++) {
-			if (damageBases[k[i]]||(k[i]=='damageToxin'&&damageBases['damageGas'])) result += '<tr><td>' + Localization.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + truncatedstringFromFloat(statusEffectScaledDuration[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
+			if (damageBases[k[i]]||(k[i]=='damageToxin'&&damageBases['damageGas'])) result += '<tr><td>' + WFC.Translate.translate(k[i]) + '</td><td>' + truncatedstringFromFloat(statusPerSecond[k[i]]) + '</td><td>' + truncatedstringFromFloat(statusEffectScaledDuration[k[i]]) + '</td><td>' + percentagestringFromFloat(statusUptimeClip[k[i]]) + '</td><td>' + statusDesc[k[i]] + '</td></tr>' + "\n";
 		}
 	}
 	result += '</table>';
@@ -377,6 +378,7 @@ function updateDamageCalcs() {
 }
 
 function updateStatsum() {
+	return;
 	var newStatsum = {};
 	var capacitySum = 0;
 	
@@ -438,10 +440,10 @@ function describeMod(id, rank = null) {
 		var k = Object.keys(effects);
 		for (let i = 0; i < k.length; i++) {
 			let adj = effects[k[i]] * (rank + 1);
-			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + Localization.translate(k[i]) + '<br>';
+			result += (adj>0?'+':'') + (k[i].indexOf('bonus') === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + ' ' + WFC.Translate.translate(k[i]) + '<br>';
 		}
 		if (mod.set) {
-			result += Localization.translate(mod.set);
+			result += WFC.Translate.translate(mod.set);
 		}
 	}	
 	return result;
@@ -488,9 +490,9 @@ function setSlot(slot, id, rank = null) {
 		slot.children[1].innerText = slots[i].polarity;
 		slot.children[2].className = 'slotcost' + polarmatch;
 		slot.children[2].innerText = costadj + ' ' + mods[id].polarity;
-		slot.children[3].innerText = Localization.translate(id);
+		slot.children[3].innerText = WFC.Translate.translate(id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = Localization.translate(mods[id].tag);
+		slot.children[5].innerText = WFC.Translate.translate(mods[id].tag);
 		slot.draggable=true;
 	} else {
 		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
@@ -606,7 +608,7 @@ function sortModsList() {
 	var p = document.getElementById('modslist').children;
 	for (let i = 0; i < p.length; i++) {
 		let mod = p[i].getAttribute('data-modid');
-		a.push({id: mod, hide: p[i].classList.contains('hide2'), val: Localization.translate(mod)});
+		a.push({id: mod, hide: p[i].classList.contains('hide2'), val: WFC.Translate.translate(mod)});
 	}
 	a.sort((x, y) => (x.val>y.val?1:-1));
 	for (let i = 0; i < a.length; i++) {
@@ -753,7 +755,7 @@ function displayItem() {
 	var v = document.getElementById('displayItem');
 	var tags = [];
 	for (let i = 0; i < items[item].type.length; i++) {
-		tags.push(Localization.translate(items[item].type[i]));
+		tags.push(WFC.Translate.translate(items[item].type[i]));
 	}
 	
 	v.innerText = items[item].name + "\n"
@@ -761,23 +763,23 @@ function displayItem() {
 	v.innerText += 'Attacks' + "\n"; 
 	for (let i = 0; i < items[item].attacks.length; i++) {
 		v.innerText += items[item].attacks[i].attackName + "\n"
-		             + Localization.translate('statAccuracy') + ' ' + items[item].attacks[i].statAccuracy + "\n"
-				     + Localization.translate('statCritChance') + ' ' + items[item].attacks[i].statCritChance + "\n"
-					 + Localization.translate('statCritDamage') + ' ' + items[item].attacks[i].statCritDamage + "\n"
-					 + Localization.translate('statFireRate') + ' ' + items[item].attacks[i].statFireRate + "\n"
-					 + Localization.translate('statMagazine') + ' ' + items[item].attacks[i].statMagazine + "\n"
-					 + Localization.translate('noiseGeneric') + ' ' + Localization.translate(items[item].attacks[i].noise) + "\n"
-					 + Localization.translate('statReload') + ' ' + items[item].attacks[i].statReload + "\n"
-					 + Localization.translate('statStatusChance') + ' ' + items[item].attacks[i].statStatusChance + "\n"
-					 + Localization.translate('triggerGeneric') + ' ' + Localization.translate(items[item].attacks[i].statReload) + "\n";
+		             + WFC.Translate.translate('statAccuracy') + ' ' + items[item].attacks[i].statAccuracy + "\n"
+				     + WFC.Translate.translate('statCritChance') + ' ' + items[item].attacks[i].statCritChance + "\n"
+					 + WFC.Translate.translate('statCritDamage') + ' ' + items[item].attacks[i].statCritDamage + "\n"
+					 + WFC.Translate.translate('statFireRate') + ' ' + items[item].attacks[i].statFireRate + "\n"
+					 + WFC.Translate.translate('statMagazine') + ' ' + items[item].attacks[i].statMagazine + "\n"
+					 + WFC.Translate.translate('noiseGeneric') + ' ' + WFC.Translate.translate(items[item].attacks[i].noise) + "\n"
+					 + WFC.Translate.translate('statReload') + ' ' + items[item].attacks[i].statReload + "\n"
+					 + WFC.Translate.translate('statStatusChance') + ' ' + items[item].attacks[i].statStatusChance + "\n"
+					 + WFC.Translate.translate('triggerGeneric') + ' ' + WFC.Translate.translate(items[item].attacks[i].statReload) + "\n";
 		if (items[item].attacks[i].falloff) {
-			v.innerText += "\n" + Localization.translate('%n falloffStart', items[item].attacks[i].falloff[0]) + "\n"
-			             + Localization.translate('%n falloffEnd', items[item].attacks[i].falloff[1]) + "\n"
-						 + Localization.translate('%n falloffAmount', items[item].attacks[i].falloff[2]) + "\n";
+			v.innerText += "\n" + WFC.Translate.translate('%n falloffStart', items[item].attacks[i].falloff[0]) + "\n"
+			             + WFC.Translate.translate('%n falloffEnd', items[item].attacks[i].falloff[1]) + "\n"
+						 + WFC.Translate.translate('%n falloffAmount', items[item].attacks[i].falloff[2]) + "\n";
 		}
 		v.innerText += "\n";
 		for (let j = 0; j < items[item].attacks[i].damage.length; j++) {
-			v.innerText += Localization.translate(items[item].attacks[i].damage[j][0]) + ' ' + items[item].attacks[i].damage[j][1] + "\n";
+			v.innerText += WFC.Translate.translate(items[item].attacks[i].damage[j][0]) + ' ' + items[item].attacks[i].damage[j][1] + "\n";
 		}
 		
 	}
@@ -882,14 +884,14 @@ function updateRivenForm() {
 	
 	var opt = document.createElement('option');
 	opt.value = '';
-	opt.innerText = Localization.translate('selectNone');
+	opt.innerText = WFC.Translate.translate('selectNone');
 	v.appendChild(opt);	
 	var k = Object.keys(rivenData.categories[items[item].rivenType].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
 		if (keep && k[i] == oldval) opt.selected = 'selected';
-		opt.innerText = Localization.translate(k[i]);
+		opt.innerText = WFC.Translate.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
@@ -901,14 +903,14 @@ function updateRivenForm() {
 	}
 	opt = document.createElement('option');
 	opt.value = '';
-	opt.innerText = Localization.translate('selectNone');
+	opt.innerText = WFC.Translate.translate('selectNone');
 	v.appendChild(opt);	
 	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
 		if (keep && k[i] == oldval) opt.selected = 'selected';
-		opt.innerText = Localization.translate(k[i]);
+		opt.innerText = WFC.Translate.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
@@ -920,14 +922,14 @@ function updateRivenForm() {
 	}
 	opt = document.createElement('option');
 	opt.value = '';
-	opt.innerText = Localization.translate('selectNone');
+	opt.innerText = WFC.Translate.translate('selectNone');
 	v.appendChild(opt);	
 	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
 		if (keep && k[i] == oldval) opt.selected = 'selected';
-		opt.innerText = Localization.translate(k[i]);
+		opt.innerText = WFC.Translate.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
@@ -939,14 +941,14 @@ function updateRivenForm() {
 	}
 	opt = document.createElement('option');
 	opt.value = '';
-	opt.innerText = Localization.translate('selectNone');
+	opt.innerText = WFC.Translate.translate('selectNone');
 	v.appendChild(opt);	
 	k = Object.keys(rivenData.categories[items[item].rivenType].curse);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement('option');
 		opt.value = k[i];
 		if (keep && k[i] == oldval) opt.selected = 'selected';
-		opt.innerText = Localization.translate(k[i]);
+		opt.innerText = WFC.Translate.translate(k[i]);
 		v.appendChild(opt);
 	}
 	v.onchange = updateRivenComposite;
@@ -977,7 +979,7 @@ function updateMiscForm() {
 		
 		var e = document.createElement('option');
 		e.value = '';
-		e.innerText = Localization.translate('selectBlank');
+		e.innerText = WFC.Translate.translate('selectBlank');
 		e.selected = 'selected';
 		v.appendChild(e);
 		
@@ -1015,7 +1017,7 @@ function applyDataset() {
 	
 	var e = document.createElement('option');
 	e.value = -1;
-	e.innerText = Localization.translate('selectBlank');
+	e.innerText = WFC.Translate.translate('selectBlank');
 	v.appendChild(e);
 	
 	var keys = Object.keys(items);
@@ -1032,13 +1034,13 @@ function displayMisc() {
 	//TODO localize that form
 };
 
-var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
+WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	var locales = {
-		'en': 'English', 
-		'fr': 'Français',
+		"en": "English", 
+		"fr": "Français",
 		//'it': 'Italiano',
 		//'de': 'Deutsch',
-		'sp': 'Español',
+		//'sp': 'Español',
 		//'pt': 'Português',
 		//'ru': 'Pусский',
 		//'pl': 'Polski',
@@ -1048,37 +1050,10 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 		//'zh-CN': '中文',
 		//'ko': '한국어'
 	};
-	var localeRegex = /^[a-z][a-z](?:-[a-z][a-z])?$/i;
-	var language = 'en';
-	var dict = i18n.create();
-	var thingsToUpdate = [];
-	
-	function applyLang() {		
-		language = lang.code;
-		window.document.children[0].lang = language;
-		dict = i18n.create(lang);
-		
-		for (let i = 0; i < thingsToUpdate.length; i++) {
-			thingsToUpdate[i]();
-		}
-	}
-	
-	function requestLang(e) {
-		var newlanguage = e.target.value;
-		if (language !== newlanguage) {
-			var r = document.getElementById(idSrc);
-			r.parentElement.removeChild(r);
-			var e = document.createElement('script');
-			e.id = idSrc;
-			e.onload = applyLang;
-			e.src = pathSrc + 'lang.' + newlanguage + '.js';
-			document.body.appendChild(e);
-			
-			if (!!window.localStorage) {
-				window.localStorage.setItem('lang', newlanguage);
-			}
-		}
-	}	
+	var locale = "";
+	var Dict = {};
+	var labels = {};
+
 	
 	if (!!window.localStorage) {
 		let v = window.localStorage.getItem('lang');
@@ -1087,18 +1062,56 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 		}
 	}
 	
+	function translate(key) {
+		if (Dict[key]) {
+			return Dict[key];
+		} else {
+			return key;
+		}
+	}
+
+	function applyLang() {		
+		locale = this.response.code;
+		Dict = this.response.values;
+		
+		window.document.children[0].lang = locale;
+		
+		var k = Object.keys(labels);
+		for (let i = 0; i < k.length; i++) {
+			document.getElementById(k[i])[labels[k[i]].prop] = translate(labels[k[i]].key);
+		}
+	}
+	
+	function requestLang(e) {
+		var newlanguage = e.target.value;
+		
+		if (locale !== newlanguage) {
+			var request = new XMLHttpRequest();
+			request.open("GET", pathSrc + "lang." + newlanguage + ".json");
+			request.responseType = "json";
+			request.onload = applyLang;
+			request.send();
+			
+			if (!!window.localStorage) {
+				window.localStorage.setItem('lang', newlanguage);
+			}
+		}
+	}	
+	
 	var obj = {};
 	
-	obj.translate = function (a, b) {
-		return dict(a, b);
-	};
-	obj.addUpdate = function (f) {
-		thingsToUpdate.push(f);
+	obj.translate = translate;
+	
+	obj.add = function (id, key, prop) {
+		labels[id] = {
+			"key": key,
+			"prop": prop
+		};
 	};
 	
 	obj.init = function () {
 		var ls = window.document.getElementById(idSelect);
-		var newlanguage = language;
+		var newlanguage = "en";
 		
 		if (!!window.localStorage) {
 			let v = window.localStorage.getItem('lang');
@@ -1118,18 +1131,17 @@ var Localization = (function(pathSrc, idSrc, idSelect, window, undefined){
 			ls.add(e);
 		}
 		ls.onchange = requestLang;
-		applyLang();
 		
-		if (lang.code !== newlanguage) {
-			requestLang({target:{value:newlanguage}});
-		}
+		requestLang({target:{value:newlanguage}});
 	}
+	
 	return obj;
-})('project/data/lang/', 'langsrc', 'lang_select', window);
-WFC = {};
-WFC.Data = {
+})("project/data/", "labelLanguageSelect", "inputLanguageSelect", window);
+
+WFC.SharedData = {
 	"Weapon": null
 };
+
 WFC.Util = {
 	"doDebug": true,
 	"addElement": function (parentElement, typeElement, props = {}) {
@@ -1160,7 +1172,6 @@ WFC.Weapons = (function(WFC, window, undefined) {
 	var formID = "formWeaponChoice";
 	var Weapons;
 	var Group;
-	var localization = [];
 	
 	function changeWeaponSelect(e) {
 		WFC.Util.debug("Weapons.changeWeaponSelect - " + e.target.value);
@@ -1187,15 +1198,8 @@ WFC.Weapons = (function(WFC, window, undefined) {
 	function changeWeapon(e) {
 		WFC.Util.debug("Weapons.changeWeapon - " + e.target.value);
 		
-		WFC.Data.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
-		document.getElementById("tempWeaponDisplay").innerText = JSON.stringify(WFC.Data.Weapon, null, "\t");
-	}
-	
-	function applyLocalization() {
-		WFC.Util.debug('Weapons.applyLocalization: ' + JSON.stringify(localization));
-		for (let i = 0; i < localization.length; i++) {
-			document.getElementById(localization[i].id).label = Localization.translate(localization[i].key);
-		}
+		WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
+		document.getElementById("tempWeaponDisplay").innerText = JSON.stringify(WFC.SharedData.Weapon, null, "\t");
 	}
 
 	function initForm() {
@@ -1211,24 +1215,18 @@ WFC.Weapons = (function(WFC, window, undefined) {
 			let eG = WFC.Util.addElement(selectCategory, "option", {
 				"id": "optionWeaponGroup" + groups[iGroup],
 				"value": groups[iGroup],
-				"label": groups[iGroup]
+				"label": WFC.Translate.translate("weaponGroup" + groups[iGroup])
 			});
-			localization.push({
-				"id": eG.id,
-				"key": "weaponGroup" + groups[iGroup]
-			});
+			WFC.Translate.add(eG.id, "weaponGroup" + groups[iGroup], "label");
 			
 			let subGroups = Object.keys(Weapons.Tree[groups[iGroup]]);
 			for (let iSub = 0; iSub < subGroups.length; iSub++) {
 				let eSG = WFC.Util.addElement(selectWeapon, "optgroup", {
 					"id": "optionWeaponSubGroup" + subGroups[iSub],
-					"label": subGroups[iSub]
+					"label": WFC.Translate.translate("weaponSubGroup" + subGroups[iSub])
 				});
 				eSG.setAttribute("data-parent", groups[iGroup]);
-				localization.push({
-					"id": eSG.id,
-					"key": "weaponSubGroup" + subGroups[iSub]
-				});
+				WFC.Translate.add(eSG.id, "weaponSubGroup" + subGroups[iSub], "label");
 				
 				let weapons = Weapons.Tree[groups[iGroup]][subGroups[iSub]];
 				for (let iWeapon = 0; iWeapon < weapons.length; iWeapon++) {
@@ -1242,7 +1240,6 @@ WFC.Weapons = (function(WFC, window, undefined) {
 		
 		selectCategory.onchange = changeWeaponSelect;
 		selectWeapon.onchange = changeWeapon;
-		applyLocalization();
 		
 		changeWeaponSelect({"target":{"value":groups[0]}});
 	}
@@ -1260,13 +1257,9 @@ WFC.Weapons = (function(WFC, window, undefined) {
 	}
 	
 	var obj = {};
-	obj.translate = applyLocalization;
 	obj.init = function () {
 		WFC.Util.debug("Weapons.init");
-		localization.push({
-			"id": "optionWeaponSelectBlank", 
-			"key": "selectBlankWeapon"
-		});
+		WFC.Translate.add("optionWeaponSelectBlank", "selectBlankWeapon", "label");
 		var request = new XMLHttpRequest();
 		request.open("GET", srcWeaponList);
 		request.responseType = "json";
@@ -1277,15 +1270,10 @@ WFC.Weapons = (function(WFC, window, undefined) {
 })(WFC, window);
 
 function init() {
-	Localization.addUpdate(WFC.Weapons.translate);
-	Localization.addUpdate(reloadSlots);
-	Localization.addUpdate(sortModsList);
-	Localization.addUpdate(displayItem);
-	Localization.addUpdate(displayMisc);
-	Localization.init();
 	initializeModsList();
 	initializeModSlots();
 	WFC.Weapons.init();
+	WFC.Translate.init();
 }
 
 window.addEventListener('load', init);
