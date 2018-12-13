@@ -1,4 +1,4 @@
-var lang = {
+{
 	"code": "sp",
 	"values": {
 		"damageGeneric": "Dañar",
@@ -61,4 +61,4 @@ var lang = {
 		"bonusFireRate": "de cadencia de disparo (x2 para arcos)",
 		"flatPunchThrough": "de atravesar"
 	}
-};
+}

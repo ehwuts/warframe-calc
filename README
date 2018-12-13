@@ -31,11 +31,4 @@ Undecided:
 	
 LICENSING
 This project is licensed under the Unlicense. A copy of the 
-Unlicense is saved here as LICENSE. This project directly 
-depends upon and includes some libraries licensed differently.
-Their information is as follows:
-	i18njs (c) 2017 Simon Rodwell
-	  * Released under the MIT License. A copy of the MIT 
-	  license is saved here as LICENSE-i18njs
-	  * Sources can be found at 
-	  https://github.com/roddeh/i18njs
+Unlicense is saved here as LICENSE.

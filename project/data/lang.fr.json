@@ -1,4 +1,4 @@
-var lang = {
+{
 	"code": "fr",
 	"values": {
 		"damageGeneric": "Dégât",
@@ -71,4 +71,4 @@ var lang = {
 		"bonusFireRate": "de Cadence de Tir (x2 pour le Arcs)",
 		"flatPunchThrough": "Pénétration"
 	}
-};
+}
