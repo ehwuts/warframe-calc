@@ -1056,9 +1056,9 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 
 
 	if (!!window.localStorage) {
-		let v = window.localStorage.getItem('lang');
+		let v = window.localStorage.getItem("lang");
 		if (v === null) {
-			window.localStorage.setItem('lang', locale);
+			window.localStorage.setItem("lang", locale);
 		}
 	}
 
