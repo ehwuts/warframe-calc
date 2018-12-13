@@ -66,13 +66,12 @@ function updateFiltering(e) {
 
 function updateDamageCalcs() {
 	var v = document.getElementById("output");
-
+	
 	if (!WFC.SharedData.Weapon) {
 		v.innerHTML = "";
 		return;
 	}
-
-	var tags = WFC.Translate.translate(WFC.SharedData.Weapon.Group) + ", " + WFC.Translate.translate(WFC.SharedData.Weapon.SubGroup);
+	
 
 	var stats = JSON.parse(JSON.stringify(WFC.SharedData.Weapon.Attacks[Object.keys(WFC.SharedData.Weapon.Attacks)[0]]));
 	var baseDamage = 0;
@@ -334,7 +333,7 @@ function updateDamageCalcs() {
 	/* Begin Display Blob */
 	var result = "<table>" + "\n"
 	           + "<tr><td colspan=\"4\">" + WFC.SharedData.Weapon.Name + " - " + Object.keys(WFC.SharedData.Weapon.Attacks)[0] + "</td></tr>"
-			   + "<tr><td colspan=\"4\">" + tags + "</td></tr>";
+			   + "<tr><td colspan=\"4\">" + WFC.Translate.translate(WFC.SharedData.Weapon.Group) + ", " + WFC.Translate.translate(WFC.SharedData.Weapon.SubGroup) + "</td></tr>";
 
 	result += "<tr><td>&nbsp;</td><td>" + WFC.Translate.translate("labelBase") + "<td>" + WFC.Translate.translate("labelMinimum") + "</td><td>" + WFC.Translate.translate("labelAverage") + "</td><td>" + WFC.Translate.translate("statStatusChance") + "</td></tr>" + "\n";
 	var k = Object.keys(damagePercents);
@@ -404,13 +403,13 @@ function updateStatsum() {
 
 	var zoom = document.getElementById("zoom").value;
 	if (zoom !== "" && WFC.SharedData.Weapon.Zoom && WFC.SharedData.Weapon.Zoom[zoom]) {
-		let k = Object.keys(WFC.SharedData.Weapon.Zoom[zoom].effects);
+		let k = Object.keys(WFC.SharedData.Weapon.Zoom[zoom].Effects);
 		//console.log(k);
 		for (let i = 0; i < k.length; i++) {
 			if (newStatsum[k[i]]) {
-				newStatsum[k[i]] += WFC.SharedData.Weapon.Zoom[zoom].effects[k[i]];
+				newStatsum[k[i]] += WFC.SharedData.Weapon.Zoom[zoom].Effects[k[i]];
 			} else {
-				newStatsum[k[i]] = WFC.SharedData.Weapon.Zoom[zoom].effects[k[i]];
+				newStatsum[k[i]] = WFC.SharedData.Weapon.Zoom[zoom].Effects[k[i]];
 			}
 		}
 	}
@@ -612,6 +611,7 @@ function sortModsList() {
 	for (let i = 0; i < a.length; i++) {
 		p[i].setAttribute("data-modid", a[i].id);
 		p[i].innerText = a[i].val;
+		p[i].id = WFC.SharedData.Mods[a[i].id].id;
 		if (a[i].hide) {
 			makeListInvisible(a[i].id);
 		} else {
@@ -627,6 +627,7 @@ function initializeModsList() {
 	for (let i = 0; i < k.length; i++) {
 		let e = document.createElement("div");
 		e.setAttribute("data-modid", k[i]);
+		e.id = WFC.SharedData.Mods[k[i]].id;
 
 		e.classList.add("tile");
 		e.draggable = true;
@@ -636,6 +637,8 @@ function initializeModsList() {
 		e.addEventListener("dragend", DragHandler.end, false);
 
 		dest.appendChild(e);
+		
+		WFC.Translate.add(e.id, e.id, "innerText");
 	}
 	dest.addEventListener("dragover", DragHandler.over, false);
 	dest.addEventListener("dragleave", DragHandler.leave, false);
@@ -958,7 +961,7 @@ function updateMiscForm() {
 	var v = document.getElementById("zoom");
 	v.onchange = updateStatsum;
 	var oldval = v.value;
-	if (items[item].attacks[0].zoom) {
+	if (WFC.SharedData.Weapon.Zoom) {
 		while (v.children.length > 0) {
 			v.removeChild(v.lastElementChild);
 		}
@@ -969,10 +972,10 @@ function updateMiscForm() {
 		e.selected = "selected";
 		v.appendChild(e);
 
-		for (let i = 0; i < items[item].attacks[0].zoom.length; i++) {
+		for (let i = 0; i < WFC.SharedData.Weapon.Zoom.length; i++) {
 			e = document.createElement("option");
 			e.value = i;
-			e.innerText = items[item].attacks[0].zoom[i].statZoom;
+			e.innerText = WFC.SharedData.Weapon.Zoom[i].statZoom;
 			v.appendChild(e);
 		}
 		v.parentElement.classList.remove("hide2");
@@ -1012,6 +1015,8 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 		WFC.SharedData.Mods = this.response.Mods;
 		initializeModsList();
 		initializeModSlots();
+		WFC.Translate.addHook(reloadSlots);
+		WFC.Translate.addHook(updateDamageCalcs);
 	}
 
 	var obj = {};
@@ -1047,6 +1052,7 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	var locale = "";
 	var Dict = {};
 	var labels = {};
+	var hooks = [];
 
 
 	if (!!window.localStorage) {
@@ -1073,6 +1079,9 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 		var k = Object.keys(labels);
 		for (let i = 0; i < k.length; i++) {
 			document.getElementById(k[i])[labels[k[i]].prop] = translate(labels[k[i]].key);
+		}
+		for (let i = 0; i < hooks.length; i++) {
+			hooks[i]();
 		}
 	}
 
@@ -1102,6 +1111,12 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 			"prop": prop
 		};
 	};
+	
+	obj.addHook = function(func) {
+		if (!hooks.includes(func)) {
+			hooks.push(func);
+		}
+	}
 
 	obj.init = function () {
 		var ls = window.document.getElementById(idSelect);
@@ -1187,7 +1202,8 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		WFC.Util.debug("Weapons.changeWeapon - " + e.target.value);
 
 		WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
-		document.getElementById("displayWeapon").innerText = WFC.SharedData.Weapon.Name + "\n" + WFC.Translate.translate(WFC.SharedData.Weapon.Group) + ", " + WFC.Translate.translate(WFC.SharedData.Weapon.SubGroup);
+		updateStatsum();
+		updateMiscForm();
 	}
 
 	function initForm() {
