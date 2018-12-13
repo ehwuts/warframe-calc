@@ -1190,7 +1190,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 					children[i].hidden = false;
 				} else {
 					children[i].disabled = true;
-					children[i].hidden = true;					
+					children[i].hidden = true;
 				}
 			}
 		}
@@ -1269,7 +1269,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		request.send();
 	};
 	return obj;
-})(WFC, "project/data/WeaponData.json", "inputWeaponSelectGroup", "inputWeaponSelect", window);
+})(WFC, "project/data/WeaponData.json", "formWeaponChoice", "inputWeaponSelectGroup", "inputWeaponSelect", window);
 
 function init() {
 	initializeModsList();
