@@ -1034,6 +1034,14 @@ function displayMisc() {
 	//TODO localize that form
 };
 
+WFC.SharedData = {
+	"Weapon": null
+};
+
+WFC.Modding = (function (WFC, window, undefined) {
+	
+})(WFC, window);
+
 WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	var locales = {
 		"en": "English", 
@@ -1138,10 +1146,6 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	return obj;
 })("project/data/", "labelLanguageSelect", "inputLanguageSelect", window);
 
-WFC.SharedData = {
-	"Weapon": null
-};
-
 WFC.Util = {
 	"doDebug": true,
 	"addElement": function (parentElement, typeElement, props = {}) {
@@ -1167,9 +1171,7 @@ WFC.Util = {
 	},
 };
 
-WFC.Weapons = (function(WFC, window, undefined) {
-	var srcWeaponList = "project/data/WeaponData.json";
-	var formID = "formWeaponChoice";
+WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, window, undefined) {
 	var Weapons;
 	var Group;
 	
@@ -1180,7 +1182,7 @@ WFC.Weapons = (function(WFC, window, undefined) {
 		}
 		Group = e.target.value;
 		
-		var children = document.getElementById("inputWeaponSelect").children;
+		var children = document.getElementById(idSelectWeapon).children;
 		for (let i = 0; i < children.length; i++) {
 			if (children[i].tagName === "OPTGROUP") {
 				if (children[i].getAttribute("data-parent") === Group) {
@@ -1192,7 +1194,7 @@ WFC.Weapons = (function(WFC, window, undefined) {
 				}
 			}
 		}
-		document.getElementById("inputWeaponSelect").selectedIndex = 0;
+		document.getElementById(idSelectWeapon).selectedIndex = 0;
 	}
 	
 	function changeWeapon(e) {
@@ -1205,10 +1207,10 @@ WFC.Weapons = (function(WFC, window, undefined) {
 	function initForm() {
 		WFC.Util.debug("Weapons.initForm");
 		
-		document.getElementById(formID).onsubmit = function () { return false; };
+		document.getElementById(idForm).onsubmit = function () { return false; };
 		
-		var selectCategory = document.getElementById("inputWeaponSelectCategory");
-		var selectWeapon = document.getElementById("inputWeaponSelect");
+		var selectCategory = document.getElementById(idSelectGroup);
+		var selectWeapon = document.getElementById(idSelectWeapon);
 		
 		var groups = Object.keys(Weapons.Tree);
 		for (let iGroup = 0; iGroup < groups.length; iGroup++) {
@@ -1261,13 +1263,13 @@ WFC.Weapons = (function(WFC, window, undefined) {
 		WFC.Util.debug("Weapons.init");
 		WFC.Translate.add("optionWeaponSelectBlank", "selectBlankWeapon", "label");
 		var request = new XMLHttpRequest();
-		request.open("GET", srcWeaponList);
+		request.open("GET", srcData);
 		request.responseType = "json";
 		request.onload = initData;
 		request.send();
 	};
 	return obj;
-})(WFC, window);
+})(WFC, "project/data/WeaponData.json", "inputWeaponSelectGroup", "inputWeaponSelect", window);
 
 function init() {
 	initializeModsList();
