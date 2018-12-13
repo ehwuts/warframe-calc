@@ -35,6 +35,8 @@
   * Melee Weapons - 0/138
   * Melee Mods - 0/?
   * Robotic Weapons - 0/16  
+  * Arch-Gun - 0/9
+  * Arch-Melee - 0/8
   * Zaw Modulation
   * Kitgun Modulation
   * ~~Riven stats~~
@@ -69,6 +71,7 @@
 * Data 
   * Warframes - 0/59
   * Warframe Mods - 0/?
+  * Archwing - 0/5
   * Arcanes
 
 ##CompanionCalc
