@@ -495,7 +495,7 @@ function setSlot(slot, id, rank = null) {
 		slot.children[1].innerText = slots[i].polarity;
 		slot.children[2].className = "slotcost" + polarmatch;
 		slot.children[2].innerText = costadj + " " + WFC.SharedData.Mods[id].polarity;
-		slot.children[3].innerText = WFC.Translate.translate(id);
+		slot.children[3].innerText = WFC.Translate.translate(WFC.SharedData.Mods[id].id);
 		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
 		slot.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[id].tag);
 		slot.draggable=true;
@@ -613,7 +613,7 @@ function sortModsList() {
 	var p = document.getElementById("modslist").children;
 	for (let i = 0; i < p.length; i++) {
 		let mod = p[i].getAttribute("data-modid");
-		a.push({id: mod, hide: p[i].classList.contains("hide2"), val: WFC.Translate.translate(mod)});
+		a.push({id: mod, hide: p[i].classList.contains("hide2"), val: WFC.Translate.translate(WFC.SharedData.Mods[mod].id)});
 	}
 	a.sort((x, y) => (x.val>y.val?1:-1));
 	for (let i = 0; i < a.length; i++) {
@@ -637,7 +637,7 @@ function initializeModsList() {
 
 		e.classList.add("tile");
 		e.draggable = true;
-		e.innerText = k[i];
+		e.innerText = WFC.Translate.translate(WFC.SharedData.Mods[k[i]].id);
 
 		e.addEventListener("dragstart", DragHandler.start, false);
 		e.addEventListener("dragend", DragHandler.end, false);
