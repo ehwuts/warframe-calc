@@ -19,9 +19,12 @@ The goal of this project is to produce a fully featured weapon calculator for Wa
 
 1.  Fully clientside logic with static data modules. 
     -   Leaning async json to load weapon/enemy stats, trading increased file requests for reduced standing memory?
+
 2.  Display actual, with "Effective" unmerged.
+
 3.  Display Single shot/Burst/Sustained DPS
     -   merged and per-type
+
 4.  Built in support for drop-in localization. One of:
     -   pregen endpoints from template
     -   dynamically fill after page load
@@ -46,4 +49,3 @@ This project is licensed under the Unlicense. A copy of the Unlicense is saved h
 ## DISCLAIMER
 
 Digital Extreme Ltd, Warframe and the logo Warframe are registered trademarks. All rights are reserved worldwide. This project has no official link with Digital Extremes Ltd or Warframe. All artwork, screenshots, characters or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of Digital Extreme Ltd.
-
