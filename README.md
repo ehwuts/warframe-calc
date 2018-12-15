@@ -34,7 +34,7 @@ The goal of this project is to produce a fully featured weapon calculator for Wa
 4.  Damage effectiveness for enemy resource combinations
 5.  Tileset-based enemy spreads for #4
 
-### Undecided:
+### Undecided
 
 1.  Display as per ingame.
 2.  Import from WFB
