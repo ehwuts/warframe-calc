@@ -734,46 +734,6 @@ function initializeModSlots() {
 	}
 }
 
-function displayItem() {
-	if (item === -1 || !items.hasOwnProperty(item)) {
-		document.getElementById("displayItem").innerText = "";
-		return;
-	}
-	return;
-
-	var v = document.getElementById("displayItem");
-	var tags = [];
-	for (let i = 0; i < items[item].type.length; i++) {
-		tags.push(WFC.Translate.translate(items[item].type[i]));
-	}
-
-	v.innerText = items[item].name + "\n"
-	            + tags.join(', ') + "\n\n";
-	v.innerText += 'Attacks' + "\n";
-	for (let i = 0; i < items[item].attacks.length; i++) {
-		v.innerText += items[item].attacks[i].attackName + "\n"
-		             + WFC.Translate.translate("statAccuracy") + " " + items[item].attacks[i].statAccuracy + "\n"
-				     + WFC.Translate.translate("statCritChance") + " " + items[item].attacks[i].statCritChance + "\n"
-					 + WFC.Translate.translate("statCritDamage") + " " + items[item].attacks[i].statCritDamage + "\n"
-					 + WFC.Translate.translate("statFireRate") + " " + items[item].attacks[i].statFireRate + "\n"
-					 + WFC.Translate.translate("statMagazine") + " " + items[item].attacks[i].statMagazine + "\n"
-					 + WFC.Translate.translate("noiseGeneric") + " " + WFC.Translate.translate(items[item].attacks[i].noise) + "\n"
-					 + WFC.Translate.translate("statReload") + " " + items[item].attacks[i].statReload + "\n"
-					 + WFC.Translate.translate("statStatusChance") + " " + items[item].attacks[i].statStatusChance + "\n"
-					 + WFC.Translate.translate("triggerGeneric") + " " + WFC.Translate.translate(items[item].attacks[i].statReload) + "\n";
-		if (items[item].attacks[i].falloff) {
-			v.innerText += "\n" + WFC.Translate.translate("%n falloffStart", items[item].attacks[i].falloff[0]) + "\n"
-			             + WFC.Translate.translate("%n falloffEnd", items[item].attacks[i].falloff[1]) + "\n"
-						 + WFC.Translate.translate("%n falloffAmount", items[item].attacks[i].falloff[2]) + "\n";
-		}
-		v.innerText += "\n";
-		for (let j = 0; j < items[item].attacks[i].damage.length; j++) {
-			v.innerText += WFC.Translate.translate(items[item].attacks[i].damage[j][0]) + " " + items[item].attacks[i].damage[j][1] + "\n";
-		}
-
-	}
-}
-
 function updateRivenMod() {
 	var boon1ID = document.getElementById("rivenBoon1ID").value;
 	var boon1Val = document.getElementById("rivenBoon1").value;
@@ -985,18 +945,6 @@ function updateMiscForm() {
 	}
 }
 
-function applyItem(e) {
-	let v = e.target.value;
-	if (v !== -1 && v != item) {
-		if (items[item] && items[item].rivenType != items[v].rivenType) rivenEffects = {};
-		item = v;
-
-		updateRivenForm();
-		updateRivenStatRanges();
-		updateMiscForm();
-		displayItem();
-	}
-}
 
 function displayMisc() {
 	//TODO localize that form
