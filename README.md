@@ -15,7 +15,7 @@ Hopefully intuitive given knowledge of use of the source material.
 
 The goal of this project is to produce a fully featured weapon calculator for Warframe.
 
-### Goal Features:
+### Goal Features
 
 1.  Fully clientside logic with static data modules. 
     -   Leaning async json to load weapon/enemy stats, trading increased file requests for reduced standing memory?
@@ -26,7 +26,7 @@ The goal of this project is to produce a fully featured weapon calculator for Wa
     -   pregen endpoints from template
     -   dynamically fill after page load
 
-### Secondary Features:
+### Secondary Features
 
 1.  Enemy Scaling Calculator
 2.  Per-mod value calcs
