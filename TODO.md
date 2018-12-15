@@ -70,7 +70,7 @@
 -   Sniper Specifics
 
     -   sniper combo
-        \*~~sniper zoom~~
+    -   ~~sniper zoom~~
         
 -   Beam Specifics
     -   multishot doesn't add status chances?
