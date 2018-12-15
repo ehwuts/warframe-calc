@@ -60,7 +60,7 @@
 
 -   Charge shot specifics
     -   Charge Time versus Fire Rate
-    
+
 -   Verify base Pellet logic
 
 -   Fire types support
