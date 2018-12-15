@@ -12,12 +12,12 @@
     -   Coverage for Warframes
     -   Coverage for Companions
 
-# Calculator-Aux
+## Calculator-Aux
 
 -   Auras
 -   Buffs
 
-# Calculator-Weapons-Generic
+## Calculator-Weapons-Generic
 
 -   Warning generation for unprocessed stats.
 -   Status cleanup
