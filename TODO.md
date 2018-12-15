@@ -30,7 +30,7 @@
     -   Indirect effect descriptions
     -   ~~Effect damage~~
     -   Verify effect damage
-    
+
 -   ~~Rivens~~
     -   Clean up Riven code's mess
 
