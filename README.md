@@ -44,7 +44,7 @@ The goal of this project is to produce a fully featured weapon calculator for Wa
 
 ## LICENSING
 
-This project is licensed under the Unlicense. A copy of the Unlicense is saved here as LICENSE.
+This project is licensed under the MIT license. A copy of the MIT license is saved here as LICENSE.
 
 ## DISCLAIMER
 
