@@ -76,7 +76,7 @@ if (generate.Mods) {
 					} else {
 						ModIDs[moddata.id] = filepath;
 					}
-					Mods.Mods[files2[i].slice(0, -5)] = JSON.parse(JSON.stringify(moddata));
+					Mods.Mods[moddata.id] = JSON.parse(JSON.stringify(moddata));
 					if (!Mods.Tree[moddata.group]) {
 						Mods.Tree[moddata.group] = [];
 					}
