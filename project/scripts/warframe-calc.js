@@ -1,6 +1,25 @@
 var WFC = {};
-
-//{ polarity: ' ', mod: null, rank: '' }
+/*
+			<tr><td>Accuracy</td><td>13.3</td></tr>
+			<tr><td>Critical Chance</td><td>95.0%</td></tr>
+			<tr><td>Critical Multiplier</td><td>5.3x</td></tr>
+			<tr><td>Falloff</td><td>400.0 - 600.0</td></tr>
+			<tr><td>Fire Rate</td><td>3.67</td></tr>
+			<tr><td>Magazine</td><td>5</td></tr>
+			<tr><td>Noise</td><td>Alarming</td></tr>
+			<tr><td>Punch Through</td><td>1.0</td></tr>
+			<tr><td>Reload</td><td>2.0</td></tr>
+			<tr><td>Riven Disposition</td><td>3/5</td></tr>
+			<tr><td>Status</td><td>28.2%</td></tr>
+			<tr><td>Trigger</td><td>Semi</td></tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr><td>Impact</td><td>1424</td></tr>
+			<tr><td>Electricity</td><td>1188</td></tr>
+			<tr><td>Slash</td><td>89.0</td></tr>
+			<tr><td>Puncture</td><td>267.0</td></tr>
+			<tr><td>Viral</td><td>2670</td></tr>
+*/
+//
 var slots = [];
 var slotsCount = 8;
 var filter = "";
@@ -33,16 +52,6 @@ function truncatedstringFromFloat(f, p = 2) {
 	*/
 	return f.toFixed(p);
 }
-function modCostFromSlot(i) {
-	var id = slots[i].mod;
-	if (id) {
-		let costadj = (slots[i].rank|0)+WFC.SharedData.Mods[id].cost;
-		costadj = (slots[i].polarity!=" "?Math.ceil(slots[i].polarity==WFC.SharedData.Mods[id].polarity?costadj/2.0:costadj*1.25):costadj);
-
-		return costadj;
-	}
-	return 0;
-}
 
 function clearFiltering() {
 	console.log("Call to remove filter");
@@ -66,12 +75,12 @@ function updateFiltering(e) {
 
 function updateDamageCalcs() {
 	var v = document.getElementById("output");
-	
+
 	if (!WFC.SharedData.Weapon) {
 		v.innerHTML = "";
 		return;
 	}
-	
+
 
 	var stats = JSON.parse(JSON.stringify(WFC.SharedData.Weapon.Attacks[Object.keys(WFC.SharedData.Weapon.Attacks)[0]]));
 	var baseDamage = 0;
@@ -374,7 +383,6 @@ function updateDamageCalcs() {
 
 function updateStatsum() {
 	var newStatsum = {};
-	var capacitySum = 0;
 
 	for (var m = 0; m < slots.length; m++) {
 		if (slots[m].mod && WFC.SharedData.Mods[slots[m].mod]) {
@@ -397,7 +405,6 @@ function updateStatsum() {
 					newStatsum[mod.set]  = 1;
 				}
 			}
-			capacitySum += modCostFromSlot(m);
 		}
 	}
 
@@ -417,46 +424,9 @@ function updateStatsum() {
 	statsum = newStatsum;
 	//document.getElementById('testdiv').innerHTML = JSON.stringify(statsum,null,2);
 
-	document.getElementById("capacity").innerText = capacitySum + "/60";
-
 	if (WFC.SharedData.Weapon) {
 		updateDamageCalcs();
 	}
-}
-
-function describeMod(id, rank = null) {
-	var result = "";
-	var mod = WFC.SharedData.Mods[id];
-	if (mod) {
-		if (!rank) {
-			rank = 0;
-		}
-		rank = Math.max(0, Math.min(mod.ranks, rank));
-
-		let effects = (mod.sharedID && mod.sharedID == "modRiven" ? rivenEffects : mod.effects);
-		var k = Object.keys(effects);
-		for (let i = 0; i < k.length; i++) {
-			let adj = effects[k[i]] * (rank + 1);
-			result += (adj>0?"+":"") + (k[i].indexOf("bonus") === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + " " + WFC.Translate.translate(k[i]) + "<br>";
-		}
-		if (mod.set) {
-			result += WFC.Translate.translate(mod.set);
-		}
-	}
-	return result;
-}
-
-function slotAdjust(slot, delta) {
-	var i = slot.getAttribute("data-num");
-	var id = slots[i].mod;
-	slots[i].rank = Math.max(0, Math.min(WFC.SharedData.Mods[id].ranks, slots[i].rank + delta));
-	slot.children[0].children[1].innerText = slots[i].rank+"/"+WFC.SharedData.Mods[id].ranks;
-
-	let costadj = modCostFromSlot(i);
-	slot.children[2].innerText = costadj + " " + WFC.SharedData.Mods[id].polarity;
-	slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-
-	updateStatsum();
 }
 
 function displayRivenEditor() {
@@ -470,63 +440,6 @@ function displayRivenEditor() {
 	return;
 }
 
-function setSlot(slot, id, rank = null) {
-	var i = slot.getAttribute("data-num");
-	if (id) {
-		if (rank !== null) {
-			slots[i].rank = rank;
-		} else {
-			slots[i].rank = WFC.SharedData.Mods[id].ranks;
-		}
-		slots[i].mod = id;
-		let polarmatch = (slots[i].polarity!=" "?(slots[i].polarity==WFC.SharedData.Mods[id].polarity?" polaritymatch":" polarityconflict"):"");
-		let costadj = modCostFromSlot(i);
-
-		slot.children[0].className = "slotrank";
-		slot.children[0].children[1].innerText = slots[i].rank+"/"+WFC.SharedData.Mods[id].ranks;
-		slot.children[1].innerText = slots[i].polarity;
-		slot.children[2].className = "slotcost" + polarmatch;
-		slot.children[2].innerText = costadj + " " + WFC.SharedData.Mods[id].polarity;
-		slot.children[3].innerText = WFC.Translate.translate(WFC.SharedData.Mods[id].id);
-		slot.children[4].innerHTML = describeMod(id, slots[i].rank);
-		slot.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[id].tag);
-		slot.draggable=true;
-	} else {
-		slots[i] = { polarity: slots[i].polarity, mod: null, rank: null };
-		slot.children[0].className = "slotrank hide";
-		slot.children[1].innerText = slots[i].polarity;
-		slot.children[2].className = "slotcost";
-		slot.children[2].innerText = "";
-		slot.children[3].innerText = "";
-		slot.children[4].innerText = "";
-		slot.children[5].innerText = "";
-		slot.draggable = null;
-	}
-
-	displayRivenEditor();
-	updateStatsum();
-}
-
-function swapSlots(a, b) {
-	var i = slots[a.getAttribute("data-num")].mod;
-	var ir = slots[a.getAttribute("data-num")].rank;
-	setSlot(a, slots[b.getAttribute("data-num")].mod, slots[b.getAttribute("data-num")].rank);
-	setSlot(b, i, ir);
-}
-
-function makeListVisible(id) {
-	var search = document.querySelector('#modslist [data-modid="'+id+'"]');
-	if (search) {
-		search.classList.remove("hide2");
-	}
-}
-function makeListInvisible(id) {
-	var search = window.document.querySelector('#modslist [data-modid="'+id+'"]');
-	if (search) {
-		search.classList.add("hide2");
-	}
-}
-
 var DragHandler = (function(window, undefined){
 	var dragSrc = null;
 
@@ -534,9 +447,11 @@ var DragHandler = (function(window, undefined){
 		"enter": function handleDragEnter(e) {
 			this.classList.add("over");
 		},
+		"leave": function handleDragLeave(e) {
+			this.classList.remove("over");
+		},
 		"start": function handleDragStart(e) {
 			dragSrc = this;
-			//console.log(this);
 
 			e.dataTransfer.effectAllowed = "move";
 		},
@@ -549,35 +464,13 @@ var DragHandler = (function(window, undefined){
 
 			return false;
 		},
-		"leave": function handleDragLeave(e) {
-			this.classList.remove("over");
-		},
 		"drop": function handleDrop(e) {
 			if (e.stopPropogation) {
 				e.stopPropogation();
 			}
 
-			if (dragSrc != this && (dragSrc.classList.contains("slot") || this.classList.contains("slot"))) {
-				if (dragSrc.parentElement.id == "modslist") {
-					if (slots[this.getAttribute("data-num")].mod) {
-						makeListVisible(slots[this.getAttribute("data-num")].mod);
-					} else {
-						for (let i = 0; i < slots.length; i++) {
-							let conflicts = WFC.SharedData.Mods[dragSrc.getAttribute('data-modid')].sharedID;
-							let conflicts2 = slots[i].mod && WFC.SharedData.Mods[slots[i].mod].sharedID;
-							if (conflicts2 && conflicts && conflicts2 == conflicts) {
-								return false;
-							}
-						}
-					}
-					setSlot(this, dragSrc.getAttribute("data-modid"));
-					dragSrc.classList.add("hide2");
-				} else if (this.parentElement.id == "modslist" || this.id == "modslist") {
-					makeListVisible(slots[dragSrc.getAttribute("data-num")].mod);
-					setSlot(dragSrc, null);
-				} else {
-					swapSlots(dragSrc, this);
-				}
+			if (dragSrc !== this && (dragSrc.classList.contains("modSlot") || this.classList.contains("modSlot"))) {
+				WFC.Modding.moveMod(dragSrc, this);
 			}
 
 			return false;
@@ -593,146 +486,6 @@ var DragHandler = (function(window, undefined){
 	};
 })(window);
 
-function reloadSlots() {
-	var ss = document.getElementById("slots").children;
-	for (let i = 0; i < slots.length; i++) {
-		setSlot(ss[i], slots[i].mod, slots[i].rank);
-	}
-}
-
-function sortModsList() {
-	var a = [];
-	var p = document.getElementById("modslist").children;
-	for (let i = 0; i < p.length; i++) {
-		let mod = p[i].getAttribute("data-modid");
-		a.push({id: mod, hide: p[i].classList.contains("hide2"), val: WFC.Translate.translate(WFC.SharedData.Mods[mod].id)});
-	}
-	a.sort((x, y) => (x.val>y.val?1:-1));
-	for (let i = 0; i < a.length; i++) {
-		p[i].setAttribute("data-modid", a[i].id);
-		p[i].innerText = a[i].val;
-		p[i].id = WFC.SharedData.Mods[a[i].id].id;
-		if (a[i].hide) {
-			makeListInvisible(a[i].id);
-		} else {
-			makeListVisible(a[i].id);
-		}
-	}
-}
-
-function initializeModsList() {
-	var k = Object.keys(WFC.SharedData.Mods);
-	var dest = document.getElementById("modslist");
-
-	for (let i = 0; i < k.length; i++) {
-		let e = document.createElement("div");
-		e.setAttribute("data-modid", k[i]);
-		e.id = WFC.SharedData.Mods[k[i]].id;
-
-		e.classList.add("tile");
-		e.draggable = true;
-		e.innerText = WFC.Translate.translate(WFC.SharedData.Mods[k[i]].id);
-
-		e.addEventListener("dragstart", DragHandler.start, false);
-		e.addEventListener("dragend", DragHandler.end, false);
-
-		dest.appendChild(e);
-		
-		WFC.Translate.add(e.id, e.id, "innerText");
-	}
-	dest.addEventListener("dragover", DragHandler.over, false);
-	dest.addEventListener("dragleave", DragHandler.leave, false);
-	dest.addEventListener("dragend", DragHandler.end, false);
-	dest.addEventListener("drop", DragHandler.drop, false);
-
-	sortModsList();
-
-	document.getElementById("modfilter").onchange = updateFiltering;
-	document.getElementById("modfilter").onkeyup = updateFiltering;
-}
-
-function reinitializeModsList() {
-	var m = document.getElementById("modslist");
-	while (m.children.length > 0) {
-		m.removeChild(m.lastElementChild);
-	}
-	initializeModsList();
-	for (let i = 0; i < slots.length; i++) {
-		if (slots[i].mod) {
-			makeListInvisible(slots[i].mod);
-		}
-	}
-}
-
-function cyclePolarity(e) {
-	var slot = e.target.parentElement;
-	var id = slot.getAttribute("data-num");
-
-	var polarities = [" ", "V", "D", "—", "=", "R", "Y", "U"];
-	var polarityCycle = polarities[(polarities.indexOf(slots[id].polarity) + 1) % polarities.length];
-
-	slots[id].polarity = polarityCycle;
-	setSlot(slot, slots[id].mod, slots[id].rank);
-}
-
-function initializeModSlots() {
-	for (let i = 0; i < slotsCount; i++) {
-		slots[i] = { polarity: " ", mod: null, rank: "" };
-	}
-
-	var dest = document.getElementById("slots");
-	for (let i = 0; i < slots.length; i++) {
-		let e = document.createElement("div");
-		e.classList.add("slot");
-		e.setAttribute("data-num", i);
-
-		e.addEventListener("dragstart", DragHandler.start, false);
-		e.addEventListener("dragenter", DragHandler.enter, false);
-		e.addEventListener("dragover", DragHandler.over, false);
-		e.addEventListener("dragleave", DragHandler.leave, false);
-		e.addEventListener("dragend", DragHandler.end, false);
-		e.addEventListener("drop", DragHandler.drop, false);
-
-		let ee = document.createElement("div");
-		ee.className = "slotrank hide";
-		let eee = document.createElement("button");
-		eee.innerText = "-";
-		eee.onclick = (e) => slotAdjust(e.target.parentElement.parentElement, -1);
-		ee.appendChild(eee);
-		eee = document.createElement("span");
-		eee.innerText = "0/0";
-		ee.appendChild(eee);
-		eee = document.createElement("button");
-		eee.innerText = "+";
-		eee.onclick = (e) => slotAdjust(e.target.parentElement.parentElement, 1);
-		ee.appendChild(eee);
-		e.appendChild(ee);
-
-		ee = document.createElement("div");
-		ee.className = "slotpolarity";
-		ee.innerText = " ";
-		ee.onclick = cyclePolarity;
-		e.appendChild(ee);
-
-		ee = document.createElement("div");
-		ee.className = "slotcost";
-		e.appendChild(ee);
-
-		ee = document.createElement("div");
-		ee.className = "slotname";
-		e.appendChild(ee);
-
-		ee = document.createElement("div");
-		ee.className = "sloteffects";
-		e.appendChild(ee);
-
-		ee = document.createElement("div");
-		ee.className = "slotcategory";
-		e.appendChild(ee);
-
-		dest.appendChild(e);
-	}
-}
 
 function updateRivenMod() {
 	var boon1ID = document.getElementById("rivenBoon1ID").value;
@@ -952,22 +705,352 @@ function displayMisc() {
 
 WFC.SharedData = {
 	"Weapon": null,
+	"Modding": {
+		"Weapon": {
+			"Stance": null,
+			"Arcane": null,
+			"Slots": []
+		}
+	},
 	"Mods": null
 };
 
 WFC.Modding = (function (WFC, srcData, window, undefined) {
 	var Mods;
+	var Polarities = [" ", "V", "D", "—", "=", "R", "Y", "U"];
+	
+	function getAdjustedCost(group, index) {
+		if (! WFC.SharedData.Modding[group].Slots[index].ModID || ! WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID]) {
+			return 0;
+		}
+		
+		var cost = WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].cost + WFC.SharedData.Modding[group].Slots[index].Rank;
+		
+		if (WFC.SharedData.Modding[group].Slots[index].Polarity !== Polarities[0]) {
+			if (WFC.SharedData.Modding[group].Slots[index].Polarity === WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].polarity) {
+				cost -= Math.floor(cost / 2.0);
+			} else {
+				cost += Math.ceil(cost * 0.25);
+			}
+		}
+		
+		return cost;
+	}
+	
+	function drawCapacity(group) {
+		var base = 60;
+		var used = 0;
+		
+		for (let i = 0; i < WFC.SharedData.Modding[group].Slots.length; i++) {
+			used += getAdjustedCost(group, i);
+		}
+		console.log(group, (base - used) + "/60");
+		
+		document.getElementById("editor" + group + "ValueCapacity").innerText = (base - used) + "/60";
+	}	
+	
+	function drawModSlot(group, index) {
+		let elementTarget = WFC.SharedData.Modding[group].Slots[index].Element;
+		let modID = WFC.SharedData.Modding[group].Slots[index].ModID;
+		
+		/*
+			<div class="modSlot" data-category="Weapon" data-index="0">
+			0	<span class="modSlotPolarity"></span>
+			1	<span class="modUsage"></span>
+			2	<div class="modRank hide"><button>-</button><span>0/0</span><button>+</button></div>
+			3	<div class="modName"></div>
+			4	<div class="modContent"></div>
+			5	<div class="modGroup"></div>
+			</div>
+		*/
+		
+		elementTarget.children[0].innerText = WFC.SharedData.Modding[group].Slots[index].Polarity;	
+		elementTarget.children[1].classList.remove("polaritymatch");
+		elementTarget.children[1].classList.remove("polarityconflict");	
+		if (modID) {
+			let adjustedcost = getAdjustedCost(group, index);
+			
+			elementTarget.children[1].innerText = adjustedcost + " " + WFC.SharedData.Mods[modID].polarity;
+		
+			if (WFC.SharedData.Modding[group].Slots[index].Polarity !== Polarities[0]) {
+				if (WFC.SharedData.Modding[group].Slots[index].Polarity === WFC.SharedData.Mods[modID].polarity) {
+					elementTarget.children[1].classList.add("polaritymatch");
+				} else {
+					elementTarget.children[1].classList.add("polarityconflict");
+				}
+			}
+			
+			elementTarget.children[2].classList.remove("hide");
+			elementTarget.children[2].children[1].innerText = WFC.SharedData.Modding[group].Slots[index].Rank + "/" + WFC.SharedData.Mods[modID].ranks;
+			
+			elementTarget.children[3].innerText = WFC.Translate.translate(modID);
+			
+			elementTarget.children[4].innerText = "LOCALIZEME";
+			
+			
+			elementTarget.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[modID].tag);
+		} else {
+			elementTarget.children[1].innerText = "";
+			
+			elementTarget.children[2].classList.add("hide");
+			
+			elementTarget.children[3].innerText = "";
+			elementTarget.children[4].innerText = "";
+			elementTarget.children[5].innerText = "";
+		}
+		/*
+		function describeMod(id, rank = null) {
+			var result = "";
+			var mod = WFC.SharedData.Mods[id];
+			if (mod) {
+				if (!rank) {
+					rank = 0;
+				}
+				rank = Math.max(0, Math.min(mod.ranks, rank));
+
+				let effects = (mod.sharedID && mod.sharedID == "modRiven" ? rivenEffects : mod.effects);
+				var k = Object.keys(effects);
+				for (let i = 0; i < k.length; i++) {
+					let adj = effects[k[i]] * (rank + 1);
+					result += (adj>0?"+":"") + (k[i].indexOf("bonus") === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + " " + WFC.Translate.translate(k[i]) + "<br>";
+				}
+				if (mod.set) {
+					result += WFC.Translate.translate(mod.set);
+				}
+			}
+			return result;
+		}
+		*/
+	}
+
+	function cyclePolarity(group, index, direction) {
+		WFC.SharedData.Modding[group].Slots[index].Polarity = Polarities[(Polarities.indexOf(WFC.SharedData.Modding[group].Slots[index].Polarity) + direction) % Polarities.length];
+		
+		drawModSlot(group, index);
+		drawCapacity(group);
+		
+		return false;
+	}
+	
+	function adjustModRank(group, index, direction) {
+		WFC.SharedData.Modding[group].Slots[index].Rank = Math.max(0, Math.min(WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].ranks, WFC.SharedData.Modding[group].Slots[index].Rank + direction));
+		
+		drawModSlot(group, index);
+		drawCapacity(group);
+		
+		updateStatsum();
+	}
+	
+	function moveMod(source, destination) {		
+		if (source === destination) {
+			return;
+		}
+		
+		if (source.classList.contains("modSlot") && destination.classList.contains("modSlot")) {
+			//Swapping the positions of two Mods
+			let groupSource = source.getAttribute("data-category");
+			let indexSource = source.getAttribute("data-index");
+			
+			let groupDestination = destination.getAttribute("data-category");
+			let indexDestination = destination.getAttribute("data-index");			
+			let rankDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].Rank;
+			let modDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].ModID;
+			
+			WFC.SharedData.Modding[groupDestination].Slots[indexDestination].Rank = WFC.SharedData.Modding[groupSource].Slots[indexSource].Rank;
+			WFC.SharedData.Modding[groupDestination].Slots[indexDestination].ModID = WFC.SharedData.Modding[groupSource].Slots[indexSource].ModID;
+			WFC.SharedData.Modding[groupSource].Slots[indexSource].Rank = rankDestination;
+			WFC.SharedData.Modding[groupSource].Slots[indexSource].ModID = modDestination;
+			
+			drawModSlot(groupSource, indexSource);
+			drawModSlot(groupDestination, indexDestination);
+			drawCapacity(group);
+		} else if (source.classList.contains("modSlot") && destination.classList.contains("modTile")) {
+			//Unequipping a Mod
+			let group = source.getAttribute("data-category");
+			let index = source.getAttribute("data-index");
+			document.getElementById(WFC.SharedData.Modding[group].Slots[index].ModID).parentElement.classList.remove("modTileVisibilityOverride");
+			WFC.SharedData.Modding[group].Slots[index].ModID = null;
+			
+			drawModSlot(group, index);
+			drawCapacity(group);
+		} else if (source.classList.contains("modTile") && destination.classList.contains("modSlot")) {
+			//Equipping a Mod from the "Inventory"
+			let group = destination.getAttribute("data-category");
+			let index = destination.getAttribute("data-index");
+			
+			let modSource = source.getAttribute("data-modid");
+			let modDestination = WFC.SharedData.Modding[group].Slots[index].ModID;
+			if (modDestination) {
+				document.getElementById(modDestination).parentElement.classList.remove("modTileVisibilityOverride");
+			} else {
+				if (WFC.SharedData.Mods[modSource].sharedID) {
+					for (let i = 0; i < WFC.SharedData.Modding[group].Slots.length; i++) {
+						if (WFC.SharedData.Modding[group].Slots[i].ModID && WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[i].ModID] && WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[i].ModID].sharedID === WFC.SharedData.Mods[modSource].sharedID) {
+							return false;
+						}
+					}
+				}
+			}
+			
+			WFC.SharedData.Modding[group].Slots[index].ModID = modSource;
+			WFC.SharedData.Modding[group].Slots[index].Rank = WFC.SharedData.Mods[modSource].ranks;
+			source.classList.add("modTileVisibilityOverride");
+			
+			drawModSlot(group, index);
+			drawCapacity(group);
+		}
+		
+		updateStatsum();
+	}
+
+	function sortModTiles() {
+		var a = [];
+		var k = Object.keys(WFC.SharedData.Mods);
+		for (let i = 0; i < k.length; i++) {
+			a.push({
+				id: WFC.SharedData.Mods[k[i]].id,
+				val: WFC.Translate.translate(WFC.SharedData.Mods[k[i]].id)
+			});
+		}
+		a.sort((x, y) => (x.val>y.val?1:-1));
+		for (let i = 0; i < a.length; i++) {
+			document.getElementById(a[i].id).parentElement.style.order = i;
+		}
+	}
+
+	function createModSlot(group, index) {
+		var slot = document.createElement("div");
+		slot.classList.add("modSlot");
+		slot.setAttribute("data-category", group);
+		slot.setAttribute("data-index", index);
+
+		var polarity = document.createElement("span");
+		polarity.classList.add("modSlotPolarity");
+		polarity.onclick = (e) => { return cyclePolarity(group, index, 1) };
+		polarity.oncontextmenu = (e) => { return cyclePolarity(group, index, -1) };
+
+		var usage = document.createElement("span");
+		usage.classList.add("modUsage");
+
+		var rank = document.createElement("div");
+		rank.classList.add("modRank");
+		rank.classList.add("hide");
+
+		var minus = document.createElement("button");
+		minus.innerText = "-";
+		minus.onclick = (e) => adjustModRank(group, index, -1);
+
+		var rankCount = document.createElement("span");
+		rankCount.innerText = "0/0";
+
+		var plus = document.createElement("button");
+		plus.innerText = "+";
+		plus.onclick = (e) => adjustModRank(group, index, 1);
+
+		rank.appendChild(minus);
+		rank.appendChild(rankCount);
+		rank.appendChild(plus);
+
+		var name = document.createElement("div");
+		name.classList.add("modName");
+
+		var content = document.createElement("div");
+		content.classList.add("modContent");
+
+		var modGroup = document.createElement("div");
+		modGroup.classList.add("modGroup");
+
+		slot.appendChild(polarity);
+		slot.appendChild(usage);
+		slot.appendChild(rank);
+		slot.appendChild(name);
+		slot.appendChild(content);
+		slot.appendChild(modGroup);
+
+		slot.addEventListener("dragstart", DragHandler.start, false);
+		slot.addEventListener("dragenter", DragHandler.enter, false);
+		slot.addEventListener("dragover", DragHandler.over, false);
+		slot.addEventListener("dragleave", DragHandler.leave, false);
+		slot.addEventListener("dragend", DragHandler.end, false);
+		slot.addEventListener("drop", DragHandler.drop, false);
+
+		return slot;
+	}
+	
+	function redrawWeaponModSlots() {
+		for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
+			drawModSlot("Weapon", i);
+		}
+	}
+
+	function initWeaponModSlots() {
+		var editorWeaponModSlots = document.getElementById("editorWeaponModSlots");
+		while (WFC.SharedData.Modding.Weapon.Slots.length < 8) {
+			editorWeaponModSlots.appendChild(createModSlot("Weapon", WFC.SharedData.Modding.Weapon.Slots.length));
+			WFC.SharedData.Modding.Weapon.Slots.push({
+				"Polarity": Polarities[0],
+				"ModID": null,
+				"Rank": 0,
+				"Element": editorWeaponModSlots.lastElementChild
+			});
+		}
+		
+		WFC.Translate.addHook(redrawWeaponModSlots);
+	}
+
+	function initWeaponModTiles() {
+		var editorWeaponInventory = document.getElementById("editorWeaponInventory");
+		var k = Object.keys(WFC.SharedData.Mods);
+		for (let i = 0; i < k.length; i++) {
+			let tile = document.createElement("div");
+			tile.classList.add("modTile");
+			tile.setAttribute("data-category", "Weapon");
+			tile.setAttribute("data-modid", WFC.SharedData.Mods[k[i]].id);
+
+			let cost = document.createElement("span");
+			cost.innerText = (WFC.SharedData.Mods[k[i]].cost + WFC.SharedData.Mods[k[i]].ranks) + " " + WFC.SharedData.Mods[k[i]].polarity;
+
+			let name = document.createElement("div");
+			name.innerText = WFC.Translate.translate(WFC.SharedData.Mods[k[i]].id);
+			name.id = WFC.SharedData.Mods[k[i]].id;
+
+			tile.appendChild(cost);
+			tile.appendChild(name);
+
+			WFC.Translate.add(WFC.SharedData.Mods[k[i]].id, WFC.SharedData.Mods[k[i]].id, "innerText");
+
+			tile.draggable = true;
+			tile.addEventListener("dragstart", DragHandler.start, false);
+			tile.addEventListener("dragend", DragHandler.end, false);
+
+			editorWeaponInventory.appendChild(tile);
+		}
+
+		document.getElementById("editorWeaponInventoryFilterText").onchange = updateFiltering;
+		document.getElementById("editorWeaponInventoryFilterText").onkeyup = updateFiltering;
+
+		editorWeaponInventory.addEventListener("dragover", DragHandler.over, false);
+		editorWeaponInventory.addEventListener("dragleave", DragHandler.leave, false);
+		editorWeaponInventory.addEventListener("dragend", DragHandler.end, false);
+		editorWeaponInventory.addEventListener("drop", DragHandler.drop, false);
+
+		WFC.Translate.addHook(sortModTiles);
+	}
 
 	function initData() {
 		WFC.Util.debug("Modding.initData");
 		WFC.SharedData.Mods = this.response.Mods;
-		initializeModsList();
-		initializeModSlots();
-		WFC.Translate.addHook(reloadSlots);
+
+		initWeaponModSlots();
+		initWeaponModTiles();
+		WFC.Translate.add("editorWeaponLabelCapacity", "labelCapacity", "innerText");
+		
 		WFC.Translate.addHook(updateDamageCalcs);
 	}
 
 	var obj = {};
+	
+	obj.moveMod = moveMod;
 
 	obj.init = function() {
 		WFC.Util.debug("Modding.init");
@@ -1006,7 +1089,7 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 	if (!!window.localStorage) {
 		let v = window.localStorage.getItem("lang");
 		if (v === null) {
-			window.localStorage.setItem("lang", locale);
+			window.localStorage.setItem("lang", "en");
 		}
 	}
 
@@ -1059,7 +1142,7 @@ WFC.Translate = (function (pathSrc, idLabel, idSelect, window, undefined) {
 			"prop": prop
 		};
 	};
-	
+
 	obj.addHook = function(func) {
 		if (!hooks.includes(func)) {
 			hooks.push(func);
@@ -1149,7 +1232,11 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 	function changeWeapon(e) {
 		WFC.Util.debug("Weapons.changeWeapon - " + e.target.value);
 
-		WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
+		if (e.target.value === -1) {
+			WFC.SharedData.Weapon = null;
+		} else {
+			WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
+		}
 		updateStatsum();
 		updateMiscForm();
 	}

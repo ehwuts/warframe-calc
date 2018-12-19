@@ -1,39 +1,14 @@
 .hide { visibility: hidden; }
+.hide2b { display: none; } 
 .center { text-align: center; }
 
 div { border: 1px solid grey; }
 span { border: 1px solid darkblue; }
 td { border: 1px solid green; }
 
-[draggable] { user-select: none; }
-.tile {
-	width: 100%;
-	display: inline-block;
-	border: 1px solid #666;
-	padding-left: 2px;
-	margin-right: 5px;
-	border-radius: 3px;
-	text-align: left;
-	cursor: move;
-}
+[draggable] { user-select: none; cursor: move; }
+.over {	border: 1px dashed #000; }
 
-#capacity { float: right; }
-#mods { display: table; height: 300px; }
-#modslist { overflow-x: hidden; overflow-y: auto; max-height: 100%; }
-
-.modsearch { width: 20%; display: table-cell; vertical-align: top; }
-#slots { width: 79%; display: table-cell; }
-.slot {
-	border: 1px solid blue;
-	height: 150px;
-	width: 24.7%;
-	display: inline-block;
-	position: relative;
-	text-align: center;
-}
-.slotFilled {
-	cursor: move;
-}
 .polaritymatch { color: darkgreen; }
 .polarityconflict { color: darkred; }
 
@@ -44,44 +19,41 @@ td { border: 1px solid green; }
 .sloteffects { position: absolute; width: 100%; top: 3em; }
 .slotcategory { font-size: smaller; position: absolute; bottom: 0; width: 100%; }
 
-.over {
-	border: 1px dashed #000;
-}
-.hide2 { display: none; }
-.hide2b { display: none; } 
 
-#bigTestTest {
-	display: flex;
-	flex-direction: row;
-}
-.bigandstrong { font-size: X-Large; font-weight: bold; }
-#bigTest {  }
-#testHeader { text-align: center; }
-#testStatLand { white-space: nowrap; }
-#testStatLand tr td:nth-child(2) { text-align: right; }
-#testModLand { flex-grow: 1; }
-.testModSlotHeader { display: flex; flex-direction: row; }
-.testModSlotHeader span { display: inline-block; }
-.testModSlots {
-	display: flex; flex-flow: row wrap;
-}
-.testModSlot { display: flex; flex-direction: column; flex: 1; height: 150px; text-align: center; }
-.testModSlot div { flex: 0 1 0 ; }
-.testModHeader { display: flex; flex-direction: row; }
-.testModHeader span { flex: 0 1 1; }
-.testModRank { flex: 1 1 0; }
-.testModName { font-size: larger; }
-.testModSlot div.testModContent { flex: 1 1 0; }
-.testModGroup { font-size: smaller; }
+.modSlot { display: flex; flex-direction: column; flex: 1 0 21%; height: 150px; text-align: center; position: relative; }
+.modSlotPolarity { position: absolute; left: 0; top: 0; padding: 3px; width: 1em; }
+.modUsage { position: absolute; right: 0; top: 0; padding: 3px; }
+.modName { font-size: larger; }
+.modContent { padding-top: 3px; flex-grow: 1; }
+.modGroup { font-size: smaller; }
 
-#testModInventoryHeader { display: flex; flex-direction: row; }
-.testModInventoryHeaderBox { flex: 0; }
-.testModInventoryHeaderCenter { flex: 1; text-align: center; }
-#testModInventoryListing {
+.editorInventoryHeader { display: flex; flex-direction: row; }
+.editorInventoryHeader span { flex: 0; }
+.editorInventoryHeader div { flex: 1; text-align: center; }
+
+#editorWeaponHeader { text-align: center; }
+#editorWeaponName { font-size: X-Large; font-weight: bold; }
+#editorWeaponBody {	display: flex; flex-direction: row; }
+#editorWeaponStatsSimple { white-space: nowrap; }
+#editorWeaponStatsSimple tr td:nth-child(2) { text-align: right; }
+#editorWeaponModding { flex-grow: 1; }
+#editorWeaponModSlots { display: flex; flex-flow: row wrap; }
+
+.editorInventoryListing {
 	display: flex;
 	flex-flow: column wrap;
-	height: 100px;
+	min-height: 0;
+	height: 110px;
 	align-content: flex-start;
+	overflow-x: auto;
 }
-#testModInventoryListing span { text-align: right; }
-#testModInventoryListing span span:nth-child(1) { font-size: smaller; }
+.modTile {
+	display: inline-block;
+	text-align: right;
+	margin: 3px;
+}
+
+.modTile span { font-size: smaller; }
+.modTile div { text-align: center; padding: 2px; }
+
+.modTileVisibilityOverride { display: none; }
