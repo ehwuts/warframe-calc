@@ -1,0 +1,10 @@
+{
+	"id": "modRiven",
+	"group": "Primary",
+	"tag": "weaponSubGroupRiven",
+	"cost": 8,
+	"ranks": 8,
+	"polarity": " ",
+	"effects": {},
+	"sharedID": "modRiven"
+}
