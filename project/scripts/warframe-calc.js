@@ -19,10 +19,6 @@ var WFC = {};
 			<tr><td>Puncture</td><td>267.0</td></tr>
 			<tr><td>Viral</td><td>2670</td></tr>
 */
-//
-var slots = [];
-var slotsCount = 8;
-var filter = "";
 
 var rivenEffects = {};
 var statsum = {};
@@ -384,25 +380,29 @@ function updateDamageCalcs() {
 function updateStatsum() {
 	var newStatsum = {};
 
-	for (var m = 0; m < slots.length; m++) {
-		if (slots[m].mod && WFC.SharedData.Mods[slots[m].mod]) {
-			let mod = WFC.SharedData.Mods[slots[m].mod];
+	for (var m = 0; m < WFC.SharedData.Modding.Weapon.Slots.length; m++) {
+		let modID = WFC.SharedData.Modding.Weapon.Slots[m].ModID;
+		if (modID) {
+			let mod = WFC.SharedData.Mods[modID];
+			let rank = WFC.SharedData.Modding.Weapon.Slots[m].Rank;
+			let set = WFC.SharedData.Mods[modID].set;
 			let effects = (mod.sharedID && mod.sharedID == "modRiven" ? rivenEffects : mod.effects);
+
 			let k = Object.keys(effects);
 			if (mod.sharedID && mod.sharedID == "modRiven") k.reverse();
 			for (let i = 0; i < k.length; i++) {
-				let adj = effects[k[i]] * (slots[m].rank + 1);
+				let adj = effects[k[i]] * (rank + 1);
 				if (newStatsum[k[i]]) {
 					newStatsum[k[i]] += adj;
 				} else {
 					newStatsum[k[i]] = adj;
 				}
 			}
-			if (mod.set) {
-				if (newStatsum[mod.set]) {
-					newStatsum[mod.set] ++;
+			if (set) {
+				if (newStatsum[set]) {
+					newStatsum[set] ++;
 				} else {
-					newStatsum[mod.set]  = 1;
+					newStatsum[set] = 1;
 				}
 			}
 		}
@@ -718,14 +718,14 @@ WFC.SharedData = {
 WFC.Modding = (function (WFC, srcData, window, undefined) {
 	var Mods;
 	var Polarities = [" ", "V", "D", "—", "=", "R", "Y", "U"];
-	
+
 	function getAdjustedCost(group, index) {
 		if (! WFC.SharedData.Modding[group].Slots[index].ModID || ! WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID]) {
 			return 0;
 		}
-		
+
 		var cost = WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].cost + WFC.SharedData.Modding[group].Slots[index].Rank;
-		
+
 		if (WFC.SharedData.Modding[group].Slots[index].Polarity !== Polarities[0]) {
 			if (WFC.SharedData.Modding[group].Slots[index].Polarity === WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].polarity) {
 				cost -= Math.floor(cost / 2.0);
@@ -733,25 +733,25 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				cost += Math.ceil(cost * 0.25);
 			}
 		}
-		
+
 		return cost;
 	}
-	
+
 	function drawCapacity(group) {
 		var base = 60;
 		var used = 0;
-		
+
 		for (let i = 0; i < WFC.SharedData.Modding[group].Slots.length; i++) {
 			used += getAdjustedCost(group, i);
 		}
-		
+
 		document.getElementById("editor" + group + "ValueCapacity").innerText = (base - used) + "/60";
-	}	
-	
+	}
+
 	function drawModSlot(group, index) {
 		let elementTarget = WFC.SharedData.Modding[group].Slots[index].Element;
 		let modID = WFC.SharedData.Modding[group].Slots[index].ModID;
-		
+
 		/*
 			<div class="modSlot" data-category="Weapon" data-index="0">
 			0	<span class="modSlotPolarity"></span>
@@ -762,15 +762,15 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			5	<div class="modGroup"></div>
 			</div>
 		*/
-		
-		elementTarget.children[0].innerText = WFC.SharedData.Modding[group].Slots[index].Polarity;	
+
+		elementTarget.children[0].innerText = WFC.SharedData.Modding[group].Slots[index].Polarity;
 		elementTarget.children[1].classList.remove("polaritymatch");
-		elementTarget.children[1].classList.remove("polarityconflict");	
+		elementTarget.children[1].classList.remove("polarityconflict");
 		if (modID) {
 			let adjustedcost = getAdjustedCost(group, index);
-			
+
 			elementTarget.children[1].innerText = adjustedcost + " " + WFC.SharedData.Mods[modID].polarity;
-		
+
 			if (WFC.SharedData.Modding[group].Slots[index].Polarity !== Polarities[0]) {
 				if (WFC.SharedData.Modding[group].Slots[index].Polarity === WFC.SharedData.Mods[modID].polarity) {
 					elementTarget.children[1].classList.add("polaritymatch");
@@ -778,15 +778,15 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 					elementTarget.children[1].classList.add("polarityconflict");
 				}
 			}
-			
+
 			elementTarget.children[2].classList.remove("hide");
 			elementTarget.children[2].children[1].innerText = WFC.SharedData.Modding[group].Slots[index].Rank + "/" + WFC.SharedData.Mods[modID].ranks;
-			
+
 			elementTarget.children[3].innerText = WFC.Translate.translate(modID);
-			
+
 			elementTarget.children[4].innerText = "";"LOCALIZEME";
-			
-			var k = Object.keys(WFC.SharedData.Mods[modID].effects);			
+
+			var k = Object.keys(WFC.SharedData.Mods[modID].effects);
 			for (let i = 0; i < k.length; i++) {
 				let magnitude = WFC.SharedData.Mods[modID].effects[k[i]] * (1 + WFC.SharedData.Modding[group].Slots[index].Rank);
 				if (magnitude >= 0) {
@@ -797,19 +797,19 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				} else {
 					elementTarget.children[4].innerText += truncatedstringFromFloat(magnitude);
 				}
-				
+
 				elementTarget.children[4].innerText += " " + WFC.Translate.translate(k[i]);
-				
+
 				elementTarget.children[4].appendChild(document.createElement("br"));
 			}
-			
-			
+
+
 			elementTarget.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[modID].tag);
 		} else {
 			elementTarget.children[1].innerText = "";
-			
+
 			elementTarget.children[2].classList.add("hide");
-			
+
 			elementTarget.children[3].innerText = "";
 			elementTarget.children[4].innerText = "";
 			elementTarget.children[5].innerText = "";
@@ -818,46 +818,46 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 	function cyclePolarity(group, index, direction) {
 		WFC.SharedData.Modding[group].Slots[index].Polarity = Polarities[(Polarities.indexOf(WFC.SharedData.Modding[group].Slots[index].Polarity) + direction) % Polarities.length];
-		
+
 		drawModSlot(group, index);
 		drawCapacity(group);
-		
+
 		return false;
 	}
-	
+
 	function adjustModRank(group, index, direction) {
 		WFC.SharedData.Modding[group].Slots[index].Rank = Math.max(0, Math.min(WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID].ranks, WFC.SharedData.Modding[group].Slots[index].Rank + direction));
-		
+
 		drawModSlot(group, index);
 		drawCapacity(group);
-		
+
 		updateStatsum();
 	}
-	
-	function moveMod(source, destination) {		
+
+	function moveMod(source, destination) {
 		if (source === destination) {
 			return false;
 		}
-		
+
 		if (source.classList.contains("modSlot") && destination.classList.contains("modSlot")) {
 			//Swapping the positions of two Mods
 			let groupSource = source.getAttribute("data-category");
 			let groupDestination = destination.getAttribute("data-category");
-			
+
 			if (groupSource !== groupDestination) {
 				return false;
 			}
-			
-			let indexSource = source.getAttribute("data-index");			
-			let indexDestination = destination.getAttribute("data-index");			
+
+			let indexSource = source.getAttribute("data-index");
+			let indexDestination = destination.getAttribute("data-index");
 			let rankDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].Rank;
 			let modDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].ModID;
-			
+
 			WFC.SharedData.Modding[groupDestination].Slots[indexDestination].Rank = WFC.SharedData.Modding[groupSource].Slots[indexSource].Rank;
 			WFC.SharedData.Modding[groupDestination].Slots[indexDestination].ModID = WFC.SharedData.Modding[groupSource].Slots[indexSource].ModID;
 			WFC.SharedData.Modding[groupSource].Slots[indexSource].Rank = rankDestination;
 			WFC.SharedData.Modding[groupSource].Slots[indexSource].ModID = modDestination;
-			
+
 			drawModSlot(groupSource, indexSource);
 			drawModSlot(groupDestination, indexDestination);
 			drawCapacity(groupSource);
@@ -867,7 +867,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			let index = source.getAttribute("data-index");
 			document.getElementById(WFC.SharedData.Modding[group].Slots[index].ModID).parentElement.classList.remove("modTileVisibilityOverride");
 			WFC.SharedData.Modding[group].Slots[index].ModID = null;
-			
+
 			drawModSlot(group, index);
 			drawCapacity(group);
 			source.draggable = false;
@@ -875,13 +875,13 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			//Equipping a Mod from the "Inventory"
 			let groupSource = source.getAttribute("data-category");
 			let group = destination.getAttribute("data-category");
-			
+
 			if (groupSource !== group) {
 				return false;
 			}
-			
+
 			let index = destination.getAttribute("data-index");
-			
+
 			let modSource = source.getAttribute("data-modid");
 			let modDestination = WFC.SharedData.Modding[group].Slots[index].ModID;
 			if (modDestination) {
@@ -896,15 +896,15 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				}
 			}
 			destination.draggable = true;
-			
+
 			WFC.SharedData.Modding[group].Slots[index].ModID = modSource;
 			WFC.SharedData.Modding[group].Slots[index].Rank = WFC.SharedData.Mods[modSource].ranks;
 			source.classList.add("modTileVisibilityOverride");
-			
+
 			drawModSlot(group, index);
 			drawCapacity(group);
 		}
-		
+
 		updateStatsum();
 		return true;
 	}
@@ -982,7 +982,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 		return slot;
 	}
-	
+
 	function redrawWeaponModSlots() {
 		for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
 			drawModSlot("Weapon", i);
@@ -1000,7 +1000,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				"Element": editorWeaponModSlots.lastElementChild
 			});
 		}
-		
+
 		WFC.Translate.addHook(redrawWeaponModSlots);
 	}
 
@@ -1050,12 +1050,12 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 		initWeaponModSlots();
 		initWeaponModTiles();
 		WFC.Translate.add("editorWeaponLabelCapacity", "labelCapacity", "innerText");
-		
+
 		WFC.Translate.addHook(updateDamageCalcs);
 	}
 
 	var obj = {};
-	
+
 	obj.moveMod = moveMod;
 
 	obj.init = function() {
