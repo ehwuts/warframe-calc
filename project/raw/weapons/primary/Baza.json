@@ -3,6 +3,7 @@
 	"Group": "Primary",
 	"SubGroup": "Rifle",
 	"Disposition": 1.1,
+	"RivenGroup": "Rifle",
 
 	"Magazine": 40,
 	"Ammo": 800,

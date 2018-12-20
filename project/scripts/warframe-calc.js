@@ -430,8 +430,8 @@ function updateStatsum() {
 }
 
 function displayRivenEditor() {
-	for (let i = 0; i < slots.length; i++) {
-		if (slots[i].mod && WFC.SharedData.Mods[slots[i].mod] && WFC.SharedData.Mods[slots[i].mod].sharedID && WFC.SharedData.Mods[slots[i].mod].sharedID == "modRiven") {
+	for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
+		if (WFC.SharedData.Modding.Weapon.Slots[i].ModID === "modRiven") {
 			document.getElementById("rivenedit").classList.remove("hide2");
 			return;
 		}
@@ -499,17 +499,45 @@ function updateRivenMod() {
 
 	var newRivenEffects = {};
 
-	if (boon1ID) newRivenEffects[boon1ID] = boon1Val / 9 / 100;
-	if (boon2ID) newRivenEffects[boon2ID] = boon2Val / 9 / 100;
-	if (boon3ID) newRivenEffects[boon3ID] = boon3Val / 9 / 100;
-	if (curseID) newRivenEffects[curseID] = curseVal / 9 / 100;
+	if (boon1ID) {
+		if (newRivenEffects[boon1ID]) {
+			newRivenEffects[boon1ID] += boon1Val / 9 / 100;
+		} else {
+			newRivenEffects[boon1ID] = boon1Val / 9 / 100;
+		}
+	}
+	if (boon2ID) {
+		if (newRivenEffects[boon2ID]) {
+			newRivenEffects[boon2ID] += boon2Val / 9 / 100;
+		} else {
+			newRivenEffects[boon2ID] = boon2Val / 9 / 100;
+		}
+	}
+	if (boon3ID) {
+		if (newRivenEffects[boon3ID]) {
+			newRivenEffects[boon3ID] += boon3Val / 9 / 100;
+		} else {
+			newRivenEffects[boon3ID] = boon3Val / 9 / 100;
+		}
+	}
+	if (curseID) {
+		if (newRivenEffects[curseID]) {
+			newRivenEffects[curseID] += curseVal / 9 / 100;
+		} else {
+			newRivenEffects[curseID] = curseVal / 9 / 100;
+		}
+	}
 
 	rivenEffects = newRivenEffects;
 
-	reloadSlots();
+	WFC.Modding.redrawSlots("Weapon");
+	updateStatsum();
 }
 
 function updateRivenStatRanges() {
+	var group = WFC.SharedData.Weapon.RivenGroup;
+	var disposition = WFC.SharedData.Weapon.Disposition;
+	
 	var boon1ID = document.getElementById("rivenBoon1ID").value;
 	var boon2ID = document.getElementById("rivenBoon2ID").value;
 	var boon3ID = document.getElementById("rivenBoon3ID").value;
@@ -518,9 +546,9 @@ function updateRivenStatRanges() {
 	var tristat = (boon1ID && boon2ID && boon3ID ? true : false);
 	var hascurse = (curseID ? true : false);
 
-	if (boon1ID && rivenData.categories[items[item].rivenType].buff[boon1ID]) {
-		let base = rivenData.categories[items[item].rivenType].buff[boon1ID];
-		base *= items[item].rivenDisposition;
+	if (boon1ID && rivenData.categories[group].buff[boon1ID]) {
+		let base = rivenData.categories[group].buff[boon1ID];
+		base *= disposition;
 		if (hascurse) base *= rivenData.logic.hascurse;
 		if (tristat) base *= rivenData.logic["3rdbuff"];
 
@@ -531,9 +559,9 @@ function updateRivenStatRanges() {
 		document.getElementById("rivenBoon1Max").innerText = "";
 	}
 
-	if (boon2ID && rivenData.categories[items[item].rivenType].buff[boon2ID]) {
-		let base = rivenData.categories[items[item].rivenType].buff[boon2ID];
-		base *= items[item].rivenDisposition;
+	if (boon2ID && rivenData.categories[group].buff[boon2ID]) {
+		let base = rivenData.categories[group].buff[boon2ID];
+		base *= disposition;
 		if (hascurse) base *= rivenData.logic.hascurse;
 		if (tristat) base *= rivenData.logic["3rdbuff"];
 
@@ -544,9 +572,9 @@ function updateRivenStatRanges() {
 		document.getElementById("rivenBoon2Max").innerText = "";
 	}
 
-	if (boon3ID && rivenData.categories[items[item].rivenType].buff[boon3ID]) {
-		let base = rivenData.categories[items[item].rivenType].buff[boon3ID];
-		base *= items[item].rivenDisposition;
+	if (boon3ID && rivenData.categories[group].buff[boon3ID]) {
+		let base = rivenData.categories[group].buff[boon3ID];
+		base *= disposition;
 		if (hascurse) base *= rivenData.logic.hascurse;
 		if (tristat) base *= rivenData.logic["3rdbuff"];
 
@@ -557,9 +585,9 @@ function updateRivenStatRanges() {
 		document.getElementById("rivenBoon3Max").innerText = "";
 	}
 
-	if (curseID && rivenData.categories[items[item].rivenType].curse[curseID]) {
-		let base = rivenData.categories[items[item].rivenType].curse[curseID];
-		base *= items[item].rivenDisposition;
+	if (curseID && rivenData.categories[group].curse[curseID]) {
+		let base = rivenData.categories[group].curse[curseID];
+		base *= disposition;
 		if (hascurse) base *= rivenData.logic.hascurse;
 		if (tristat) base *= rivenData.logic["3rdcurse"];
 
@@ -577,6 +605,9 @@ function updateRivenComposite() {
 }
 
 function updateRivenForm() {
+	var group = WFC.SharedData.Weapon.RivenGroup;
+	var disposition = WFC.SharedData.Weapon.Disposition;
+	
 	var v = document.getElementById("rivenBoon1ID");
 	var keep = (Object.keys(rivenEffects).length > 0);
 	var oldval = v.value;
@@ -588,7 +619,7 @@ function updateRivenForm() {
 	opt.value = "";
 	opt.innerText = WFC.Translate.translate("selectNone");
 	v.appendChild(opt);
-	var k = Object.keys(rivenData.categories[items[item].rivenType].buff);
+	var k = Object.keys(rivenData.categories[group].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement("option");
 		opt.value = k[i];
@@ -607,7 +638,6 @@ function updateRivenForm() {
 	opt.value = "";
 	opt.innerText = WFC.Translate.translate("selectNone");
 	v.appendChild(opt);
-	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement("option");
 		opt.value = k[i];
@@ -626,7 +656,6 @@ function updateRivenForm() {
 	opt.value = "";
 	opt.innerText = WFC.Translate.translate("selectNone");
 	v.appendChild(opt);
-	k = Object.keys(rivenData.categories[items[item].rivenType].buff);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement("option");
 		opt.value = k[i];
@@ -645,7 +674,7 @@ function updateRivenForm() {
 	opt.value = "";
 	opt.innerText = WFC.Translate.translate("selectNone");
 	v.appendChild(opt);
-	k = Object.keys(rivenData.categories[items[item].rivenType].curse);
+	k = Object.keys(rivenData.categories[group].curse);
 	for (let i = 0; i < k.length; i++) {
 		opt = document.createElement("option");
 		opt.value = k[i];
@@ -784,11 +813,12 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 			elementTarget.children[3].innerText = WFC.Translate.translate(modID);
 
-			elementTarget.children[4].innerText = "";"LOCALIZEME";
+			elementTarget.children[4].innerText = "";
 
-			var k = Object.keys(WFC.SharedData.Mods[modID].effects);
+			var effects = modID === "modRiven" ? rivenEffects : WFC.SharedData.Mods[modID].effects;
+			var k = Object.keys(effects);
 			for (let i = 0; i < k.length; i++) {
-				let magnitude = WFC.SharedData.Mods[modID].effects[k[i]] * (1 + WFC.SharedData.Modding[group].Slots[index].Rank);
+				let magnitude = effects[k[i]] * (1 + WFC.SharedData.Modding[group].Slots[index].Rank);
 				if (magnitude >= 0) {
 					elementTarget.children[4].innerText += "+";
 				}
@@ -863,6 +893,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			drawCapacity(groupSource);
 		} else if (source.classList.contains("modSlot") && destination.classList.contains("editorInventoryListing")) {
 			//Unequipping a Mod
+			let modID = WFC.SharedData.Modding[group].Slots[index].ModID;
 			let group = source.getAttribute("data-category");
 			let index = source.getAttribute("data-index");
 			document.getElementById(WFC.SharedData.Modding[group].Slots[index].ModID).parentElement.classList.remove("modTileVisibilityOverride");
@@ -871,6 +902,9 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			drawModSlot(group, index);
 			drawCapacity(group);
 			source.draggable = false;
+			if (modID === "modRiven") {
+				displayRivenEditor();
+			}
 		} else if (source.classList.contains("modTile") && destination.classList.contains("modSlot")) {
 			//Equipping a Mod from the "Inventory"
 			let groupSource = source.getAttribute("data-category");
@@ -903,6 +937,9 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 			drawModSlot(group, index);
 			drawCapacity(group);
+			if (modSource === "modRiven" || modDestination === "modRiven") {
+				displayRivenEditor();
+			}
 		}
 
 		updateStatsum();
@@ -983,10 +1020,14 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 		return slot;
 	}
 
-	function redrawWeaponModSlots() {
+	function redrawSlots(group) {
 		for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
-			drawModSlot("Weapon", i);
-		}
+			drawModSlot(group, i);
+		}		
+	}
+	
+	function redrawWeaponModSlots() {
+		redrawSlots("Weapon");
 	}
 
 	function initWeaponModSlots() {
@@ -1057,6 +1098,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 	var obj = {};
 
 	obj.moveMod = moveMod;
+	obj.redrawSlots = redrawSlots;
 
 	obj.init = function() {
 		WFC.Util.debug("Modding.init");
@@ -1245,6 +1287,8 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 			WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
 			document.getElementById("editorWeaponName").innerText = WFC.SharedData.Weapon.Name;
 		}
+		updateRivenForm();
+		updateRivenStatRanges();
 		updateStatsum();
 		updateMiscForm();
 	}

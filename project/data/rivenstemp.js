@@ -7,7 +7,7 @@ var rivenData = {
 	},
 
 	"categories": {
-		"weaponTypeRifle": {
+		"Rifle": {
 			"buff": {
 				"bonusMultishot": 80.16,
 				"bonusDamage": 147.04,
@@ -57,7 +57,7 @@ var rivenData = {
 			}
 		},
 
-		"weaponTypeSecondary": {
+		"Secondary": {
 			"buff": {
 				"bonusMultishot": 106.64,
 				"bonusDamage": 195.68,
@@ -107,7 +107,7 @@ var rivenData = {
 			}
 		},
 
-		"weaponTypeShotgun": {
+		"Shotgun": {
 			"buff": {
 				"bonusMultishot": 106.64,
 				"bonusDamage": 146.72,
@@ -152,7 +152,7 @@ var rivenData = {
 			}
 		},
 
-		"weaponTypeMelee": {
+		"Melee": {
 			"buff": {
 				"Melee Damage": 146.72,
 				"bonusImpact": 106.64,

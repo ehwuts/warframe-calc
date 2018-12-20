@@ -3,6 +3,7 @@
 	"Group": "Primary",
 	"SubGroup": "Sniper",
 	"Disposition": 1.1,
+	"RivenGroup": "Rifle",
 
 	"Magazine": 10,
 	"Ammo": 72,
