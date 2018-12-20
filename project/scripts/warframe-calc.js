@@ -835,16 +835,20 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 	}
 	
 	function moveMod(source, destination) {		
-		if (source === destination || source.getAttribute("data-category") !== destination.getAttribute("data-category")) {
-			return;
+		if (source === destination) {
+			return false;
 		}
 		
 		if (source.classList.contains("modSlot") && destination.classList.contains("modSlot")) {
 			//Swapping the positions of two Mods
 			let groupSource = source.getAttribute("data-category");
-			let indexSource = source.getAttribute("data-index");
-			
 			let groupDestination = destination.getAttribute("data-category");
+			
+			if (groupSource !== groupDestination) {
+				return false;
+			}
+			
+			let indexSource = source.getAttribute("data-index");			
 			let indexDestination = destination.getAttribute("data-index");			
 			let rankDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].Rank;
 			let modDestination = WFC.SharedData.Modding[groupDestination].Slots[indexDestination].ModID;
@@ -857,7 +861,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			drawModSlot(groupSource, indexSource);
 			drawModSlot(groupDestination, indexDestination);
 			drawCapacity(groupSource);
-		} else if (source.classList.contains("modSlot") && destination.classList.contains("modTile")) {
+		} else if (source.classList.contains("modSlot") && destination.classList.contains("editorInventoryListing")) {
 			//Unequipping a Mod
 			let group = source.getAttribute("data-category");
 			let index = source.getAttribute("data-index");
@@ -866,9 +870,16 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			
 			drawModSlot(group, index);
 			drawCapacity(group);
+			source.draggable = false;
 		} else if (source.classList.contains("modTile") && destination.classList.contains("modSlot")) {
 			//Equipping a Mod from the "Inventory"
+			let groupSource = source.getAttribute("data-category");
 			let group = destination.getAttribute("data-category");
+			
+			if (groupSource !== group) {
+				return false;
+			}
+			
 			let index = destination.getAttribute("data-index");
 			
 			let modSource = source.getAttribute("data-modid");
@@ -884,6 +895,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 					}
 				}
 			}
+			destination.draggable = true;
 			
 			WFC.SharedData.Modding[group].Slots[index].ModID = modSource;
 			WFC.SharedData.Modding[group].Slots[index].Rank = WFC.SharedData.Mods[modSource].ranks;
@@ -894,6 +906,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 		}
 		
 		updateStatsum();
+		return true;
 	}
 
 	function sortModTiles() {
