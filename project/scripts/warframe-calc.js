@@ -727,11 +727,6 @@ function updateMiscForm() {
 	}
 }
 
-
-function displayMisc() {
-	//TODO localize that form
-};
-
 WFC.SharedData = {
 	"Weapon": null,
 	"Modding": {
