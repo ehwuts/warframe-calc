@@ -1,10 +1,9 @@
-.hide { visibility: hidden; }
-.hide2b { display: none; } 
-.center { text-align: center; }
-
 div { border: 1px solid grey; }
 span { border: 1px solid darkblue; }
 td { border: 1px solid green; }
+
+.hide { visibility: hidden; }
+.hide2 { display: none; }
 
 [draggable] { user-select: none; cursor: move; }
 .over {	border: 1px dashed #000; }
