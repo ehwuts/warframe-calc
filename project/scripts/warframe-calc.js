@@ -1240,8 +1240,10 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 
 		if (e.target.value === -1) {
 			WFC.SharedData.Weapon = null;
+			document.getElementById("editorWeaponName").innerText = "";
 		} else {
 			WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
+			document.getElementById("editorWeaponName").innerText = WFC.SharedData.Weapon.Name;
 		}
 		updateStatsum();
 		updateMiscForm();
