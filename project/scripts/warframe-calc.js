@@ -888,9 +888,9 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			drawCapacity(groupSource);
 		} else if (source.classList.contains("modSlot") && destination.classList.contains("editorInventoryListing")) {
 			//Unequipping a Mod
-			let modID = WFC.SharedData.Modding[group].Slots[index].ModID;
 			let group = source.getAttribute("data-category");
 			let index = source.getAttribute("data-index");
+			let modID = WFC.SharedData.Modding[group].Slots[index].ModID;
 			document.getElementById(WFC.SharedData.Modding[group].Slots[index].ModID).parentElement.classList.remove("modTileVisibilityOverride");
 			WFC.SharedData.Modding[group].Slots[index].ModID = null;
 
