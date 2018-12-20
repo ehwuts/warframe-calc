@@ -744,7 +744,6 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 		for (let i = 0; i < WFC.SharedData.Modding[group].Slots.length; i++) {
 			used += getAdjustedCost(group, i);
 		}
-		console.log(group, (base - used) + "/60");
 		
 		document.getElementById("editor" + group + "ValueCapacity").innerText = (base - used) + "/60";
 	}	
@@ -785,7 +784,24 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			
 			elementTarget.children[3].innerText = WFC.Translate.translate(modID);
 			
-			elementTarget.children[4].innerText = "LOCALIZEME";
+			elementTarget.children[4].innerText = "";"LOCALIZEME";
+			
+			var k = Object.keys(WFC.SharedData.Mods[modID].effects);			
+			for (let i = 0; i < k.length; i++) {
+				let magnitude = WFC.SharedData.Mods[modID].effects[k[i]] * (1 + WFC.SharedData.Modding[group].Slots[index].Rank);
+				if (magnitude >= 0) {
+					elementTarget.children[4].innerText += "+";
+				}
+				if (k[i].indexOf("bonus") === 0) {
+					elementTarget.children[4].innerText += percentagestringFromFloat(magnitude, 0);
+				} else {
+					elementTarget.children[4].innerText += truncatedstringFromFloat(magnitude);
+				}
+				
+				elementTarget.children[4].innerText += " " + WFC.Translate.translate(k[i]);
+				
+				elementTarget.children[4].appendChild(document.createElement("br"));
+			}
 			
 			
 			elementTarget.children[5].innerText = WFC.Translate.translate(WFC.SharedData.Mods[modID].tag);
@@ -798,29 +814,6 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			elementTarget.children[4].innerText = "";
 			elementTarget.children[5].innerText = "";
 		}
-		/*
-		function describeMod(id, rank = null) {
-			var result = "";
-			var mod = WFC.SharedData.Mods[id];
-			if (mod) {
-				if (!rank) {
-					rank = 0;
-				}
-				rank = Math.max(0, Math.min(mod.ranks, rank));
-
-				let effects = (mod.sharedID && mod.sharedID == "modRiven" ? rivenEffects : mod.effects);
-				var k = Object.keys(effects);
-				for (let i = 0; i < k.length; i++) {
-					let adj = effects[k[i]] * (rank + 1);
-					result += (adj>0?"+":"") + (k[i].indexOf("bonus") === 0?percentagestringFromFloat(adj,0):truncatedstringFromFloat(adj))  + " " + WFC.Translate.translate(k[i]) + "<br>";
-				}
-				if (mod.set) {
-					result += WFC.Translate.translate(mod.set);
-				}
-			}
-			return result;
-		}
-		*/
 	}
 
 	function cyclePolarity(group, index, direction) {
@@ -842,7 +835,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 	}
 	
 	function moveMod(source, destination) {		
-		if (source === destination) {
+		if (source === destination || source.getAttribute("data-category") !== destination.getAttribute("data-category")) {
 			return;
 		}
 		
@@ -863,7 +856,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			
 			drawModSlot(groupSource, indexSource);
 			drawModSlot(groupDestination, indexDestination);
-			drawCapacity(group);
+			drawCapacity(groupSource);
 		} else if (source.classList.contains("modSlot") && destination.classList.contains("modTile")) {
 			//Unequipping a Mod
 			let group = source.getAttribute("data-category");
