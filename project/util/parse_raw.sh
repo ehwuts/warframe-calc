@@ -71,6 +71,9 @@ if (generate.Mods) {
 				let textContent = fs.readFileSync(filepath);
 				try {
 					let moddata = JSON.parse(textContent);
+					if (moddata.id === "mod") {
+						console.log("Warning: ", filename, "contains definition for", moddata.id, "which should probably be fixed.");
+					}
 					if (ModIDs[moddata.id]) {
 						console.log("Warning: ", filename, "contains definition for", moddata.id, "which already has a definition from", ModIDs[moddata.id]);
 					} else {

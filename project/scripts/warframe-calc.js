@@ -607,6 +607,9 @@ function updateRivenComposite() {
 function updateRivenForm() {
 	var group = WFC.SharedData.Weapon.RivenGroup;
 	var disposition = WFC.SharedData.Weapon.Disposition;
+	if (!group || !disposition) {
+		return;
+	}
 	
 	var v = document.getElementById("rivenBoon1ID");
 	var keep = (Object.keys(rivenEffects).length > 0);
