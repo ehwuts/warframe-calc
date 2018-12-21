@@ -812,6 +812,10 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 			elementTarget.children[3].innerText = WFC.Translate.translate(modID);
 
 			elementTarget.children[4].innerText = "";
+			if (WFC.SharedData.Mods[modID].condition) {
+				elementTarget.children[4].innerText += "condition: " + WFC.SharedData.Mods[modID].condition;
+				elementTarget.children[4].appendChild(document.createElement("br"));
+			}
 
 			var effects = modID === "modRiven" ? rivenEffects : WFC.SharedData.Mods[modID].effects;
 			var k = Object.keys(effects);
@@ -825,9 +829,12 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				} else {
 					elementTarget.children[4].innerText += truncatedstringFromFloat(magnitude);
 				}
-
 				elementTarget.children[4].innerText += " " + WFC.Translate.translate(k[i]);
 
+				elementTarget.children[4].appendChild(document.createElement("br"));
+			}
+			if (WFC.SharedData.Mods[modID].set) {
+				elementTarget.children[4].innerText += WFC.Translate.translate(WFC.SharedData.Mods[modID].set);
 				elementTarget.children[4].appendChild(document.createElement("br"));
 			}
 
