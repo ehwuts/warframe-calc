@@ -1,0 +1,30 @@
+{
+	"Name": "Grattler (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 30,
+	"Ammo": 210,
+	"Reload": 2,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerAutoSpool",
+			"Noise": "noiseAlarming",
+			"FallOff": [100, 350, "?"],
+			"FireRate": 6.25,
+			"Accuracy": 25,
+			"PunchThrough": 5,
+			"Projectiles": 1,
+			"CriticalChance": 0.25,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.25,
+
+			"Damage": {
+				"Impact": 29.7,
+				"Puncture": 237.8,
+				"Slash": 29.7
+			}			
+		}
+	}
+}

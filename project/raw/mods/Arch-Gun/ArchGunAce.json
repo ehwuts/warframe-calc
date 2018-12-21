@@ -1,0 +1,14 @@
+{
+	"id":"modArchGunAce",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "V",
+	"condition": "headshot kill",
+	"effects" : {
+		"bonusFireRate" : 0.083333333,
+		"bonusReloadSpeed": 0.6666667,
+		"duration": 1.5
+	}
+}

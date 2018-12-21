@@ -1,0 +1,28 @@
+{
+	"Name": "Imperator Vandal (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 300,
+	"Ammo": 1200,
+	"Reload": 2,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerAutoSpool",
+			"Noise": "noiseAlarming",
+			"FireRate": 24.34,
+			"Accuracy": 25,
+			"Projectiles": 1,
+			"CriticalChance": 0.28,
+			"CriticalMultiplier": 2.4,
+			"StatusChance": 0.12,
+
+			"Damage": {
+				"Impact": 20,
+				"Puncture": 17.5,
+				"Slash": 12.5
+			}			
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":"modShellRush",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 3,
+	"polarity": "D",
+	"effects" : {
+		"bonusChargeRate" : 0.125
+	}
+}

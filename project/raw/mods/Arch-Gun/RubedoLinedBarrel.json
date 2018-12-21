@@ -1,0 +1,11 @@
+{
+	"id":"modRubedoLinedBarrel",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"bonusDamage" : 0.16666667
+	}
+}

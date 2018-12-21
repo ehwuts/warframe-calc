@@ -1,0 +1,28 @@
+{
+	"Name": "Phaedra (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 250,
+	"Ammo": 960,
+	"Reload": 2,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerAutoSpool",
+			"Noise": "noiseAlarming",
+			"FireRate": 25,
+			"Accuracy": 11.8,
+			"Projectiles": 1,
+			"CriticalChance": 0.14,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.3,
+
+			"Damage": {
+				"Impact": 14,
+				"Puncture": 36.4,
+				"Slash": 6
+			}			
+		}
+	}
+}

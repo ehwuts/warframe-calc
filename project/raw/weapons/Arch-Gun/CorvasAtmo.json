@@ -1,0 +1,48 @@
+{
+	"Name": "Corvas (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 25,
+	"Ammo": 100,
+	"Reload": 2,
+
+	"Attacks": {
+		"Charged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"FallOff": [60, 120, "?"],
+			"ChargeTime": 0.5,
+			"Accuracy": 9.1,
+			"PunchThrough": 0,
+			"Projectiles": 12,
+			"CriticalChance": 0.4,
+			"CriticalMultiplier": 2.6,
+			"StatusChance": 0.14,
+
+			"Damage": {
+				"Impact": 768,
+				"Puncture": 96,
+				"Slash": 96
+			}			
+		},		
+		"Uncharged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"FallOff": [60, 120, "?"],
+			"ChargeTime": "?",
+			"Accuracy": 9.1,
+			"PunchThrough": 0,
+			"Projectiles": 12,
+			"CriticalChance": 0.4,
+			"CriticalMultiplier": 2.6,
+			"StatusChance": 0.14,
+
+			"Damage": {
+				"Impact": 384,
+				"Puncture": 48,
+				"Slash": 48
+			}			
+		}
+	}
+}

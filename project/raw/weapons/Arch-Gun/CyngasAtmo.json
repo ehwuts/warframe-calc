@@ -1,0 +1,29 @@
+{
+	"Name": "Cyngas (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 30,
+	"Ammo": 480,
+	"Reload": 1.2,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerBurst",
+			"BurstCount": 3,
+			"Noise": "noiseAlarming",
+			"FireRate": 9.09,
+			"Accuracy": 33.3,
+			"Projectiles": 3,
+			"CriticalChance": 0.2,
+			"CriticalMultiplier": 2.2,
+			"StatusChance": 0.30,
+
+			"Damage": {
+				"Impact": 39.6,
+				"Puncture": 39.6,
+				"Slash": 40.8
+			}			
+		}
+	}
+}

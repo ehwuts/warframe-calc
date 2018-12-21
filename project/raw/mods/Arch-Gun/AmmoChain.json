@@ -1,0 +1,11 @@
+{
+	"id":"modAmmoChain",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 2,
+	"ranks" : 5,
+	"polarity": " ",
+	"effects" : {
+		"bonusAmmo" : 16.66667
+	}
+}

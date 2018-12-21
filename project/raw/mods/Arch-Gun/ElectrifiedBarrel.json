@@ -1,0 +1,11 @@
+{
+	"id":"modElectrifiedBarrel",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusElectricity" : 0.20
+	}
+}

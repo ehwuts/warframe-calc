@@ -1,0 +1,11 @@
+{
+	"id":"modDualRounds",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"bonusMultishot" : 0.1
+	}
+}

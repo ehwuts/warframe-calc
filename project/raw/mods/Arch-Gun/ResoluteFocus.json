@@ -1,0 +1,13 @@
+{
+	"id":"modResoluteFocus",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "—",
+	"condition": "aiming",
+	"effects" : {
+		"resistKnockdown" : 0.17,
+		"bonusAccuracy": -0.08
+	}
+}

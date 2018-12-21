@@ -1,0 +1,12 @@
+{
+	"id":"modSabotRounds",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 10,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusDamage" : 0.1,
+		"flatPunchThrough": 0.5
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":"modCombustionRounds",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"bonusHeat" : 0.20
+	}
+}

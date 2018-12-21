@@ -1,0 +1,11 @@
+{
+	"id":"modCometBlast",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 2,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusImpact" : 0.15
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":"modHollowedBullets",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 3,
+	"polarity": "V",
+	"effects" : {
+		"bonusCritDamage" : 0.2
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":"modQuickReload",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 2,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusReload" : 0.25
+	}
+}

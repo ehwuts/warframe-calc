@@ -1,0 +1,12 @@
+{
+	"id":"modMarkedTarget",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 6,
+	"ranks" : 5,
+	"polarity": "—",
+	"condition": "aiming",
+	"effects" : {
+		"bonusDamage" : 0.2
+	}
+}

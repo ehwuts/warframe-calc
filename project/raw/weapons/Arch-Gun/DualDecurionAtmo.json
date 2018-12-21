@@ -1,0 +1,28 @@
+{
+	"Name": "Dual Decurion (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 32,
+	"Ammo": 512,
+	"Reload": 1.4,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerAuto",
+			"Noise": "noiseAlarming",
+			"FireRate": 8.3,
+			"Accuracy": 100,
+			"Projectiles": 1,
+			"CriticalChance": 0.28,
+			"CriticalMultiplier": 2.2,
+			"StatusChance": 0.14,
+
+			"Damage": {
+				"Impact": 49.6,
+				"Puncture": 30.25,
+				"Slash": 30.25
+			}			
+		}
+	}
+}

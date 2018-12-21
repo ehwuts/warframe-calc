@@ -1,0 +1,11 @@
+{
+	"id":"modZodiacShred",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 2,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusSlash" : 0.15
+	}
+}

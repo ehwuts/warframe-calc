@@ -1,0 +1,13 @@
+{
+	"id":"modDeadlyEfficiency",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "V",
+	"condition": "reload from empty",
+	"effects" : {
+		"bonusDamage" : 0.2,
+		"duration": 1.5
+	}
+}

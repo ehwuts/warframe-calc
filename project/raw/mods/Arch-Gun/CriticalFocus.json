@@ -1,0 +1,13 @@
+{
+	"id":"modCriticalFocus",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 6,
+	"ranks" : 10,
+	"polarity": "V",
+	"condition": "aiming",
+	"effects" : {
+		"bonusCritChance" : 0.10,
+		"bonusCritDamage" : 0.10
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":"modParallaxScope",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 3,
+	"polarity": "—",
+	"effects" : {
+		"bonusCritChance" : 0.25
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"Name": "Velocitus (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 10,
+	"Ammo": 60,
+	"Reload": 2,
+
+	"Attacks": {
+		"Charged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"ChargeTime": 1,
+			"Accuracy": 9.1,
+			"PunchThrough": 5,
+			"Projectiles": 1,
+			"CriticalChance": 0.3,
+			"CriticalMultiplier": 3,
+			"StatusChance": 0.25,
+
+			"Damage": {
+				"Magnetic": 1200
+			}			
+		},		
+		"Uncharged Shot": {
+			"Trigger": "triggerCharge",
+			"Noise": "noiseAlarming",
+			"ChargeTime": 0.2,
+			"Accuracy": 28.6,
+			"PunchThrough": 5,
+			"Projectiles": 1,
+			"CriticalChance": 0.3,
+			"CriticalMultiplier": 3,
+			"StatusChance": 0.25,
+
+			"Damage": {
+				"Magnetic": 200
+			}			
+		}
+	}
+}

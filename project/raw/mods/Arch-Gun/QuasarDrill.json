@@ -1,0 +1,11 @@
+{
+	"id":"modQuasarDrill",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 2,
+	"ranks" : 5,
+	"polarity": "—",
+	"effects" : {
+		"bonusPuncture" : 0.15
+	}
+}

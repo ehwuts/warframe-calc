@@ -1,0 +1,29 @@
+{
+	"Name": "Fluctus (Atmosphere)",
+	"Group": "Arch-Gun",
+	"SubGroup": "Arch-Gun (Atmosphere)",
+
+	"Magazine": 40,
+	"Ammo": 160,
+	"Reload": 2,
+
+	"Attacks": {
+		"Primary": {
+			"Trigger": "triggerSemi",
+			"Noise": "noiseAlarming",
+			"FireRate": 5,
+			"Accuracy": 100,
+			"PunchThrough": 275,
+			"Projectiles": 1,
+			"CriticalChance": 0.22,
+			"CriticalMultiplier": 2,
+			"StatusChance": 0.16,
+
+			"Damage": {
+				"Impact": 50,
+				"Puncture": 25,
+				"Slash": 175
+			}			
+		}
+	}
+}

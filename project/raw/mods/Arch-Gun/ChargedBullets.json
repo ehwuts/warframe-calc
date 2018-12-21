@@ -1,0 +1,12 @@
+{
+	"id":"modChargedBullets",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 3,
+	"polarity": "V",
+	"effects" : {
+		"bonusElectricity" : 0.15,
+		"bonusStatusChance" : 0.15
+	}
+}

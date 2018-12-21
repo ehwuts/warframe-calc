@@ -1,0 +1,11 @@
+{
+	"id":"modAutomaticTrigger",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 10,
+	"ranks" : 5,
+	"polarity": "V",
+	"effects" : {
+		"bonusFireRate" : 0.1
+	}
+}

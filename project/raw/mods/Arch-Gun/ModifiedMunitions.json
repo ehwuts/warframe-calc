@@ -1,0 +1,11 @@
+{
+	"id":"modModifiedMunitions",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "D",
+	"effects" : {
+		"bonusStatusChance" : 0.1
+	}
+}
