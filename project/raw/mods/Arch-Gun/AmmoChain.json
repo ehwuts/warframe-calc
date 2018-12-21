@@ -4,8 +4,8 @@
 	"tag" : "weaponSubGroupArch-Gun",
 	"cost" : 2,
 	"ranks" : 5,
-	"polarity": " ",
+	"polarity": "—",
 	"effects" : {
-		"bonusAmmo" : 16.66667
+		"bonusAmmo" : 0.1666667
 	}
 }

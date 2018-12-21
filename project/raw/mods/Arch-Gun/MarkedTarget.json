@@ -7,6 +7,6 @@
 	"polarity": "—",
 	"condition": "aiming",
 	"effects" : {
-		"bonusDamage" : 0.2
+		"bonusStatusChance" : 0.2
 	}
 }

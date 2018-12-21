@@ -8,6 +8,6 @@
 	"condition": "aiming",
 	"effects" : {
 		"resistKnockdown" : 0.17,
-		"bonusAccuracy": -0.08
+		"bonusAccuracy": 0.08
 	}
 }

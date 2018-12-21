@@ -8,7 +8,7 @@
 	"condition": "headshot kill",
 	"effects" : {
 		"bonusFireRate" : 0.083333333,
-		"bonusReloadSpeed": 0.6666667,
+		"bonusReloadSpeed": 0.16666667,
 		"duration": 1.5
 	}
 }
