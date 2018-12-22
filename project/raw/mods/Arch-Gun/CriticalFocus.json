@@ -3,7 +3,7 @@
 	"group": "Arch-Gun",
 	"tag" : "weaponSubGroupArch-Gun",
 	"cost" : 6,
-	"ranks" : 10,
+	"ranks" : 5,
 	"polarity": "V",
 	"condition": "aiming",
 	"effects" : {
