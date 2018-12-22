@@ -224,10 +224,10 @@ function updateDamageCalcs() {
 	var critMulti = stats.CriticalMultiplier * (1 + (statsum.bonusCritDamage?statsum.bonusCritDamage:0));
 	var multishot = stats.Projectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
 	var punchThrough = stats.PunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
-	var fireRate = (stats.Trigger == "triggerCharge" ? 1 / stats.ChargeTime : stats.FireRate) *(1 + (statsum.bonusFireRate?statsum.bonusFireRate:0));
-	var magazine = WFC.SharedData.Weapon.Magazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0));
-	var reload = WFC.SharedData.Weapon.Reload * (1 + (statsum.bonusReload?statsum.bonusReload:0));
-	var ammo = WFC.SharedData.Weapon.Ammo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0));
+	var fireRate = (stats.Trigger == "triggerCharge" ? 1 / stats.ChargeTime : stats.FireRate) *(1 + (statsum.bonusFireRate?statsum.bonusFireRate:0) + (stats.Trigger == "triggerCharge" && statsum.bonusChargeRate? statsum.bonusChargeRate:0));
+	var magazine = Math.Floor(WFC.SharedData.Weapon.Magazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0)));
+	var reload = WFC.SharedData.Weapon.Reload / (1 + (statsum.bonusReload?statsum.bonusReload:0));
+	var ammo = Math.floor(WFC.SharedData.Weapon.Ammo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0)));
 	if (statsum.bonusCold) damagePercents["damageCold"] += statsum.bonusCold;
 	if (statsum.bonusElectricity) damagePercents["damageElectricity"] += statsum.bonusElectricity;
 	if (statsum.bonusHeat) damagePercents["damageHeat"] += statsum.bonusHeat;
