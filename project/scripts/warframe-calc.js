@@ -225,7 +225,7 @@ function updateDamageCalcs() {
 	var multishot = stats.Projectiles * (1 + (statsum.bonusMultishot?statsum.bonusMultishot:0));
 	var punchThrough = stats.PunchThrough + (statsum.flatPunchThrough?statsum.flatPunchThrough:0);
 	var fireRate = (stats.Trigger == "triggerCharge" ? 1 / stats.ChargeTime : stats.FireRate) *(1 + (statsum.bonusFireRate?statsum.bonusFireRate:0) + (stats.Trigger == "triggerCharge" && statsum.bonusChargeRate? statsum.bonusChargeRate:0));
-	var magazine = Math.Floor(WFC.SharedData.Weapon.Magazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0)));
+	var magazine = Math.floor(WFC.SharedData.Weapon.Magazine * (1 + (statsum.bonusMagazine?statsum.bonusMagazine:0)));
 	var reload = WFC.SharedData.Weapon.Reload / (1 + (statsum.bonusReload?statsum.bonusReload:0));
 	var ammo = Math.floor(WFC.SharedData.Weapon.Ammo * (1 + (statsum.bonusAmmo?statsum.bonusAmmo:0)));
 	if (statsum.bonusCold) damagePercents["damageCold"] += statsum.bonusCold;
@@ -746,6 +746,18 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 	var Mods;
 	var Polarities = [" ", "V", "D", "—", "=", "R", "Y", "U"];
 
+	function updateModInventory() {
+		let k = Object.keys(WFC.SharedData.Mods);
+		let group = WFC.SharedData.Weapon.Group;
+		for (let i = 0; i < k.length; i++) {
+			if (WFC.SharedData.Mods[k[i]].group === group) {
+				document.getElementById(k[i]).parentElement.classList.remove("modTileVisibilityOverride");
+			} else {
+				document.getElementById(k[i]).parentElement.classList.add("modTileVisibilityOverride");
+			}
+		}
+	}
+	
 	function getAdjustedCost(group, index) {
 		if (! WFC.SharedData.Modding[group].Slots[index].ModID || ! WFC.SharedData.Mods[WFC.SharedData.Modding[group].Slots[index].ModID]) {
 			return 0;
@@ -1104,6 +1116,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 	obj.moveMod = moveMod;
 	obj.redrawSlots = redrawSlots;
+	obj.updateModInventory = updateModInventory;
 
 	obj.init = function() {
 		WFC.Util.debug("Modding.init");
@@ -1292,6 +1305,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 			WFC.SharedData.Weapon = JSON.parse(JSON.stringify(Weapons.Weapons[e.target.value]));
 			document.getElementById("editorWeaponName").innerText = WFC.SharedData.Weapon.Name;
 		}
+		WFC.Modding.updateModInventory();
 		updateRivenForm();
 		updateRivenStatRanges();
 		updateStatsum();
