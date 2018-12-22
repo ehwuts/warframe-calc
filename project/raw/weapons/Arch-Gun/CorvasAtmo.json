@@ -21,9 +21,9 @@
 			"StatusChance": 0.14,
 
 			"Damage": {
-				"Impact": 768,
-				"Puncture": 96,
-				"Slash": 96
+				"Impact": 64,
+				"Puncture": 8,
+				"Slash": 8
 			}			
 		},		
 		"Uncharged Shot": {
@@ -39,9 +39,9 @@
 			"StatusChance": 0.14,
 
 			"Damage": {
-				"Impact": 384,
-				"Puncture": 48,
-				"Slash": 48
+				"Impact": 32,
+				"Puncture": 4,
+				"Slash": 4
 			}			
 		}
 	}
