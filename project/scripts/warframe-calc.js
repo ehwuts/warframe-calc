@@ -1100,6 +1100,80 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 		WFC.Translate.addHook(sortModTiles);
 	}
+	
+	function initWeaponStatsSimple() {
+		WFC.Translate.add("editorWeaponLabelCapacity", "labelCapacity", "innerText");
+		let table = document.getElementById("editorWeaponStatsSimple");
+		
+		var generalStats = [
+			"Accuracy",
+			"CriticalChance",
+			"CriticalMultiplier",
+			"FallOff",
+			"FireRate",
+			"Magazine",
+			"Noise",
+			"PunchThrough",
+			"Reload",
+			"Disposition",
+			"StatusChance",
+			"Trigger"
+		];
+		var damageTypes = [
+			"Impact",
+			"Toxin",
+			"Heat",
+			"Electricity",
+			"Slash",
+			"Puncture",
+			"Cold",
+			"Gas",
+			"Corrosive",
+			"Radiation",
+			"Blast",
+			"Viral",
+			"Magnetic"
+		];
+		
+		for (let i = 0; i < generalStats.length; i++) {
+			let row = document.createElement("tr");
+			let label = document.createElement("td");
+			label.id = "editorWeaponLabel" + generalStats[i];
+			label.innerText = "label" + generalStats[i];
+			row.appendChild(label);
+			
+			let value = document.createElement("td");
+			value.id = "editorWeaponValue" + generalStats[i];
+			row.appendChild(value);
+			
+			table.appendChild(row);
+			WFC.Translate.add(label.id, label.innerText, "innerText");
+		}
+		
+		{
+			let row = document.createElement("tr");
+			let spacer = document.createElement("td");
+			spacer.colspan = "2";
+			spacer.innerText = " ";
+			row.appendChild(spacer);
+			table.appendChild(row);
+		}
+		
+		for (let i = 0; i < damageTypes.length; i++) {
+			let row = document.createElement("tr");
+			let label = document.createElement("td");
+			label.id = "editorWeaponLabel" + damageTypes[i];
+			label.innerText = "damage" + damageTypes[i];
+			row.appendChild(label);
+			
+			let value = document.createElement("td");
+			value.id = "editorWeaponValue" + damageTypes[i];
+			row.appendChild(value);
+			
+			table.appendChild(row);
+			WFC.Translate.add(label.id, label.innerText, "innerText");			
+		}
+	}
 
 	function initData() {
 		WFC.Util.debug("Modding.initData");
@@ -1107,7 +1181,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 
 		initWeaponModSlots();
 		initWeaponModTiles();
-		WFC.Translate.add("editorWeaponLabelCapacity", "labelCapacity", "innerText");
+		initWeaponStatsSimple();
 
 		WFC.Translate.addHook(updateDamageCalcs);
 	}
