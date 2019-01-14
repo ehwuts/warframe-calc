@@ -1399,9 +1399,9 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 			let eG = WFC.Util.addElement(selectCategory, "option", {
 				"id": "optionWeaponGroup" + groups[iGroup],
 				"value": groups[iGroup],
-				"label": WFC.Translate.translate("weaponGroup" + groups[iGroup])
+				"innerText": WFC.Translate.translate("weaponGroup" + groups[iGroup])
 			});
-			WFC.Translate.add(eG.id, "weaponGroup" + groups[iGroup], "label");
+			WFC.Translate.add(eG.id, "weaponGroup" + groups[iGroup], "innerText");
 
 			let subGroups = Object.keys(Weapons.Tree[groups[iGroup]]);
 			for (let iSub = 0; iSub < subGroups.length; iSub++) {
@@ -1416,7 +1416,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 				for (let iWeapon = 0; iWeapon < weapons.length; iWeapon++) {
 					WFC.Util.addElement(eSG, "option", {
 						"value": weapons[iWeapon],
-						"label": weapons[iWeapon]
+						"innerText": Weapons.Weapons[weapons[iWeapon]].Name
 					});
 				}
 			}
@@ -1443,7 +1443,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 	var obj = {};
 	obj.init = function () {
 		WFC.Util.debug("Weapons.init");
-		WFC.Translate.add("optionWeaponSelectBlank", "selectBlankWeapon", "label");
+		WFC.Translate.add("optionWeaponSelectBlank", "selectBlankWeapon", "innerText");
 		var request = new XMLHttpRequest();
 		request.open("GET", srcData);
 		request.responseType = "json";
