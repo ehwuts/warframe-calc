@@ -1,0 +1,11 @@
+{
+	"id":"modVenomousClip",
+	"group": "Arch-Gun",
+	"tag" : "weaponSubGroupArch-Gun",
+	"cost" : 4,
+	"ranks" : 5,
+	"polarity": "D",
+	"effects" : {
+		"bonusToxin" : 0.2
+	}
+}
