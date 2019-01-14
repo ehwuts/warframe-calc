@@ -836,7 +836,7 @@ WFC.Modding = (function (WFC, srcData, window, undefined) {
 				if (magnitude >= 0) {
 					elementTarget.children[4].innerText += "+";
 				}
-				if (k[i].indexOf("bonus") === 0) {
+				if (k[i].indexOf("bonus") === 0 || k[i].indexOf("resist") === 0) {
 					elementTarget.children[4].innerText += percentagestringFromFloat(magnitude, 0);
 				} else {
 					elementTarget.children[4].innerText += truncatedstringFromFloat(magnitude);
