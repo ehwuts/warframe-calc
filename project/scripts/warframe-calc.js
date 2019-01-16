@@ -19,8 +19,6 @@ var WFC = {};
 			<tr><td>Puncture</td><td>267.0</td></tr>
 			<tr><td>Viral</td><td>2670</td></tr>
 */
-
-var rivenEffects = {};
 var statsum = {};
 
 function percentagestringFromFloat(f, p = 1) {
@@ -429,17 +427,6 @@ function updateStatsum() {
 	}
 }
 
-function displayRivenEditor() {
-	for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
-		if (WFC.SharedData.Modding.Weapon.Slots[i].ModID === "modRiven") {
-			document.getElementById("rivenedit").classList.remove("hide2");
-			return;
-		}
-	}
-	document.getElementById("rivenedit").classList.add("hide2");
-	return;
-}
-
 var DragHandler = (function(window, undefined){
 	var dragSrc = null;
 
@@ -487,221 +474,6 @@ var DragHandler = (function(window, undefined){
 })(window);
 
 
-function updateRivenMod() {
-	var boon1ID = document.getElementById("rivenBoon1ID").value;
-	var boon1Val = document.getElementById("rivenBoon1").value;
-	var boon2ID = document.getElementById("rivenBoon2ID").value;
-	var boon2Val = document.getElementById("rivenBoon2").value;
-	var boon3ID = document.getElementById("rivenBoon3ID").value;
-	var boon3Val = document.getElementById("rivenBoon3").value;
-	var curseID = document.getElementById("rivenCurseID").value;
-	var curseVal = document.getElementById("rivenCurse").value;
-
-	var newRivenEffects = {};
-
-	if (boon1ID) {
-		if (newRivenEffects[boon1ID]) {
-			newRivenEffects[boon1ID] += boon1Val / 9 / 100;
-		} else {
-			newRivenEffects[boon1ID] = boon1Val / 9 / 100;
-		}
-	}
-	if (boon2ID) {
-		if (newRivenEffects[boon2ID]) {
-			newRivenEffects[boon2ID] += boon2Val / 9 / 100;
-		} else {
-			newRivenEffects[boon2ID] = boon2Val / 9 / 100;
-		}
-	}
-	if (boon3ID) {
-		if (newRivenEffects[boon3ID]) {
-			newRivenEffects[boon3ID] += boon3Val / 9 / 100;
-		} else {
-			newRivenEffects[boon3ID] = boon3Val / 9 / 100;
-		}
-	}
-	if (curseID) {
-		if (newRivenEffects[curseID]) {
-			newRivenEffects[curseID] += curseVal / 9 / 100;
-		} else {
-			newRivenEffects[curseID] = curseVal / 9 / 100;
-		}
-	}
-
-	rivenEffects = newRivenEffects;
-
-	WFC.Modding.redrawSlots("Weapon");
-	updateStatsum();
-}
-
-function updateRivenStatRanges() {
-	var group = WFC.SharedData.Weapon.RivenGroup;
-	var disposition = WFC.SharedData.Weapon.Disposition;
-	
-	var boon1ID = document.getElementById("rivenBoon1ID").value;
-	var boon2ID = document.getElementById("rivenBoon2ID").value;
-	var boon3ID = document.getElementById("rivenBoon3ID").value;
-	var curseID = document.getElementById("rivenCurseID").value;
-
-	var tristat = (boon1ID && boon2ID && boon3ID ? true : false);
-	var hascurse = (curseID ? true : false);
-
-	if (boon1ID && rivenData.categories[group].buff[boon1ID]) {
-		let base = rivenData.categories[group].buff[boon1ID];
-		base *= disposition;
-		if (hascurse) base *= rivenData.logic.hascurse;
-		if (tristat) base *= rivenData.logic["3rdbuff"];
-
-		document.getElementById("rivenBoon1Min").innerText = truncatedstringFromFloat(base);
-		document.getElementById("rivenBoon1Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
-	} else {
-		document.getElementById("rivenBoon1Min").innerText = "";
-		document.getElementById("rivenBoon1Max").innerText = "";
-	}
-
-	if (boon2ID && rivenData.categories[group].buff[boon2ID]) {
-		let base = rivenData.categories[group].buff[boon2ID];
-		base *= disposition;
-		if (hascurse) base *= rivenData.logic.hascurse;
-		if (tristat) base *= rivenData.logic["3rdbuff"];
-
-		document.getElementById("rivenBoon2Min").innerText = truncatedstringFromFloat(base);
-		document.getElementById("rivenBoon2Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
-	} else {
-		document.getElementById("rivenBoon2Min").innerText = "";
-		document.getElementById("rivenBoon2Max").innerText = "";
-	}
-
-	if (boon3ID && rivenData.categories[group].buff[boon3ID]) {
-		let base = rivenData.categories[group].buff[boon3ID];
-		base *= disposition;
-		if (hascurse) base *= rivenData.logic.hascurse;
-		if (tristat) base *= rivenData.logic["3rdbuff"];
-
-		document.getElementById("rivenBoon3Min").innerText = truncatedstringFromFloat(base);
-		document.getElementById("rivenBoon3Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
-	} else {
-		document.getElementById("rivenBoon3Min").innerText = "";
-		document.getElementById("rivenBoon3Max").innerText = "";
-	}
-
-	if (curseID && rivenData.categories[group].curse[curseID]) {
-		let base = rivenData.categories[group].curse[curseID];
-		base *= disposition;
-		if (hascurse) base *= rivenData.logic.hascurse;
-		if (tristat) base *= rivenData.logic["3rdcurse"];
-
-		document.getElementById("rivenCurseMin").innerText = truncatedstringFromFloat(base);
-		document.getElementById("rivenCurseMax").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
-	} else {
-		document.getElementById("rivenCurseMin").innerText = "";
-		document.getElementById("rivenCurseMax").innerText = "";
-	}
-}
-
-function updateRivenComposite() {
-	updateRivenStatRanges();
-	updateRivenMod();
-}
-
-function updateRivenForm() {
-	var group = WFC.SharedData.Weapon.RivenGroup;
-	var disposition = WFC.SharedData.Weapon.Disposition;
-	if (!group || !disposition) {
-		return;
-	}
-	
-	var v = document.getElementById("rivenBoon1ID");
-	var keep = (Object.keys(rivenEffects).length > 0);
-	var oldval = v.value;
-	while (v.children.length > 0) {
-		v.removeChild(v.lastElementChild);
-	}
-
-	var opt = document.createElement("option");
-	opt.value = "";
-	opt.innerText = WFC.Translate.translate("selectNone");
-	v.appendChild(opt);
-	var k = Object.keys(rivenData.categories[group].buff);
-	for (let i = 0; i < k.length; i++) {
-		opt = document.createElement("option");
-		opt.value = k[i];
-		if (keep && k[i] == oldval) opt.selected = "selected";
-		opt.innerText = WFC.Translate.translate(k[i]);
-		v.appendChild(opt);
-	}
-	v.onchange = updateRivenComposite;
-
-	v = document.getElementById("rivenBoon2ID");
-	oldval = v.value;
-	while (v.children.length > 0) {
-		v.removeChild(v.lastElementChild);
-	}
-	opt = document.createElement("option");
-	opt.value = "";
-	opt.innerText = WFC.Translate.translate("selectNone");
-	v.appendChild(opt);
-	for (let i = 0; i < k.length; i++) {
-		opt = document.createElement("option");
-		opt.value = k[i];
-		if (keep && k[i] == oldval) opt.selected = "selected";
-		opt.innerText = WFC.Translate.translate(k[i]);
-		v.appendChild(opt);
-	}
-	v.onchange = updateRivenComposite;
-
-	v = document.getElementById("rivenBoon3ID");
-	oldval = v.value;
-	while (v.children.length > 0) {
-		v.removeChild(v.lastElementChild);
-	}
-	opt = document.createElement("option");
-	opt.value = "";
-	opt.innerText = WFC.Translate.translate("selectNone");
-	v.appendChild(opt);
-	for (let i = 0; i < k.length; i++) {
-		opt = document.createElement("option");
-		opt.value = k[i];
-		if (keep && k[i] == oldval) opt.selected = "selected";
-		opt.innerText = WFC.Translate.translate(k[i]);
-		v.appendChild(opt);
-	}
-	v.onchange = updateRivenComposite;
-
-	v = document.getElementById("rivenCurseID");
-	oldval = v.value;
-	while (v.children.length > 0) {
-		v.removeChild(v.lastElementChild);
-	}
-	opt = document.createElement("option");
-	opt.value = "";
-	opt.innerText = WFC.Translate.translate("selectNone");
-	v.appendChild(opt);
-	k = Object.keys(rivenData.categories[group].curse);
-	for (let i = 0; i < k.length; i++) {
-		opt = document.createElement("option");
-		opt.value = k[i];
-		if (keep && k[i] == oldval) opt.selected = "selected";
-		opt.innerText = WFC.Translate.translate(k[i]);
-		v.appendChild(opt);
-	}
-	v.onchange = updateRivenComposite;
-
-	document.getElementById("rivenBoon1").onchange = updateRivenMod;
-	document.getElementById("rivenBoon1").onkeyup = updateRivenMod;
-	document.getElementById("rivenBoon1ID").onkeyup = updateRivenMod;
-	document.getElementById("rivenBoon2").onchange = updateRivenMod;
-	document.getElementById("rivenBoon2").onkeyup = updateRivenMod;
-	document.getElementById("rivenBoon2ID").onkeyup = updateRivenMod;
-	document.getElementById("rivenBoon3").onchange = updateRivenMod;
-	document.getElementById("rivenBoon3").onkeyup = updateRivenMod;
-	document.getElementById("rivenBoon3ID").onkeyup = updateRivenMod;
-	document.getElementById("rivenCurse").onchange = updateRivenMod;
-	document.getElementById("rivenCurse").onkeyup = updateRivenMod;
-	document.getElementById("rivenCurseID").onkeyup = updateRivenMod;
-
-}
-
 function updateMiscForm() {
 	var v = document.getElementById("zoom");
 	v.onchange = updateStatsum;
@@ -741,6 +513,238 @@ WFC.SharedData = {
 	},
 	"Mods": null
 };
+
+WFC.RivenHandling = (function (WFC, window, undefined) {
+	var rivenEffects = {};
+	
+	function updateRivenMod() {
+		var boon1ID = document.getElementById("rivenBoon1ID").value;
+		var boon1Val = document.getElementById("rivenBoon1").value;
+		var boon2ID = document.getElementById("rivenBoon2ID").value;
+		var boon2Val = document.getElementById("rivenBoon2").value;
+		var boon3ID = document.getElementById("rivenBoon3ID").value;
+		var boon3Val = document.getElementById("rivenBoon3").value;
+		var curseID = document.getElementById("rivenCurseID").value;
+		var curseVal = document.getElementById("rivenCurse").value;
+
+		var newRivenEffects = {};
+
+		if (boon1ID) {
+			if (newRivenEffects[boon1ID]) {
+				newRivenEffects[boon1ID] += boon1Val / 9 / 100;
+			} else {
+				newRivenEffects[boon1ID] = boon1Val / 9 / 100;
+			}
+		}
+		if (boon2ID) {
+			if (newRivenEffects[boon2ID]) {
+				newRivenEffects[boon2ID] += boon2Val / 9 / 100;
+			} else {
+				newRivenEffects[boon2ID] = boon2Val / 9 / 100;
+			}
+		}
+		if (boon3ID) {
+			if (newRivenEffects[boon3ID]) {
+				newRivenEffects[boon3ID] += boon3Val / 9 / 100;
+			} else {
+				newRivenEffects[boon3ID] = boon3Val / 9 / 100;
+			}
+		}
+		if (curseID) {
+			if (newRivenEffects[curseID]) {
+				newRivenEffects[curseID] += curseVal / 9 / 100;
+			} else {
+				newRivenEffects[curseID] = curseVal / 9 / 100;
+			}
+		}
+
+		rivenEffects = newRivenEffects;
+
+		WFC.Modding.redrawSlots("Weapon");
+		updateStatsum();
+	}
+
+	function updateRivenStatRanges() {
+		var group = WFC.SharedData.Weapon.RivenGroup;
+		var disposition = WFC.SharedData.Weapon.Disposition;
+		
+		var boon1ID = document.getElementById("rivenBoon1ID").value;
+		var boon2ID = document.getElementById("rivenBoon2ID").value;
+		var boon3ID = document.getElementById("rivenBoon3ID").value;
+		var curseID = document.getElementById("rivenCurseID").value;
+
+		var tristat = (boon1ID && boon2ID && boon3ID ? true : false);
+		var hascurse = (curseID ? true : false);
+
+		if (boon1ID && rivenData.categories[group].buff[boon1ID]) {
+			let base = rivenData.categories[group].buff[boon1ID];
+			base *= disposition;
+			if (hascurse) base *= rivenData.logic.hascurse;
+			if (tristat) base *= rivenData.logic["3rdbuff"];
+
+			document.getElementById("rivenBoon1Min").innerText = truncatedstringFromFloat(base);
+			document.getElementById("rivenBoon1Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+		} else {
+			document.getElementById("rivenBoon1Min").innerText = "";
+			document.getElementById("rivenBoon1Max").innerText = "";
+		}
+
+		if (boon2ID && rivenData.categories[group].buff[boon2ID]) {
+			let base = rivenData.categories[group].buff[boon2ID];
+			base *= disposition;
+			if (hascurse) base *= rivenData.logic.hascurse;
+			if (tristat) base *= rivenData.logic["3rdbuff"];
+
+			document.getElementById("rivenBoon2Min").innerText = truncatedstringFromFloat(base);
+			document.getElementById("rivenBoon2Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+		} else {
+			document.getElementById("rivenBoon2Min").innerText = "";
+			document.getElementById("rivenBoon2Max").innerText = "";
+		}
+
+		if (boon3ID && rivenData.categories[group].buff[boon3ID]) {
+			let base = rivenData.categories[group].buff[boon3ID];
+			base *= disposition;
+			if (hascurse) base *= rivenData.logic.hascurse;
+			if (tristat) base *= rivenData.logic["3rdbuff"];
+
+			document.getElementById("rivenBoon3Min").innerText = truncatedstringFromFloat(base);
+			document.getElementById("rivenBoon3Max").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+		} else {
+			document.getElementById("rivenBoon3Min").innerText = "";
+			document.getElementById("rivenBoon3Max").innerText = "";
+		}
+
+		if (curseID && rivenData.categories[group].curse[curseID]) {
+			let base = rivenData.categories[group].curse[curseID];
+			base *= disposition;
+			if (hascurse) base *= rivenData.logic.hascurse;
+			if (tristat) base *= rivenData.logic["3rdcurse"];
+
+			document.getElementById("rivenCurseMin").innerText = truncatedstringFromFloat(base);
+			document.getElementById("rivenCurseMax").innerText = truncatedstringFromFloat(base * rivenData.logic.range);
+		} else {
+			document.getElementById("rivenCurseMin").innerText = "";
+			document.getElementById("rivenCurseMax").innerText = "";
+		}
+	}
+
+	function updateRivenComposite() {
+		updateRivenStatRanges();
+		updateRivenMod();
+	}
+
+	function updateRivenForm() {
+		var group = WFC.SharedData.Weapon.RivenGroup;
+		var disposition = WFC.SharedData.Weapon.Disposition;
+		if (!group || !disposition) {
+			return;
+		}
+		
+		var v = document.getElementById("rivenBoon1ID");
+		var keep = (Object.keys(rivenEffects).length > 0);
+		var oldval = v.value;
+		while (v.children.length > 0) {
+			v.removeChild(v.lastElementChild);
+		}
+
+		var opt = document.createElement("option");
+		opt.value = "";
+		opt.innerText = WFC.Translate.translate("selectNone");
+		v.appendChild(opt);
+		var k = Object.keys(rivenData.categories[group].buff);
+		for (let i = 0; i < k.length; i++) {
+			opt = document.createElement("option");
+			opt.value = k[i];
+			if (keep && k[i] == oldval) opt.selected = "selected";
+			opt.innerText = WFC.Translate.translate(k[i]);
+			v.appendChild(opt);
+		}
+		v.onchange = updateRivenComposite;
+
+		v = document.getElementById("rivenBoon2ID");
+		oldval = v.value;
+		while (v.children.length > 0) {
+			v.removeChild(v.lastElementChild);
+		}
+		opt = document.createElement("option");
+		opt.value = "";
+		opt.innerText = WFC.Translate.translate("selectNone");
+		v.appendChild(opt);
+		for (let i = 0; i < k.length; i++) {
+			opt = document.createElement("option");
+			opt.value = k[i];
+			if (keep && k[i] == oldval) opt.selected = "selected";
+			opt.innerText = WFC.Translate.translate(k[i]);
+			v.appendChild(opt);
+		}
+		v.onchange = updateRivenComposite;
+
+		v = document.getElementById("rivenBoon3ID");
+		oldval = v.value;
+		while (v.children.length > 0) {
+			v.removeChild(v.lastElementChild);
+		}
+		opt = document.createElement("option");
+		opt.value = "";
+		opt.innerText = WFC.Translate.translate("selectNone");
+		v.appendChild(opt);
+		for (let i = 0; i < k.length; i++) {
+			opt = document.createElement("option");
+			opt.value = k[i];
+			if (keep && k[i] == oldval) opt.selected = "selected";
+			opt.innerText = WFC.Translate.translate(k[i]);
+			v.appendChild(opt);
+		}
+		v.onchange = updateRivenComposite;
+
+		v = document.getElementById("rivenCurseID");
+		oldval = v.value;
+		while (v.children.length > 0) {
+			v.removeChild(v.lastElementChild);
+		}
+		opt = document.createElement("option");
+		opt.value = "";
+		opt.innerText = WFC.Translate.translate("selectNone");
+		v.appendChild(opt);
+		k = Object.keys(rivenData.categories[group].curse);
+		for (let i = 0; i < k.length; i++) {
+			opt = document.createElement("option");
+			opt.value = k[i];
+			if (keep && k[i] == oldval) opt.selected = "selected";
+			opt.innerText = WFC.Translate.translate(k[i]);
+			v.appendChild(opt);
+		}
+		v.onchange = updateRivenComposite;
+
+		document.getElementById("rivenBoon1").onchange = updateRivenMod;
+		document.getElementById("rivenBoon1").onkeyup = updateRivenMod;
+		document.getElementById("rivenBoon1ID").onkeyup = updateRivenMod;
+		document.getElementById("rivenBoon2").onchange = updateRivenMod;
+		document.getElementById("rivenBoon2").onkeyup = updateRivenMod;
+		document.getElementById("rivenBoon2ID").onkeyup = updateRivenMod;
+		document.getElementById("rivenBoon3").onchange = updateRivenMod;
+		document.getElementById("rivenBoon3").onkeyup = updateRivenMod;
+		document.getElementById("rivenBoon3ID").onkeyup = updateRivenMod;
+		document.getElementById("rivenCurse").onchange = updateRivenMod;
+		document.getElementById("rivenCurse").onkeyup = updateRivenMod;
+		document.getElementById("rivenCurseID").onkeyup = updateRivenMod;
+
+	}
+	
+
+	function displayRivenEditor() {
+		for (let i = 0; i < WFC.SharedData.Modding.Weapon.Slots.length; i++) {
+			if (WFC.SharedData.Modding.Weapon.Slots[i].ModID === "modRiven") {
+				document.getElementById("rivenedit").classList.remove("hide2");
+				return;
+			}
+		}
+		document.getElementById("rivenedit").classList.add("hide2");
+		return;
+	}
+	
+})(WFC, window, undefined);
 
 WFC.Modding = (function (WFC, srcData, window, undefined) {
 	var Mods;
