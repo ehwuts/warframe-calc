@@ -517,6 +517,411 @@ WFC.SharedData = {
 WFC.RivenHandling = (function (WFC, window, undefined) {
 	var rivenEffects = {};
 	
+	var logic = {
+		"range": 1.222,
+		"hascurse": 1.25,
+		"3rdbuff": 1/1.32,
+		"3rdcurse": 1.516
+	};
+	var effects = {
+		"Boons": {
+			"bonusMultishot": {
+				"Rifle": 80.16,
+				"Secondary": 106.64,
+				"Shotgun": 106.64,
+				"Melee": NaN,
+				"Kitgun": 106.64
+			},
+			"bonusDamage": {
+				"Rifle": 147.04,
+				"Secondary": 195.68,
+				"Shotgun": 146.72,
+				"Melee": NaN,
+				"Kitgun": 195.68
+			},
+			"bonusMeleeDamage": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 146.72,
+				"Kitgun": NaN
+			},
+			"bonusImpact": {
+				"Rifle": 106.88,
+				"Secondary": 106.88,
+				"Shotgun": 106.88,
+				"Melee": 106.64,
+				"Kitgun": 106.88
+			},
+			"bonusPuncture": {
+				"Rifle": 106.88,
+				"Secondary": 106.88,
+				"Shotgun": 106.88,
+				"Melee": 106.64,
+				"Kitgun": 106.88
+			},
+			"bonusSlash": {
+				"Rifle": 106.88,
+				"Secondary": 106.88,
+				"Shotgun": 106.88,
+				"Melee": 106.64,
+				"Kitgun": 106.88
+			},
+			"bonusCritChance": {
+				"Rifle": 133.68,
+				"Secondary": 133.68,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 133.68
+			},
+			"bonusCritDamage": {
+				"Rifle": 106.96,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusHeat": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusToxin": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusElectricity": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusCold": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusStatusChance": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": 80.16,
+				"Kitgun": 80.16
+			},
+			"bonusStatusDuration": {
+				"Rifle": 89.12,
+				"Secondary": 89.12,
+				"Shotgun": 89.12,
+				"Melee": 89.12,
+				"Kitgun": 89.12
+			},
+			"baneCorpus": {
+				"Rifle": 40.08,
+				"Secondary": 40.08,
+				"Shotgun": 40.08,
+				"Melee": 40.08,
+				"Kitgun": 40.08
+			},
+			"baneInfested": {
+				"Rifle": 40.08,
+				"Secondary": 40.08,
+				"Shotgun": 40.08,
+				"Melee": 40.08,
+				"Kitgun": 40.08
+			},
+			"baneGrineer": {
+				"Rifle": 40.08,
+				"Secondary": 40.08,
+				"Shotgun": 40.08,
+				"Melee": 40.08,
+				"Kitgun": 40.08
+			},
+			"bonusFireRate": {
+				"Rifle": 53.52,
+				"Secondary": 66.56,
+				"Shotgun": 80.16,
+				"Melee": NaN,
+				"Kitgun": 66.56
+			},
+			"Attack Speed": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 48.88,
+				"Kitgun": NaN
+			},
+			"Channeling Efficiency": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 80.16,
+				"Kitgun": NaN
+			},
+			"Channeling Damage": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 133.92,
+				"Kitgun": NaN
+			},
+			"Finisher Damage": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 106.64,
+				"Kitgun": NaN
+			},
+			"Range": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 106.64,
+				"Kitgun": NaN
+			},
+			"chance for Slide Attack to be a Critical": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 80.16,
+				"Kitgun": NaN
+			},
+			"Combo Duration": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": 7.2,
+				"Kitgun": NaN
+			},
+			"bonusMagazine": {
+				"Rifle": 44.56,
+				"Secondary": 44.56,
+				"Shotgun": 44.56,
+				"Melee": NaN,
+				"Kitgun": 44.56
+			},
+			"bonusAmmo": {
+				"Rifle": 44.48,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": NaN,
+				"Kitgun": 80.16
+			},
+			"Flight Speed": {
+				"Rifle": 80.16,
+				"Secondary": 80.16,
+				"Shotgun": 80.16,
+				"Melee": NaN,
+				"Kitgun": 80.16
+			},
+			"bonusReload": {
+				"Rifle": 44.56,
+				"Secondary": 44.56,
+				"Shotgun": 44.56,
+				"Melee": NaN,
+				"Kitgun": 44.56
+			},
+			"Weapon Recoil": {
+				"Rifle": -80.16,
+				"Secondary": -80.16,
+				"Shotgun": -80.16,
+				"Melee": NaN,
+				"Kitgun": -80.16
+			},
+			"bonusZoom": {
+				"Rifle": 53.44,
+				"Secondary": 71.36,
+				"Shotgun": NaN,
+				"Melee": NaN,
+				"Kitgun": 71.36
+			},
+			"flatPunchThrough": {
+				"Rifle": 2.4,
+				"Secondary": 2.4,
+				"Shotgun": 2.4,
+				"Melee": NaN,
+				"Kitgun": 2.4
+			}
+		},
+		"Curses": {
+			"bonusMultishot": {
+				"Rifle": -32.08,
+				"Secondary": -42.64,
+				"Shotgun": -42.64,
+				"Melee": NaN,
+				"Kitgun": -42.64
+			},
+			"bonusDamage": {
+				"Rifle": -58.8,
+				"Secondary": -78.24,
+				"Shotgun": -58.72,
+				"Melee": NaN,
+				"Kitgun": -78.24
+			},
+			"bonusImpact": {
+				"Rifle": -42.72,
+				"Secondary": -42.72,
+				"Shotgun": NaN,
+				"Melee": -42.64,
+				"Kitgun": -42.72
+			},
+			"bonusPuncture": {
+				"Rifle": -42.72,
+				"Secondary": -42.72,
+				"Shotgun": NaN,
+				"Melee": -42.64,
+				"Kitgun": -42.72
+			},
+			"bonusSlash": {
+				"Rifle": -42.72,
+				"Secondary": -42.72,
+				"Shotgun": NaN,
+				"Melee": -42.64,
+				"Kitgun": -42.72
+			},
+			"bonusCritChance": {
+				"Rifle": -53.44,
+				"Secondary": -53.44,
+				"Shotgun": -32.08,
+				"Melee": -32.08,
+				"Kitgun": -53.44
+			},
+			"bonusCritDamage": {
+				"Rifle": -42.8,
+				"Secondary": -32.08,
+				"Shotgun": -32.08,
+				"Melee": -32.08,
+				"Kitgun": -32.08
+			},
+			"bonusStatusChance": {
+				"Rifle": -32.08,
+				"Secondary": -32.08,
+				"Shotgun": -32.08,
+				"Melee": -32.08,
+				"Kitgun": -32.08
+			},
+			"bonusStatusDuration": {
+				"Rifle": -35.6,
+				"Secondary": -35.6,
+				"Shotgun": -35.6,
+				"Melee": -35.6,
+				"Kitgun": -35.6
+			},
+			"baneCorpus": {
+				"Rifle": -16,
+				"Secondary": -16,
+				"Shotgun": -16,
+				"Melee": -16,
+				"Kitgun": -16
+			},
+			"baneInfested": {
+				"Rifle": -16,
+				"Secondary": -16,
+				"Shotgun": -16,
+				"Melee": -16,
+				"Kitgun": -16
+			},
+			"baneGrineer": {
+				"Rifle": -16,
+				"Secondary": -16,
+				"Shotgun": -16,
+				"Melee": -16,
+				"Kitgun": -16
+			},
+			"bonusFireRate": {
+				"Rifle": -21.36,
+				"Secondary": -26.64,
+				"Shotgun": -32.08,
+				"Melee": NaN,
+				"Kitgun": -26.64
+			},
+			"Attack Speed": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": -19.6,
+				"Kitgun": NaN				
+			},
+			"Finisher Damage": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": -42.64,
+				"Kitgun": NaN				
+			},
+			"chance for Slide Attack to be a Critical": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": -32.08,
+				"Kitgun": NaN				
+			},
+			"Combo Duration": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": -2.88,
+				"Kitgun": NaN				
+			},
+			"Range": {
+				"Rifle": NaN,
+				"Secondary": NaN,
+				"Shotgun": NaN,
+				"Melee": -42.64,
+				"Kitgun": NaN				
+			},
+			"bonusMagazine": {
+				"Rifle": -17.84,
+				"Secondary": -17.84,
+				"Shotgun": -17.84,
+				"Melee": NaN,
+				"Kitgun": -17.84
+			},
+			"bonusAmmo": {
+				"Rifle": -17.84,
+				"Secondary": -32.08,
+				"Shotgun": -32.08,
+				"Melee": NaN,
+				"Kitgun": -32.08
+			},
+			"Flight Speed": {
+				"Rifle": -32.08,
+				"Secondary": -32.08,
+				"Shotgun": -32.08,
+				"Melee": NaN,
+				"Kitgun": -32.08
+			},
+			"bonusReload": {
+				"Rifle": -17.84,
+				"Secondary": -17.84,
+				"Shotgun": -17.84,
+				"Melee": NaN,
+				"Kitgun": -17.84
+			},
+			"Weapon Recoil": {
+				"Rifle": 32.08,
+				"Secondary": 32.08,
+				"Shotgun": 32.08,
+				"Melee": NaN,
+				"Kitgun": 32.08
+			},
+			"bonusZoom": {
+				"Rifle": -21.36,
+				"Secondary": -28.56,
+				"Shotgun": NaN,
+				"Melee": NaN,
+				"Kitgun": -28.56
+			}
+		}
+	};
+	
 	function updateRivenMod() {
 		var boon1ID = document.getElementById("rivenBoon1ID").value;
 		var boon1Val = document.getElementById("rivenBoon1").value;
