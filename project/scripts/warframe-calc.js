@@ -1069,7 +1069,6 @@ WFC.RivenHandling = (function (WFC, idForm, window, undefined) {
 		if (!group || !disposition) {
 			return;
 		}
-		console.log(group, disposition);
 		
 		var children = document.getElementById("rivenBoon1ID").children;
 		for (let i = 0; i < children.length; i++) {
