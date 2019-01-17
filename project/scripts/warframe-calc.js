@@ -1000,7 +1000,7 @@ WFC.RivenHandling = (function (WFC, idForm, window, undefined) {
 		var boon3ID = document.getElementById("rivenBoon3ID").value;
 		var boon3Weight = boon3ID && rivenEffects.Boons[boon3ID][group];
 		var curseID = document.getElementById("rivenCurseID").value;
-		var curseWeight = curseID && rivenEffects.Boons[curseID][group];
+		var curseWeight = curseID && rivenEffects.Curses[curseID][group];
 
 		var tristat = (boon1ID && boon2ID && boon3ID ? true : false);
 		var hascurse = (curseID ? true : false);
