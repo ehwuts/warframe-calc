@@ -1069,6 +1069,7 @@ WFC.RivenHandling = (function (WFC, idForm, window, undefined) {
 		if (!group || !disposition) {
 			return;
 		}
+		console.log(group, disposition);
 		
 		var children = document.getElementById("rivenBoon1ID").children;
 		for (let i = 0; i < children.length; i++) {
@@ -1866,6 +1867,7 @@ WFC.Util = {
 WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, window, undefined) {
 	var Weapons;
 	var Group;
+	var selectWeapon;
 
 	function changeWeaponSelect(e) {
 		WFC.Util.debug("Weapons.changeWeaponSelect - " + e.target.value);
@@ -1874,7 +1876,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		}
 		Group = e.target.value;
 
-		var children = document.getElementById(idSelectWeapon).children;
+		var children = selectWeapon.children;
 		for (let i = 0; i < children.length; i++) {
 			if (children[i].tagName === "OPTGROUP") {
 				if (children[i].getAttribute("data-parent") === Group) {
@@ -1886,7 +1888,7 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 				}
 			}
 		}
-		document.getElementById(idSelectWeapon).selectedIndex = 0;
+		selectWeapon.selectedIndex = 0;
 	}
 
 	function changeWeapon(e) {
@@ -1910,7 +1912,6 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		document.getElementById(idForm).onsubmit = function () { return false; };
 
 		var selectCategory = document.getElementById(idSelectGroup);
-		var selectWeapon = document.getElementById(idSelectWeapon);
 
 		var groups = Object.keys(Weapons.Tree);
 		for (let iGroup = 0; iGroup < groups.length; iGroup++) {
@@ -1941,7 +1942,6 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 		}
 
 		selectCategory.onchange = changeWeaponSelect;
-		selectWeapon.addEventListener("change", changeWeapon);
 
 		changeWeaponSelect({"target":{"value":groups[0]}});
 	}
@@ -1961,6 +1961,8 @@ WFC.Weapons = (function(WFC, srcData, idForm, idSelectGroup, idSelectWeapon, win
 	var obj = {};
 	obj.init = function () {
 		WFC.Util.debug("Weapons.init");
+		selectWeapon = document.getElementById(idSelectWeapon);
+		selectWeapon.addEventListener("change", changeWeapon);
 		WFC.Translate.add("optionWeaponSelectBlank", "selectBlankWeapon", "innerText");
 		var request = new XMLHttpRequest();
 		request.open("GET", srcData);
