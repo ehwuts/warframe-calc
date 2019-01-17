@@ -939,32 +939,43 @@ WFC.RivenHandling = (function (WFC, idForm, window, undefined) {
 		var newRivenEffects = {};
 
 		if (boon1ID) {
+			if (boon1ID.indexOf("bonus") === 0 || boon1ID.indexOf("resist") === 0) {
+				boon1Val /= 100;
+			}
 			if (newRivenEffects[boon1ID]) {
-				newRivenEffects[boon1ID] += boon1Val / 9 / 100;
+				newRivenEffects[boon1ID] += boon1Val / 9;
 			} else {
-				newRivenEffects[boon1ID] = boon1Val / 9 / 100;
+				newRivenEffects[boon1ID] = boon1Val / 9;
 			}
 		}
 		if (boon2ID) {
+			if (boon2ID.indexOf("bonus") === 0 || boon2ID.indexOf("resist") === 0) {
+				boon2Val /= 100;
+			}
 			if (newRivenEffects[boon2ID]) {
-				newRivenEffects[boon2ID] += boon2Val / 9 / 100;
+				newRivenEffects[boon2ID] += boon2Val / 9;
 			} else {
-				newRivenEffects[boon2ID] = boon2Val / 9 / 100;
+				newRivenEffects[boon2ID] = boon2Val / 9;
 			}
 		}
-		console.log(boon3Val);
 		if (boon3ID) {
+			if (boon3ID.indexOf("bonus") === 0 || boon3ID.indexOf("resist") === 0) {
+				boon3Val /= 100;
+			}
 			if (newRivenEffects[boon3ID]) {
-				newRivenEffects[boon3ID] += boon3Val / 9 / 100;
+				newRivenEffects[boon3ID] += boon3Val / 9;
 			} else {
-				newRivenEffects[boon3ID] = boon3Val / 9 / 100;
+				newRivenEffects[boon3ID] = boon3Val / 9;
 			}
 		}
 		if (curseID) {
+			if (curseID.indexOf("bonus") === 0 || curseID.indexOf("resist") === 0) {
+				curseVal /= 100;
+			}
 			if (newRivenEffects[curseID]) {
-				newRivenEffects[curseID] += curseVal / 9 / 100;
+				newRivenEffects[curseID] += curseVal / 9;
 			} else {
-				newRivenEffects[curseID] = curseVal / 9 / 100;
+				newRivenEffects[curseID] = curseVal / 9;
 			}
 		}
 
