@@ -2,6 +2,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3810dc416c99410b90302f29d3d35b6f)](https://www.codacy.com/app/ehwuts/warframe-calc?utm_source=github.com&utm_medium=referral&utm_content=ehwuts/warframe-calc&utm_campaign=Badge_Grade)
 
+The aim of this project is to produce a fully featured weapon calculator for Warframe.
+
 ## Usage
 
 Hopefully intuitive given knowledge of use of the source material.
@@ -11,36 +13,15 @@ Hopefully intuitive given knowledge of use of the source material.
 1.  Due to standard XSS security, using a local copy of this project requires hosting a web server to request from.
 2.  It may additionally be required to run the util script to generate combined data files.
 
-## Goals
-
-The goal of this project is to produce a fully featured weapon calculator for Warframe.
-
-### Goal Features
+### Goals
 
 1.  Fully clientside logic with static data modules. 
-    -   Leaning async json to load weapon/enemy stats, trading increased file requests for reduced standing memory?
-
-2.  Display actual, with "Effective" unmerged.
-
-3.  Display Single shot/Burst/Sustained DPS
-    -   merged and per-type
-
-4.  Built in support for drop-in localization. One of:
-    -   pregen endpoints from template
-    -   dynamically fill after page load
-
-### Secondary Features
-
-1.  Enemy Scaling Calculator
-2.  Per-mod value calcs
-3.  Condition damage calcs sufficiently accurate as to be meaningful.
-4.  Damage effectiveness for enemy resource combinations
-5.  Tileset-based enemy spreads for #4
-
-### Undecided
-
-1.  Display as per ingame.
-2.  Import from WFB
+2.  Text localization support for every language "officially supported" by the game's client.
+3.  Stats display consistent with that of the in game modding screen.
+4.  Advanced stats display for thorough performance descriptions, including status effects.
+5.  Enemy scaling calculations for describing actual damage effectiveness.
+6.  Import codes for saving builds or loading from other utilities.
+7.  Per-mod value calculations for potentially automatic build recommendations.
 
 ## LICENSING
 
