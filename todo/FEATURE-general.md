@@ -13,6 +13,7 @@
 -   [ ] stats display that's actually correct
 -   [ ] clean up the page layout to stop being terrible
 -   [ ] error header for tidy display of notices and unexpected issues
+-   [ ] header notices for unsupported stats
 
 ### Form Controls
 
