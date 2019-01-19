@@ -1,4 +1,4 @@
-# Companions
+# Companion Data
 
 The tasks in this file represent "trivial" data entry for items. For items with unusual complexity required for their support, entries here may reference a detailed task elsewhere.
 

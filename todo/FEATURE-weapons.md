@@ -15,8 +15,6 @@
 -   [ ] sniper combo
 -   [x] sniper zoom effects
 
-
-
 ### Trigger Modes
 
 -   [x] auto
@@ -27,7 +25,6 @@
 -   [ ] burst
 -   [ ] charge
 -   [ ] stance combo
-
 
 ### Status Effects
 
@@ -52,7 +49,7 @@
 -   [ ] Stances
 -   [ ] Melee Combo
 
-### Kitgun Editor
+### Zaw Editor
 
 -   [ ] Zaw Editor
 
