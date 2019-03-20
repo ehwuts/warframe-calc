@@ -7,6 +7,7 @@
 -   [ ] beam weapons have inconsistent benefits from multishot upon status chance
 -   [ ] charge trigger uses charge rate, which has minor scaling differences beyond being an inverse of fire rate
 -   [ ] charge trigger weapons usually have the ability to fire partially charged, for scaling base damage
+-   [ ] charge trigger weapons would be useful to display modded charge rate in addition to effective fire rate
 -   [ ] burst trigger has a more complicated effective fire rate than burst count * rate
 -   [ ] pellet calculations need verification for inherent multishot weapons because they're not always consistent
 -   [ ] ammo consumption isn't always 1 per shot
